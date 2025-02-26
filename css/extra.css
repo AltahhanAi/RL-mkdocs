@@ -1,0 +1,284 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap');
+
+:root {
+  --md-primary-fg-color:        #916f40;
+  --md-primary-fg-color--light: #b38a52;
+  --md-primary-fg-color--dark:  #654d2c;
+  --md-accent-fg-color:        #916f40;
+  --md-accent-fg-color--light: #b38a52;
+  --md-accent-fg-color--dark:  #654d2c;
+}
+.md-grid {
+    max-width: 1600px; /* Change this value as needed */
+}
+
+body {
+    font-family: 'Inter', sans-serif !important;
+}
+
+header.md-header, nav.md-tabs {
+    background-color: #b31b1b;
+}
+
+/* padding on right */
+
+@media only screen and (max-width: 1265px) {
+
+    .md-announce__inner #customlogo {
+        padding-right: 1rem;
+    }
+}
+/* end */
+
+footer {
+    margin-top: 2.5rem;
+}
+
+.md-content p a:not(.md-button), p a:hover, p a:focus {
+    text-decoration: underline;
+}
+
+.md-content p a:hover:not(.md-button), p a:focus:not(.md-button) {
+    color: #b31b1b;
+}
+
+.md-content li a:not(.md-button), p a:hover, p a:focus {
+    text-decoration: underline;
+}
+
+.md-content li a:hover:not(.md-button), p a:focus:not(.md-button) {
+    color: #b31b1b;
+}
+
+h2, h3, h4, h5, h6 {
+    font-weight: 600 !important;
+}
+
+h1 {
+    border-bottom: 2px solid var(--md-primary-fg-color);
+    padding-bottom: 10px;
+    font-weight: 500 !important;
+}
+
+.md-logo {
+    display: none;
+}
+
+.md-header-nav__title {
+    padding-left: 10px;
+}
+
+.md-nav--primary .md-nav__item {
+    font-size: 14px;
+}
+
+.md-nav__title{
+    text-transform: uppercase;
+    font-size: 12px;
+    color: #111111;
+}
+
+.md-tabs__item {
+    height: 30px;
+}
+
+.md-tabs__link {
+    margin-top: 0;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.md-button--primary:hover, .md-button--primary:focus {
+    background-color: #212121 !important;
+    border-color: #212121 !important;
+}
+
+/*.md-sidebar--secondary, .md-nav--secondary, .md-nav--secondary .md-nav__list {
+    background-color: #eeeeee !important;
+}*/
+
+.md-sidebar--secondary {
+    border: 1px solid var(--md-primary-fg-color) !important;
+}
+
+#customlogo {
+    text-align: right;
+    height: 50px;
+    width: auto;
+}
+
+#versionIndicator {
+    border: 1px solid white;
+    padding: .75rem .5rem;
+    font-size: 12px;
+}
+
+.md-announce__inner {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding-right: 0;
+}
+
+/* ADMONITION STYLES */
+
+.admonition p, details p {
+    font-size: .75rem;
+}
+
+.admonition li, details li {
+    font-size: .75rem;
+}
+
+.admonition code, details code {
+    font-size: .7rem;
+}
+
+.admonition p.admonition-title, details summary {
+    font-size: .8rem;
+}
+
+.admonition-title::before {
+    top: .5rem;
+}
+
+.md-typeset blockquote {
+    border-left-color: #b31b1b;
+}
+
+.md-typeset blockquote p {
+    color: #4f4f4f;
+}
+
+a.newtab code {
+    background-color: transparent;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.md-typeset figcaption {
+    font-style: normal;
+    text-align: left;
+    margin-left: 0;
+    max-width: none;
+    margin-bottom: 0;
+}
+
+/* OUTPUT CODE STYLES */
+
+.custom-jn-output {
+    font-family: "",SFMono-Regular,Consolas,Menlo,monospace;
+    font-size: .7rem;
+}
+
+/* ALGORITHM ADMONITION STYLES */
+
+/* ALGORITHM HEADING */
+.md-typeset .admonition.algorithm-heading,
+.md-typeset details.algorithm-heading {
+  border-color: #cccccc;
+  border-width: 2px;
+  padding-left: 1.25em;
+  padding-right: 10px;
+  overflow: visible;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  position: relative;
+}
+.md-typeset .algorithm-heading > .admonition-title,
+.md-typeset .algorithm-heading > summary {
+  background-color: #eeeeee;
+  border-color: #cccccc;
+  min-width: 1200px;
+}
+.md-typeset .algorithm-heading > .admonition-title::before,
+.md-typeset .algorithm-heading > summary::before {
+  background-color: #aaaaaa;
+  -webkit-mask-image: var(--md-admonition-icon--abstract);
+          mask-image: var(--md-admonition-icon--abstract);
+}
+
+/* ALGORITHM CONTENT */
+.md-typeset .admonition.algorithm,
+.md-typeset details.algorithm {
+  border-color: #cccccc;
+  border-width: 2px;
+  padding-left: 1.25em;
+  min-width: 1200px;
+  overflow: visible;
+  box-shadow: none;
+}
+.md-typeset .admonition.algorithm p span.algorithm-line-comment,
+.md-typeset details.algorithm p span.algorithm-line-comment {
+  float: right;
+}
+.md-typeset .algorithm > .admonition-title,
+.md-typeset .algorithm > summary {
+  background-color: #eeeeee;
+  border-color: #cccccc;
+}
+.md-typeset .algorithm > .admonition-title::before,
+.md-typeset .algorithm > summary::before {
+  background-color: #aaaaaa;
+  -webkit-mask-image: var(--md-admonition-icon--abstract);
+          mask-image: var(--md-admonition-icon--abstract);
+}
+
+/* TEXT DESCRIPTION ADMONITION STYLE */
+
+.md-typeset .admonition.textdescription,
+.md-typeset details.textdescription {
+  border: none;
+  box-shadow: none;
+  background-color: #eee;
+  margin-top:0;
+}
+.md-typeset .textdescription > .admonition-title,
+.md-typeset .textdescription > summary {
+  background-color: #ffffff;
+  padding-left:4px;
+  color: var(--md-primary-fg-color);
+  text-decoration: underline;
+  font-weight: 400;
+}
+.md-typeset .textdescription > .admonition-title::before,
+.md-typeset .textdescription > summary::before {
+    display: none;
+}
+
+/*  TABLES */
+
+.md-typeset table:not([class]) {
+    font-size: .7rem;
+}
+
+/* Change header color */
+.md-typeset table thead th {
+    color: white; /* Change header text color */
+}
+
+thead {
+    background: #212121;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+thead th:not(:last-of-type), tbody tr td:not(:last-of-type) {
+    border-right: 1px solid #ccc;
+}
+
+tbody tr td {
+    border-bottom: 1px solid #ccc;
+}
+
+/* EQUATION LABELS */
+
+span.equation-label {
+    text-align: right;
+    float: right;
+    background-color: white;
+    padding:20px;
+}

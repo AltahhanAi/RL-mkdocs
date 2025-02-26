@@ -1,0 +1,1743 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Abdulrahman Altahhan, 2025">
+      
+      
+      
+        <link rel="prev" href="../lesson8/lesson8.html">
+      
+      
+        <link rel="next" href="../lesson10/lesson10.html">
+      
+      
+      <link rel="icon" href="../../img/favicon.jpg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.4">
+    
+    
+      
+        <title>9. n-Step Methods - Reinforcement Learning for Autonomous Agents</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.8608ea7d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lesson-8-tabular-methods-n-steps-bootstrapping-tabular-methods" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    <div id="versionIndicator"><b>Version:</b> 04.06.21.a</div>
+    <img id="customlogo" src="../../../img/logo.svg" alt="University of Leeds logo.">
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Reinforcement Learning for Autonomous Agents" class="md-header__button md-logo" aria-label="Reinforcement Learning for Autonomous Agents" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Reinforcement Learning for Autonomous Agents
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              9. n-Step Methods
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../index.html" class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit1/lesson1/lesson1.html" class="md-tabs__link">
+          
+  
+  Unit 1
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit2/lesson5/lesson5.html" class="md-tabs__link">
+          
+  
+  Unit 2
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../lesson8/lesson8.html" class="md-tabs__link">
+          
+  
+  Unit 3
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit4/lesson12/lesson12.html" class="md-tabs__link">
+          
+  
+  Unit 4
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit5/lesson15/lesson15.html" class="md-tabs__link">
+          
+  
+  Unit 5
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit6/lesson18/lesson18.html" class="md-tabs__link">
+          
+  
+  Unit 6
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Reinforcement Learning for Autonomous Agents" class="md-nav__button md-logo" aria-label="Reinforcement Learning for Autonomous Agents" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Reinforcement Learning for Autonomous Agents
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 1
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson1/lesson1.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. Tabular Methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson2/lesson2.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2. K-Arm Bandit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson3/lesson3.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. MDP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson4/lesson4.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4. ROS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 2
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit2/lesson5/lesson5.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5. Dynamic Programming
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit2/lesson6/lesson6.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6. Monte Carlo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit2/lesson7/lesson7.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7. Mobile Robots
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Unit 3
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lesson8/lesson8.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8. Temporal Difference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    9. n-Step Methods
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="lesson9.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    9. n-Step Methods
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#adjusting-an-mrp-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adjusting an MRP class
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#online-tdn" class="md-nav__link">
+    <span class="md-ellipsis">
+      Online TDn
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Online TDn">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tdn-and-mc-runs-on-random-walk" class="md-nav__link">
+    <span class="md-ellipsis">
+      TDn and MC Runs on random walk
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-of-online-n-step-td-and-mc-for-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison of online n-step TD and MC for different α
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#offline-tdn" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offline TDn
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Offline TDn">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tdf-and-tdnf-for-n1" class="md-nav__link">
+    <span class="md-ellipsis">
+      TDf and TDnf for n=1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tdf-tdnf-and-mc-runs-on-random-walk" class="md-nav__link">
+    <span class="md-ellipsis">
+      TDf , TDnf and MC Runs on random walk
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#offline-tdnf-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offline TDnf α comparison
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lesson10/lesson10.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10. Planning in RL(optional)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lesson11/lesson11.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11. Localisation and SLAM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 4
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 4
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit4/lesson12/lesson12.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12. Function Approximation Methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit4/lesson13/lesson13.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    13. Linear Approximation for Prediction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit4/lesson14/lesson14.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    14. Linear Approximation for Control
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 5
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 5
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit5/lesson15/lesson15.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    15. Linear Approximation with Eligibility Traces(prediction and control)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit5/lesson16/lesson16.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    16. Nonlinear Approximation for Control
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit5/lesson17/lesson17.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    17. Application on Robot Navigation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 6
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 6
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit6/lesson18/lesson18.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    18. Application on Games(optional)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#adjusting-an-mrp-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adjusting an MRP class
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#online-tdn" class="md-nav__link">
+    <span class="md-ellipsis">
+      Online TDn
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Online TDn">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tdn-and-mc-runs-on-random-walk" class="md-nav__link">
+    <span class="md-ellipsis">
+      TDn and MC Runs on random walk
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-of-online-n-step-td-and-mc-for-different" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison of online n-step TD and MC for different α
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#offline-tdn" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offline TDn
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Offline TDn">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tdf-and-tdnf-for-n1" class="md-nav__link">
+    <span class="md-ellipsis">
+      TDf and TDnf for n=1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tdf-tdnf-and-mc-runs-on-random-walk" class="md-nav__link">
+    <span class="md-ellipsis">
+      TDf , TDnf and MC Runs on random walk
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#offline-tdnf-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      Offline TDnf α comparison
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<p>The notebook uses a library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries are written from scratch using standard Python libraries (numpy, matplotlib etc.).
+Please note that you will need permission from the author to use the code for research, commercially or otherwise.</p>
+<h1 id="lesson-8-tabular-methods-n-steps-bootstrapping-tabular-methods">Lesson 8-Tabular Methods: n-steps Bootstrapping Tabular Methods</h1>
+<p><strong>Learning outcomes</strong>
+1. understand how to generalize a one-step methods to n-step methods
+2. understand the trend associated with n-steps methods 
+3. understand that intermediate n values usually works the best 
+4. generalise n-step prediction methods to n-step control methods</p>
+<p><strong>Reading</strong>:
+The accompanying reading of this lesson is <strong>chapter 7</strong> of our text book available online <a href="http://incompleteideas.net/book/RLbook2020.pdf">here</a>. Please note that we explain the ideas of this topic from a practical perspective and not from a theoretical perspective which is already covered in the textbook.</p>
+<p>In the previous lesson, we saw how a TD update rule defined in terms of the next reward and state as the target can effectively converge to useful state and action-value functions. It took the form:</p>
+<p><span class="arithmatex">\(V(S_{t}) = V(S_{t}) + \alpha[R_{t+1} + \gamma V(S_{t+1}) - V(S_{t}) ]\)</span></p>
+<p>This is a one-step update because one reward available in the current step is used. It can be written as</p>
+<p><span class="arithmatex">\(G_{t} = R_{t+1} + \gamma V(S_{t+1})\)</span></p>
+<p><span class="arithmatex">\(V(S_{t}) = V(S_{t}) + \alpha[ G_{t} - V(S_{t}) ]\)</span></p>
+<p>where <span class="arithmatex">\(G_{t}\)</span> is a one-step return.</p>
+<p>In this lesson, we study the effect of increasing the number of steps considered for the target. In particular, we study the effect of collecting rewards for n steps and substituting the one-step return with the n-step return written as the discounted sum of the n rewards plus the value function for the n-th step state.</p>
+<p>In other words, we define the n-step return as</p>
+<p><span class="arithmatex">\(G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \gamma^{2} R_{t+3} +...+ \gamma^{n-1} R_{t+n} + \gamma^{n}V(S_{t+n})\)</span></p>
+<p>And the update rule that uses this n-step return is:</p>
+<p><span class="arithmatex">\(V(S_{t}) = V(S_{t}) + \alpha[G_{t:t+n} - V(S_{t}) ]\)</span></p>
+<p>When we want to make in which time step, we are conducting this update, we add a subscript for the V function that represents the time step at which the estimate is referring to </p>
+<p><span class="arithmatex">\(G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \gamma^{2} R_{t+3} +...+ \gamma^{n-1} R_{t+n} + \gamma^{n}V_{t+n-1}(S_{t+n})\)</span></p>
+<p><span class="arithmatex">\(V_{t+n}(S_{t}) = V_{t+n-1}(S_{t}) + \alpha[G_{t:t+n} - V_{t+n-1}(S_{t}) ]\)</span></p>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rl.rl</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</code></pre></div>
+<style>.container {width:90% !important}</style>
+
+<h2 id="adjusting-an-mrp-class">Adjusting an MRP class</h2>
+<p>First, let us develop our MRP class to accommodate waiting for n-1 steps before obtaining the <span class="arithmatex">\(G_{t:t+n}\)</span>. In each step, we must also create a G function to obtain the <span class="arithmatex">\(G_{t:t+n}\)</span>. Finally, we would need to alter our stopping criteria to wait for extra n-1 steps at the end to ensure we update the latest n-1 state values since we are always lagging n-1 steps during the episode.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MRP</span><span class="p">(</span><span class="n">MRP</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+
+    <span class="c1">#----------------------------------- 🐾steps as per the algorithm style --------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop_ep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">done</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop_</span><span class="p">(</span><span class="n">done</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_t</span><span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">done</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">skipstep</span> <span class="o">+=</span><span class="mi">1</span>                     <span class="c1"># holds the count for how many steps after ep is finished (will reach n-1)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">skipstep</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">:</span> 
+                <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">skipstep</span> <span class="c1"># returns t to its original actual count of number of steps.  it is executed before self.t+=1 in interact and hence +1 is necessary</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">skipstep</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">skipstep</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="c1">#-----------------------------------💰 returns --------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">G</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">τ1</span><span class="p">,</span> <span class="n">τn</span><span class="p">):</span>    <span class="c1"># n-steps return, called during an episode   </span>
+
+        <span class="c1">#if self.γ==1: return self.r[τ1:τn+1].sum() # this saves computation when no dsicount is applied</span>
+        <span class="n">Gn</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">τn</span><span class="p">,</span> <span class="n">τ1</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span> <span class="c1"># yields τn-τ1= (τ+n)-(τ+1)= n-1 setps</span>
+            <span class="n">Gn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">*</span><span class="n">Gn</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> 
+
+        <span class="k">return</span> <span class="n">Gn</span> 
+</code></pre></div>
+<h2 id="online-tdn">Online TDn</h2>
+<p>Now we write our TDn class. It is very similar to TD except that we replace the rn+V[t+1] by the <span class="arithmatex">\(G_{t:t+n}\)</span>. Also as long as the agent did do enough steps (n-1) we skip without doing the update.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TDn</span><span class="p">(</span><span class="n">MRP</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># there is a way to save storage by using t%(self.n+1) but we left it for clarity</span>
+
+
+    <span class="c1"># ----------------------------- 🌖 online learning ----------------------    </span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">online</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">τ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>  <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="k">if</span> <span class="n">τ</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span> <span class="k">return</span>
+
+        <span class="c1"># we take the min so that we do not exceed the episode limit (last step+1)</span>
+        <span class="n">τn</span> <span class="o">=</span> <span class="n">τ</span><span class="o">+</span><span class="n">n</span> <span class="p">;</span> <span class="n">τn</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">τn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">skipstep</span><span class="p">)</span>
+        <span class="n">τ1</span> <span class="o">=</span> <span class="n">τ</span><span class="o">+</span><span class="mi">1</span>
+
+        <span class="n">sτ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">τ</span> <span class="p">]</span>
+        <span class="n">sn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">τn</span><span class="p">]</span>
+        <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">[</span><span class="n">τn</span><span class="p">]</span>
+
+        <span class="c1"># n steps τ+1,..., τ+n inclusive of both ends</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">sτ</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">(</span><span class="n">τ1</span><span class="p">,</span><span class="n">τn</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">**</span><span class="n">n</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">sn</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">sτ</span><span class="p">])</span>
+</code></pre></div>
+<p>Let us now apply TDn on our simple 5-steps random walk problem.</p>
+<div class="highlight"><pre><span></span><code><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">TDnwalk</span> <span class="o">=</span> <span class="n">TDn</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk</span><span class="p">(),</span> <span class="n">v0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.05</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_13_0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">TDnwalk</span> <span class="o">=</span> <span class="n">TDn</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk</span><span class="p">(),</span> <span class="n">v0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.05</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_14_0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">TDnwalk</span><span class="o">.</span><span class="n">t</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>18
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">TDnwalk</span><span class="o">.</span><span class="n">Ts</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>array([ 3,  7,  9, 15, 11,  5,  3,  5, 13, 27,  9,  3, 11,  3, 11,  7,  7,
+        7, 13,  3,  7,  5, 15,  7,  5, 13,  3, 23, 13,  9,  3,  7,  9, 17,
+       13, 17,  9, 13,  9,  3,  3, 29,  3, 15,  7,  3,  3, 19,  9,  3, 15,
+        3,  3,  3, 19,  3, 15,  3,  3,  9,  5,  3,  3,  7,  3,  3,  3,  5,
+        3, 11,  7, 11,  3,  5,  9,  5,  3, 19,  5,  9,  5,  3,  5,  3,  5,
+        3,  3,  9, 11,  9,  7,  5,  9,  7,  9,  3,  3, 15,  7, 19],
+      dtype=uint32)
+</code></pre></div>
+<h3 id="tdn-and-mc-runs-on-random-walk">TDn and MC Runs on random walk</h3>
+<p>Let us now  see how a TDn for n=1 and n=5 as well as MC behaves on our usual 5-states random walk on average. To that end as usual we execute several runs.</p>
+<p>from MC import MC</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">nstepTD_MC_randwalk</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk</span><span class="p">(),</span> <span class="n">algorithm</span><span class="o">=</span><span class="n">TDn</span><span class="p">,</span> <span class="n">alglabel</span><span class="o">=</span><span class="s1">&#39;TD&#39;</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">.25</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Empirical RMS error, averaged over states&#39;</span><span class="p">)</span>
+    <span class="n">n</span><span class="o">=</span><span class="mi">5</span>
+
+    <span class="k">for</span> <span class="n">α</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">.05</span><span class="p">,</span> <span class="mf">.1</span><span class="p">,</span> <span class="mf">.15</span><span class="p">]:</span>
+        <span class="n">TDαs</span> <span class="o">=</span> <span class="n">Runs</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">algorithm</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mf">.5</span><span class="p">),</span>  <span class="n">runs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">plotE</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> α= </span><span class="si">%.2f</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">alglabel</span><span class="p">,</span><span class="n">α</span><span class="p">),</span> <span class="n">frmt</span><span class="o">=</span><span class="s1">&#39;.-&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">α</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">.05</span><span class="p">,</span> <span class="mf">.1</span><span class="p">,</span> <span class="mf">.15</span><span class="p">]:</span>
+        <span class="n">TDαs</span> <span class="o">=</span> <span class="n">Runs</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">algorithm</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span><span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mf">.5</span><span class="p">),</span>  <span class="n">runs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">plotE</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> α= </span><span class="si">%.2f</span><span class="s1"> n=</span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">alglabel</span><span class="p">,</span><span class="n">α</span><span class="p">,</span><span class="n">n</span><span class="p">),</span> <span class="n">frmt</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">α</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">.01</span><span class="p">,</span> <span class="mf">.02</span><span class="p">,</span> <span class="mf">.03</span><span class="p">,</span> <span class="mf">.04</span><span class="p">]:</span>
+        <span class="n">MCs</span> <span class="o">=</span> <span class="n">Runs</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">MC</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span><span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mf">.5</span><span class="p">),</span>  <span class="n">runs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">plotE</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;MC α= </span><span class="si">%.2f</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">α</span><span class="p">,</span> <span class="n">frmt</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>Note that 5 states random walk environment env=randwalk() is the default environment for MRPs and s we did not need to explicitly pass it in the above.</p>
+<div class="highlight"><pre><span></span><code><span class="n">nstepTD_MC_randwalk</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+</code></pre></div>
+<p><img alt="png" src="output_21_1.png" /></p>
+<h2 id="comparison-of-online-n-step-td-and-mc-for-different">Comparison of online n-step TD and MC for different α</h2>
+<p>Ok, let us now study the effect of varying the hyperparameter n. n blends the horizon of all methods between bootstrapping algorithms and non-bootstrapping methods. To that end, we will apply TDn with different n values along with MC on a random walk prediction problem. This time we will use 19 states, and the goal to the left has a reward of -1, the goal on the right has a reward of 1, and all of the 19 intermediate states have a reward of 0.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">nstepTD_MC_randwalk_αcompare</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk_</span><span class="p">(),</span> <span class="n">algorithm</span><span class="o">=</span><span class="n">TDn</span><span class="p">,</span> <span class="n">Vstar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">envlabel</span><span class="o">=</span><span class="s1">&#39;19&#39;</span><span class="p">,</span> 
+                                 <span class="n">MCshow</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alglabel</span><span class="o">=</span><span class="s1">&#39;online TD&#39;</span><span class="p">):</span>
+
+    <span class="n">steps0</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">.001</span><span class="p">,</span><span class="mf">.01</span><span class="p">,</span><span class="mf">.001</span><span class="p">))</span>
+    <span class="n">steps1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">.011</span><span class="p">,</span><span class="mf">.2</span><span class="p">,</span><span class="mf">.025</span><span class="p">))</span>
+    <span class="n">steps2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">.25</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">.05</span><span class="p">))</span>
+
+    <span class="n">αs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">steps0</span> <span class="o">+</span><span class="n">steps1</span> <span class="o">+</span> <span class="n">steps2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="c1">#αs = np.arange(0,1.05,.1) # quick testing</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">.02</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">.24</span><span class="p">,</span> <span class="mf">.56</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;n-steps </span><span class="si">%s</span><span class="s1"> RMS error averaged over </span><span class="si">%s</span><span class="s1"> states and first 10 episodes&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">alglabel</span><span class="p">,</span><span class="n">envlabel</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2</span><span class="o">**</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]:</span>
+        <span class="n">Compare</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">algorithm</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">Vstar</span><span class="o">=</span><span class="n">Vstar</span><span class="p">),</span> 
+                              <span class="n">runs</span><span class="o">=</span><span class="n">runs</span><span class="p">,</span> 
+                              <span class="n">hyper</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;α&#39;</span><span class="p">:</span><span class="n">αs</span><span class="p">},</span> 
+                              <span class="n">plotE</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;n=</span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">MCshow</span><span class="p">:</span>
+        <span class="n">compare</span> <span class="o">=</span> <span class="n">Compare</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">MC</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span> 
+                                  <span class="n">runs</span><span class="o">=</span><span class="n">runs</span><span class="p">,</span> 
+                                  <span class="n">hyper</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;α&#39;</span><span class="p">:</span><span class="n">αs</span><span class="p">},</span> 
+                                  <span class="n">plotE</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;MC ≡ TDn(n=$</span><span class="se">\\</span><span class="s1">infty$)&#39;</span><span class="p">,</span> <span class="n">frmt</span><span class="o">=</span><span class="s1">&#39;-.&#39;</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">figure_7_2</span> <span class="o">=</span> <span class="n">nstepTD_MC_randwalk_αcompare</span>
+<span class="n">figure_7_2</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+</code></pre></div>
+<p><img alt="png" src="output_24_1.png" /></p>
+<p>Note how when n=<span class="arithmatex">\(\infty\)</span> TDn converges to an MC. Hence, we could see that TDn represents the full spectrum of algorithms that completely use bootstrapping (TD) and algorithms that do not use bootstrapping (MC). It nicely blends these algorithms and lets us control bootstrapping parametrically by choosing a suitable value for the n hyperparameter.</p>
+<h2 id="offline-tdn">Offline TDn</h2>
+<p>Let us now develop an offline TDn method. This method is exactly as its name suggests. We need to be mindful of going n-1 extra steps at the end because of the lag of n-1 steps at the start until the agent accumulates enough steps to obtain the <span class="arithmatex">\(G_{t:t+n}\)</span>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TDnf</span><span class="p">(</span><span class="n">MRP</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># must store because it is offline</span>
+
+    <span class="c1"># ----------------------------- 🌘 offline TD learning ----------------------------   </span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">offline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span>        
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">+</span><span class="n">n</span><span class="p">):</span> <span class="c1"># T+n to reach T+n-1</span>
+            <span class="n">τ</span>  <span class="o">=</span> <span class="n">t</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">τ</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+
+            <span class="c1"># we take the min so that we do not exceed the episode limit (last step+1)</span>
+            <span class="n">τ1</span> <span class="o">=</span> <span class="n">τ</span><span class="o">+</span><span class="mi">1</span>
+            <span class="n">τn</span> <span class="o">=</span> <span class="n">τ</span><span class="o">+</span><span class="n">n</span> <span class="p">;</span> <span class="n">τn</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">τn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">sτ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">τ</span> <span class="p">]</span>
+            <span class="n">sn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">τn</span><span class="p">]</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">[</span><span class="n">τn</span><span class="p">]</span>
+
+            <span class="c1"># n steps τ+1,..., τ+n inclusive of both ends</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">sτ</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">(</span><span class="n">τ1</span><span class="p">,</span><span class="n">τn</span><span class="p">)</span><span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">**</span><span class="n">n</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">sn</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">sτ</span><span class="p">])</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">TDnwalk</span> <span class="o">=</span> <span class="n">TDnf</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk</span><span class="p">(),</span> <span class="n">v0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_28_0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">TDnwalk</span><span class="o">.</span><span class="n">t</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>18
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">TDnwalk</span><span class="o">.</span><span class="n">Ts</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>array([ 3,  7,  9, 15, 11,  5,  3,  5, 13, 27,  9,  3, 11,  3, 11,  7,  7,
+        7, 13,  3,  7,  5, 15,  7,  5, 13,  3, 23, 13,  9,  3,  7,  9, 17,
+       13, 17,  9, 13,  9,  3,  3, 29,  3, 15,  7,  3,  3, 19,  9,  3, 15,
+        3,  3,  3, 19,  3, 15,  3,  3,  9,  5,  3,  3,  7,  3,  3,  3,  5,
+        3, 11,  7, 11,  3,  5,  9,  5,  3, 19,  5,  9,  5,  3,  5,  3,  5,
+        3,  3,  9, 11,  9,  7,  5,  9,  7,  9,  3,  3, 15,  7, 19],
+      dtype=uint32)
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">TDnwalk</span> <span class="o">=</span> <span class="n">TDnf</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk</span><span class="p">(),</span> <span class="n">v0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_31_0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">TDnwalk</span><span class="o">.</span><span class="n">t</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>18
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">TDnwalk</span><span class="o">.</span><span class="n">Ts</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>array([ 3,  7,  9, 15, 11,  5,  3,  5, 13, 27,  9,  3, 11,  3, 11,  7,  7,
+        7, 13,  3,  7,  5, 15,  7,  5, 13,  3, 23, 13,  9,  3,  7,  9, 17,
+       13, 17,  9, 13,  9,  3,  3, 29,  3, 15,  7,  3,  3, 19,  9,  3, 15,
+        3,  3,  3, 19,  3, 15,  3,  3,  9,  5,  3,  3,  7,  3,  3,  3,  5,
+        3, 11,  7, 11,  3,  5,  9,  5,  3, 19,  5,  9,  5,  3,  5,  3,  5,
+        3,  3,  9, 11,  9,  7,  5,  9,  7,  9,  3,  3, 15,  7, 19],
+      dtype=uint32)
+</code></pre></div>
+<h3 id="tdf-and-tdnf-for-n1">TDf and TDnf for n=1</h3>
+<div class="highlight"><pre><span></span><code><span class="n">TDnwalk</span> <span class="o">=</span> <span class="n">TDf</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk_</span><span class="p">(),</span> <span class="n">v0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_35_0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">TDnwalk</span> <span class="o">=</span> <span class="n">TDnf</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk_</span><span class="p">(),</span> <span class="n">v0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_36_0.png" /></p>
+<h3 id="tdf-tdnf-and-mc-runs-on-random-walk">TDf , TDnf and MC Runs on random walk</h3>
+<p>Let us now  see how a TDnf for n=1 and n=5 as well as MC behaves on our usual 5-states random walk on average. To that end as usual we execute several runs.</p>
+<div class="highlight"><pre><span></span><code><span class="n">nstepTD_MC_randwalk</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">TDnf</span><span class="p">,</span> <span class="n">alglabel</span><span class="o">=</span><span class="s1">&#39;TDf&#39;</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+</code></pre></div>
+<p><img alt="png" src="output_38_1.png" /></p>
+<p>Let us now double check that both TDnf and TDf are identical for n=1.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">trange</span><span class="p">,</span> <span class="n">tqdm</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">αs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.05</span><span class="p">,</span><span class="mf">.1</span><span class="p">)</span>
+<span class="n">n</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">compareTDf</span> <span class="o">=</span> <span class="n">Compare</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">TDf</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk_</span><span class="p">(),</span> <span class="n">v0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span> <span class="n">runs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">hyper</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;α&#39;</span><span class="p">:</span><span class="n">αs</span><span class="p">},</span> 
+                     <span class="n">plotE</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;TD offline&#39;</span><span class="p">)</span>
+
+<span class="n">compareTDnf</span> <span class="o">=</span> <span class="n">Compare</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">TDnf</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk_</span><span class="p">(),</span> <span class="n">v0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span> <span class="n">runs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">hyper</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;α&#39;</span><span class="p">:</span><span class="n">αs</span><span class="p">},</span> 
+                      <span class="n">plotE</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;TDn offline n=</span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">n</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|11/11
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|11/11
+</code></pre></div>
+<p><img alt="png" src="output_41_1.png" /></p>
+<h2 id="offline-tdnf-comparison">Offline TDnf α comparison</h2>
+<p>Let us now compare how offline n-step TD (TDnf) performs with different values for α (learning-step hyper parameter.</p>
+<div class="highlight"><pre><span></span><code><span class="n">nstepTD_MC_randwalk_αcompare</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">TDnf</span><span class="p">,</span> <span class="n">alglabel</span><span class="o">=</span><span class="s1">&#39;offline TD&#39;</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+</code></pre></div>
+<p><img alt="png" src="output_43_1.png" /></p>
+<h1 id="n-step-sarsa-on-policy-control">n-step Sarsa on-policy Control</h1>
+<p>As you can see, we have imported the class factory MDP to make it inherit the new MRP class that we defined in this lesson (which contains functions to deal with multiple steps updates) without having to restate the definition of MDP again.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Sarsan</span><span class="p">(</span><span class="n">MDP</span><span class="p">(</span><span class="n">MRP</span><span class="p">)):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="kc">True</span>        <span class="c1"># although online but we need to access *some* of earlier steps,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_an</span> <span class="c1"># for Sarsa we want to decide the next action in time step t</span>
+
+    <span class="c1"># ----------------------------- 🌖 online learning ----------------------    </span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">online</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">τ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>  <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="k">if</span> <span class="n">τ</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span> <span class="k">return</span>
+
+        <span class="c1"># we take the min so that we do not exceed the episode limit (last step+1)</span>
+        <span class="n">τ1</span> <span class="o">=</span> <span class="n">τ</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">τn</span> <span class="o">=</span> <span class="n">τ</span><span class="o">+</span><span class="n">n</span> <span class="p">;</span> <span class="n">τn</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">τn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">skipstep</span><span class="p">)</span>
+
+        <span class="n">sτ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">τ</span><span class="p">];</span>  <span class="n">aτ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">τ</span><span class="p">]</span>
+        <span class="n">sn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">τn</span><span class="p">];</span> <span class="n">an</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">τn</span><span class="p">]</span>
+        <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">[</span><span class="n">τn</span><span class="p">]</span>
+
+        <span class="c1"># n steps τ+1,..., τ+n inclusive of both ends</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">sτ</span><span class="p">,</span><span class="n">aτ</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">(</span><span class="n">τ1</span><span class="p">,</span><span class="n">τn</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">**</span><span class="n">n</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">sn</span><span class="p">,</span><span class="n">an</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">sτ</span><span class="p">,</span><span class="n">aτ</span><span class="p">])</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">nsarsa</span> <span class="o">=</span> <span class="n">Sarsan</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">grid</span><span class="p">(),</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.4</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_47_0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">seed</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">nsarsa</span> <span class="o">=</span> <span class="n">Sarsan</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">grid</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.4</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nsarsa</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">trace</span><span class="p">)</span> <span class="o">&lt;</span><span class="mi">15</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>16
+47
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">figure_7_4</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">seed</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span> 
+
+    <span class="c1"># draw the path(trace) that the agent took to reach the goal</span>
+    <span class="n">nsarsa</span> <span class="o">=</span> <span class="n">Sarsan</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">grid</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.4</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+    <span class="n">nsarsa</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;trace&#39;</span><span class="p">,</span> <span class="n">subplot</span><span class="o">=</span><span class="mi">131</span><span class="p">,</span> <span class="n">animate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;path of agent&#39;</span><span class="p">)</span>
+
+    <span class="c1"># now draw the effect of learning to estimate the Q action-value function for n=1</span>
+    <span class="n">nsarsa</span> <span class="o">=</span> <span class="n">Sarsan</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">grid</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.4</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;maxQ&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span> 
+    <span class="n">nsarsa</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">subplot</span><span class="o">=</span><span class="mi">132</span><span class="p">,</span> <span class="n">animate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;action-value increassed by 1-steps Sarsa</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1">#n=5 # try 10</span>
+    <span class="c1"># now draw the effect of learning to estimate the Q action-value function for n=10</span>
+    <span class="n">nsarsa</span> <span class="o">=</span> <span class="n">Sarsan</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">grid</span><span class="p">(),</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.4</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;maxQ&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>    
+    <span class="n">nsarsa</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">subplot</span><span class="o">=</span><span class="mi">133</span><span class="p">,</span> <span class="n">animate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;action-value increassed by </span><span class="si">%d</span><span class="s1">-steps Sarsa</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">n</span><span class="p">)</span>
+
+<span class="n">figure_7_4</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="output_49_0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">sarsa</span> <span class="o">=</span> <span class="n">Sarsa</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(</span><span class="n">reward</span><span class="o">=</span><span class="s1">&#39;reward1&#39;</span><span class="p">),</span>  <span class="n">α</span><span class="o">=</span><span class="mf">.2</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+<span class="c1"># sarsa = Sarsan(env=maze(reward=&#39;reward1&#39;), n=1, α=.2, episodes=100, seed=10, **demoQ()).interact() # same as above</span>
+</code></pre></div>
+<p><img alt="png" src="output_50_0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">sarsa</span> <span class="o">=</span> <span class="n">Sarsan</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(</span><span class="n">reward</span><span class="o">=</span><span class="s1">&#39;reward1&#39;</span><span class="p">),</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="n">α</span><span class="o">=</span><span class="mf">.2</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_51_0.png" /></p>
+<p>Note how the agent reaches a better policy in less number of episodes, i.e. it converges faster when using n-step method. At the end it counted a extra n-1 steps to finish the set of n-1 updates needed at the end of the episode.</p>
+<h2 id="n-step-q-learning">n-step Q-learning</h2>
+<p>Can we implement an n-step Q-learning algorithm?</p>
+<p>If we think about this question superficially, from an implementation perspective, the answer seems simple. All we have to do is to replace the <span class="arithmatex">\(γ^n*Q[sn,an]\)</span> with <span class="arithmatex">\(γ^n*Q[sn].max()\)</span>. However, this is <em>not the correct</em> way to implement the n-step off-policy Q-learning. </p>
+<p>Remember that Q-learning is an action-value learning method that uses TD learning off-policy, where we learn about a greedy policy while following a more exploratory policy, such as ε-greedy. To be able to generalise the n-step TD update to an off-policy action-value method, we need to take into account the following. In each step of the n-steps that we are considering, we need our method to learn what the agent <em>would have done</em> if it had followed a π=greedy policy (instead of the b=εgreedy). </p>
+<p>One way to compensate for this discrepancy between the behavioural policy b and the target policy π would be to multiply each reward of the <span class="arithmatex">\(G_{t:t+n}\)</span> with the importance sampling ratio. This ratio divides the probability of taking action <em>a</em> from policy π by the probability of taking the same action according to policy b. Importance sampling methods suffer from high variance, and usually, they are not practical for control.</p>
+<p>Another approach is by using expectation instead of importance sampling. In this case, we use a similar idea to the expected Sarsa but in an off-policy context, where we alter the calculation of <span class="arithmatex">\(G_{t:t+n}\)</span> in a way that sums over the different actions probabilities in each time step (except the first). This results in an algorithm called the Tree Backup Algorithm.</p>
+<p>Finally, we can blend the importance sampling with expectation using a hyperparameter σ which results in the Q(σ) control algorithm. All of the above three approaches are outside the scope of our coverage, and there is a theory behind this choice. See section 7.3 of our textbook.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>In this lesson, we have covered the n-step TD algorithms for prediction and control. We have seen how the different values of n represent a trade-off between full bootstrapping, as in the one-step TD (n=1), and no bootstrapping, as in the Monte Carlo algorithm (n=T the number of steps in an episode). Intermediate n values give algorithms that lie within the two extremes of the spectrum of bootstrapping algorithms. We also find that the best value is usually an intermediate value &gt;1. As we have seen, creating such an algorithm is challenging and has its drawbacks in terms of implementation. In later lessons, we will see how to achieve similar results without waiting or counting steps. We will adopt a bootstrapping variation mechanism which turns the n-step countable mechanism into an infinite continuum of value by adopting the <span class="arithmatex">\(\lambda\)</span> hyperparameter that takes a real value instead of integers.</p>
+<h2 id="your-turn">Your turn</h2>
+<ol>
+<li>implement the incorrect n-step Q-learning and apply it on the maze problem and see how it performs.</li>
+<li>implement n-step Expected Sarsa and compare its performance with the n-step Sarsa.</li>
+</ol>
+<h2 id="challenge">Challenge</h2>
+<p>Try to implement the correct off-policy n-step Sarsa presented in page 149 of the textbook.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright Abdulrahman Altahhan
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+        <script src="../../javascript/tablecontentsoverride.js"></script>
+      
+        <script src="../../javascript/config.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

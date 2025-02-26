@@ -1,0 +1,1665 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Abdulrahman Altahhan, 2025">
+      
+      
+      
+        <link rel="prev" href="../lesson9/lesson9.html">
+      
+      
+        <link rel="next" href="../lesson11/lesson11.html">
+      
+      
+      <link rel="icon" href="../../img/favicon.jpg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.4">
+    
+    
+      
+        <title>10. Planning in RL(optional) - Reinforcement Learning for Autonomous Agents</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.8608ea7d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lesson-9-tabular-methods-planning-and-learning" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    <div id="versionIndicator"><b>Version:</b> 04.06.21.a</div>
+    <img id="customlogo" src="../../../img/logo.svg" alt="University of Leeds logo.">
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Reinforcement Learning for Autonomous Agents" class="md-header__button md-logo" aria-label="Reinforcement Learning for Autonomous Agents" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Reinforcement Learning for Autonomous Agents
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              10. Planning in RL(optional)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../index.html" class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit1/lesson1/lesson1.html" class="md-tabs__link">
+          
+  
+  Unit 1
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit2/lesson5/lesson5.html" class="md-tabs__link">
+          
+  
+  Unit 2
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../lesson8/lesson8.html" class="md-tabs__link">
+          
+  
+  Unit 3
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit4/lesson12/lesson12.html" class="md-tabs__link">
+          
+  
+  Unit 4
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit5/lesson15/lesson15.html" class="md-tabs__link">
+          
+  
+  Unit 5
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit6/lesson18/lesson18.html" class="md-tabs__link">
+          
+  
+  Unit 6
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Reinforcement Learning for Autonomous Agents" class="md-nav__button md-logo" aria-label="Reinforcement Learning for Autonomous Agents" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Reinforcement Learning for Autonomous Agents
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 1
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson1/lesson1.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. Tabular Methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson2/lesson2.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2. K-Arm Bandit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson3/lesson3.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. MDP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson4/lesson4.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4. ROS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 2
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit2/lesson5/lesson5.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5. Dynamic Programming
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit2/lesson6/lesson6.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6. Monte Carlo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit2/lesson7/lesson7.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7. Mobile Robots
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Unit 3
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lesson8/lesson8.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8. Temporal Difference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lesson9/lesson9.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9. n-Step Methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    10. Planning in RL(optional)
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="lesson10.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    10. Planning in RL(optional)
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dyna-q-integrating-model-learning-and-q-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dyna-Q: Integrating Model learning and Q Learning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dyna-Q: Integrating Model learning and Q Learning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-effect-of-planning-steps-on-dynaq" class="md-nav__link">
+    <span class="md-ellipsis">
+      The effect of planning steps on DynaQ
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prioritized-sweeping" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prioritized Sweeping
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prioritized Sweeping">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-effect-of-planning-steps-on-prioritised-sweeping" class="md-nav__link">
+    <span class="md-ellipsis">
+      The effect of planning steps on Prioritised Sweeping
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prioritized-sweeping-on-different-maze-sizes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prioritized sweeping on different maze sizes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runs-and-comparison-for-planning-algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Runs and Comparison for Planning Algorithms
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-turn" class="md-nav__link">
+    <span class="md-ellipsis">
+      Your turn
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lesson11/lesson11.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11. Localisation and SLAM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 4
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 4
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit4/lesson12/lesson12.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12. Function Approximation Methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit4/lesson13/lesson13.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    13. Linear Approximation for Prediction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit4/lesson14/lesson14.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    14. Linear Approximation for Control
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 5
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 5
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit5/lesson15/lesson15.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    15. Linear Approximation with Eligibility Traces(prediction and control)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit5/lesson16/lesson16.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    16. Nonlinear Approximation for Control
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit5/lesson17/lesson17.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    17. Application on Robot Navigation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 6
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 6
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit6/lesson18/lesson18.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    18. Application on Games(optional)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dyna-q-integrating-model-learning-and-q-learning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dyna-Q: Integrating Model learning and Q Learning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dyna-Q: Integrating Model learning and Q Learning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-effect-of-planning-steps-on-dynaq" class="md-nav__link">
+    <span class="md-ellipsis">
+      The effect of planning steps on DynaQ
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prioritized-sweeping" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prioritized Sweeping
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prioritized Sweeping">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-effect-of-planning-steps-on-prioritised-sweeping" class="md-nav__link">
+    <span class="md-ellipsis">
+      The effect of planning steps on Prioritised Sweeping
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prioritized-sweeping-on-different-maze-sizes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prioritized sweeping on different maze sizes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runs-and-comparison-for-planning-algorithms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Runs and Comparison for Planning Algorithms
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#your-turn" class="md-nav__link">
+    <span class="md-ellipsis">
+      Your turn
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<p>The notebook uses a library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries are written from scratch using standard Python libraries (numpy, matplotlib etc.).
+Please note that you will need permission from the author to use the code for research, commercially or otherwise.</p>
+<h1 id="lesson-9-tabular-methods-planning-and-learning">Lesson 9- Tabular Methods: Planning and Learning</h1>
+<p><strong>Learning outcomes</strong>
+1. understand how to embed model learning withing an a reinforcement learning algorithms
+2. understand mode-based RL approach
+3. appreciate the boost in performance obtained due to infusing planning within the RL framework
+4. appreciate that planning is usually possible for tabular RL while function approximation is still work in progress (mainly via replaying)</p>
+<p>In this lesson, we cover a set of methods that use a blend of model-based and model-free to achieve planning and learning simultaneously. Planning involves using some model of the environment to predict the next action or reward of the environment and then use that to aid it in obtaining an estimate of the value function. We have already seen model-based algorithms in the early lesson. Can you remember what they are?... Dynamic programming it is. In this lesson, however, we take these concepts one step ahead, and we will develop a unified view of model-free (MC and TD etc.) and model-based (DP and other) algorithms. </p>
+<p>Model-based methods can be stochastic or deterministic this depending on the problem, but even if the environment itself is deterministic, we might want to come up with a stochastic model of it that will give us a distribution over all the states that represent the belief that an agent would be in state <em>sn</em> given that it was in state <em>s</em>, these are called distribution models. </p>
+<p>In fact, we had already seen such an approach when we dealt with the policy_evaluation() function in the DP lesson, where this function depends on the dynamics <span class="arithmatex">\(p(s',r|s,a)\)</span> to account for all of the different next state and rewards combinations to find an estimate. Distribution models are powerful because they allow us to sample from them at any point in time, but they are computationally expensive.</p>
+<p>Another possibility is to use sampling. This might appear to contradict what we said earlier about model-free, which uses sampling to estimate the value function. The difference here is that we would use sampling to obtain what might sn be according to the model and then obtain an estimate of the value function. </p>
+<p>When the environment is deterministic, sampling can be used relatively efficiently to build the dynamics. In fact, we had already seen such an approach when we dealt with the dynamics() function in the DP lesson, where this function tries to estimate the dynamics of the environment by observing the next state and reward from a current state and action combination.</p>
+<p>In all cases, the main advantage of planning is that we can plan ahead many steps <em>without actually taking action</em>, unlike non-planning algorithms such as TD. All we would be doing is to <em>assume</em> that the agent took action and then build on that. We can produce a whole imaginary episode using sampling, which is what we call a <em>simulated experience</em> which means it is an experience that the agent might take but is not real. With model-free sampling methods, we use an <em>actual experience</em> that the agent went through to estimate the value function. With distribution models, in theory, we can produce all possible episodes that the agent can take with their probabilities. Of course, that would mean accounting for many possibilities in both sampling and distribution models, and this is the main source of complexity in planning algorithms because they usually have a complexity of <span class="arithmatex">\(O(n^2)\)</span> where n is the number of states.</p>
+<p>However, this difference between using a simulated or real experience is irrelevant from the update rules perspective. So, we can apply many of the covered methods in a simulated experience and a real experience. This is quite convenient since it will require less treatment and help us develop our unified view of planning and learning.
+Note that in planning, we will not deal with prediction. We will cover control only because executing a plan naturally involves an advanced control scenario.</p>
+<p>Finally, we should point out that due to the above complexity and assumptions, planning is usually confined to the tabular methods, and we will not see it when we move to function approximation which assumes that the state space can be infinite.</p>
+<p><strong>Reading</strong>:
+The accompanying reading of this lesson is <strong>chapter 8</strong> of our text book available online <a href="http://incompleteideas.net/book/RLbook2020.pdf">here</a>. Please note that we explain the ideas of this topic from a practical perspective and not from a theoretical perspective which is already covered in the textbook.</p>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rl.rl</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>  <span class="c1"># an RL base alg lib, value-based and policy-grad RL tabular algorithms</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">bisect</span>        <span class="c1"># this will help to insert in a sorted Queue list</span>
+</code></pre></div>
+<style>.container {width:90% !important}</style>
+
+<p>Let us start by covering a basic algorithm, that shows the basic idea of planning using sampling. 
+Below we show the Random sample one-step Q-planning method.</p>
+<h2 id="dyna-q-integrating-model-learning-and-q-learning">Dyna-Q: Integrating Model learning and Q Learning</h2>
+<p>In the DP lesson, we have built a dynamics() function used in the policy_iteration() and other functions. The dynamics() function is an example of model learning. We have used this function to provide a model for the DP algorithms, assuming it is already available. Hence, we started each of them with the model-learning step. This section will integrate the model learning with the direct RL learning we have seen in other lessons (like TD and MC). We use the real experience the agent is going through to improve both our model l of the environment (model learning) and our value-function estimation (direct RL learning).</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DynaQ</span><span class="p">(</span><span class="n">MDP</span><span class="p">()):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">α</span> <span class="o">=</span> <span class="n">α</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">m</span>          <span class="c1"># how many steps to plan ahead</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># no need to store experience, the Model will give us what we need</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Model</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">nS</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="c1"># self.env.nR, self.env.nS))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_early</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">πisoptimal</span> <span class="c1"># stop experiment when policy is optimal, need to set Tstar to take effect</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nUpdates</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># number of updates to optimal solution</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+
+    <span class="c1">#--------------------------------------🌖 online learning --------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">online</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">rn</span><span class="p">,</span><span class="n">sn</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span><span class="n">_</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="n">rn</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">sn</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Model</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">rn</span><span class="p">,</span> <span class="n">sn</span><span class="p">,</span> <span class="n">done</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nUpdates</span> <span class="o">+=</span><span class="mi">1</span>
+
+        <span class="n">sa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Model</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span><span class="o">!=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">):</span>    
+            <span class="c1"># get s,a that has been visited before and randomly select a pair of them</span>
+
+            <span class="n">ind</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="n">sa</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">s</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">sa</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+
+            <span class="n">rn</span><span class="p">,</span><span class="n">sn</span><span class="p">,</span><span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Model</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">];</span> <span class="n">sn</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">sn</span><span class="p">)</span>        
+            <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="n">rn</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">sn</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nUpdates</span> <span class="o">+=</span><span class="mi">1</span>
+
+<span class="c1">#             s = sn</span>
+<span class="c1">#             rn,sn,done = self.Model[sn,self.Q[sn].max()]</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">dynaQ</span> <span class="o">=</span> <span class="n">DynaQ</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_10_0.png" /></p>
+<p>Let us see how many updates DynaQ had to do to achieve what it has achieved in the first 2 episodes!</p>
+<div class="highlight"><pre><span></span><code><span class="n">dynaQ</span><span class="o">.</span><span class="n">nUpdates</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>10659
+</code></pre></div>
+<p>For comparison let us do the same for Q learning, ( DynaQ is equivalent to Q learning fro m=0). This agent will take a bit of time sine we are training for 2 episodes.</p>
+<div class="highlight"><pre><span></span><code><span class="n">qlearn</span> <span class="o">=</span> <span class="n">DynaQ</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_14_0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">qlearn</span><span class="o">.</span><span class="n">nUpdates</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>1011
+</code></pre></div>
+<p>As we can see the difference is huge between both, this difference shown on the performance. Let us study how the performance varies with n (the number of planning steps)</p>
+<h3 id="the-effect-of-planning-steps-on-dynaq">The effect of planning steps on DynaQ</h3>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mazePlanning</span><span class="p">(</span><span class="n">runs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="n">DynaQ</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;DynaQ&#39;</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">yticks</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mi">14</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">800</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">50</span><span class="p">]:</span>
+        <span class="n">DynaQ0</span> <span class="o">=</span> <span class="n">Runs</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">algo</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">.95</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span> 
+                      <span class="n">runs</span><span class="o">=</span><span class="n">runs</span><span class="p">,</span> <span class="n">plotT</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="o">+</span><span class="s1">&#39; m = </span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">m</span><span class="p">)</span>
+<span class="n">fig_8_2</span> <span class="o">=</span> <span class="n">mazePlanning</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">fig_8_2</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|30/30
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|30/30
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|30/30
+</code></pre></div>
+<p><img alt="png" src="output_19_1.png" /></p>
+<h2 id="prioritized-sweeping">Prioritized Sweeping</h2>
+<p>In DynaQ, the algorithm uniformly chooses n number of previously visited states and re-do their updates. This is ok when the environment is small. However, when the environment becomes big, the performance will dip, and the algorithm will need to do more updates per step to reach an optimal solution. This is where prioritising more important updates over less important ones optimises compute resource usage and achieves more in fewer steps. This is the idea of prioritized sweeping algorithms; it will sweep through different previous states' updates but prioritise those needing the most changes. It measures this priority by the absolute value of the TD error (yes, TD again!). The higher this error value is, the higher its corresponding priority is. It uses a queue to add states that need to update the most (as per their TD error) on the top of the queue. Then it will go through the queue one by one until its number of planning steps is done or until the queue is empty. The algorithm is shown below.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Psweeping</span><span class="p">(</span><span class="n">MDP</span><span class="p">(</span><span class="n">MRP</span><span class="p">)):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">θ</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">α</span> <span class="o">=</span> <span class="n">α</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">θ</span> <span class="o">=</span> <span class="n">θ</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># no need to store experience, the Model will give us what we need</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Model</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">nS</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_early</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">πisoptimal</span> <span class="c1"># stop experiment when policy is optimal, needs to set Tstar to take effect</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PQueue</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># collections.deque()# native list is more efficent than a linked list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nUpdates</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># number of updates to optimal solution</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">):</span> <span class="c1"># P is the priority</span>
+        <span class="n">found_lowerP</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># found an entry with a lower priority</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">P_old</span><span class="p">,</span> <span class="n">s_old</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PQueue</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">:]):</span>
+            <span class="k">if</span> <span class="n">s</span><span class="o">==</span><span class="n">s_old</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">P</span><span class="o">&gt;=</span><span class="n">P_old</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">PQueue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="n">found_lowerP</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+        <span class="c1"># insert the tuple in the right position according to P</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">found_lowerP</span><span class="p">:</span> <span class="n">bisect</span><span class="o">.</span><span class="n">insort_left</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PQueue</span><span class="p">,</span> <span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">))</span>
+
+    <span class="c1">#--------------------------------------🌖 online learning --------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">online</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">rn</span><span class="p">,</span><span class="n">sn</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span><span class="n">_</span><span class="p">):</span>
+
+        <span class="n">P</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">rn</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">sn</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">P</span><span class="o">&gt;=</span><span class="bp">self</span><span class="o">.</span><span class="n">θ</span><span class="p">:</span>  <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Model</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">rn</span><span class="p">,</span> <span class="n">sn</span><span class="p">,</span> <span class="n">done</span><span class="p">]</span>
+
+        <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">PQueue</span> <span class="ow">and</span> <span class="n">i</span><span class="o">&lt;=</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PQueue</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">rn</span><span class="p">,</span> <span class="n">sn</span><span class="p">,</span> <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Model</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">];</span> <span class="n">sn</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">sn</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="n">rn</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">sn</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nUpdates</span> <span class="o">+=</span><span class="mi">1</span>
+            <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+
+            <span class="c1"># to guarantee equivelncy with Qlearning when θ=0, m=0</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="k">break</span> 
+            <span class="c1"># go backward to previous states and actions sp, ap</span>
+            <span class="k">for</span> <span class="n">sp</span><span class="p">,</span><span class="n">ap</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Model</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="n">s</span><span class="p">):</span>
+                <span class="n">r</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">done</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Model</span><span class="p">[</span><span class="n">sp</span><span class="p">,</span><span class="n">ap</span><span class="p">]</span> <span class="c1">#_==s</span>
+                <span class="n">P</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">sp</span><span class="p">,</span><span class="n">ap</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">P</span><span class="o">&gt;=</span><span class="bp">self</span><span class="o">.</span><span class="n">θ</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">sp</span><span class="p">,</span><span class="n">ap</span><span class="p">)</span>
+</code></pre></div>
+<p>Note that for the insert() function, we check first if state s is already in the queue, and if so, remove its entry if it has less priority than the new entry. Otherwise, do not add anything. </p>
+<p>PQueue is an ascending sorted queue according to P, not to s, and hence we cannot do a binary search for s, so we had to reside to linear search we tried to cut the search time by limiting the queue scope to 2n from the end of the queue.</p>
+<p>Let us ensure that Qlearning and prioritized sweeping are almost identical for θ=0 and m=0.</p>
+<div class="highlight"><pre><span></span><code><span class="n">psweep0</span> <span class="o">=</span> <span class="n">Runs</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">Psweeping</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">.95</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">θ</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span><span class="n">runs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">plotT</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;psweep n = </span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qlearn</span> <span class="o">=</span> <span class="n">Runs</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">Qlearn</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">.95</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span><span class="n">runs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">plotT</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Qlearn&#39;</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|10/10
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|10/10
+</code></pre></div>
+<p><img alt="png" src="output_23_1.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">psweeping</span> <span class="o">=</span> <span class="n">Psweeping</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_24_0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">psweeping</span><span class="o">.</span><span class="n">nUpdates</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>3
+</code></pre></div>
+<p>Note how prioritised sweeping done only 3 updates and compare this to DynaQ. 
+Ok so now let us test with m=50</p>
+<div class="highlight"><pre><span></span><code><span class="n">psweeping</span> <span class="o">=</span> <span class="n">Psweeping</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_27_0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">psweeping</span><span class="o">.</span><span class="n">nUpdates</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>2754
+</code></pre></div>
+<p>Compare the above 5k number of updates for prioritised sweeping with the 32k number of update for DynaQ for the same number of planning states m=50. The difference is huge.</p>
+<h3 id="the-effect-of-planning-steps-on-prioritised-sweeping">The effect of planning steps on Prioritised Sweeping</h3>
+<p>Ok let us conduct the same experiment as before and test to see how the performance changes with n.</p>
+<div class="highlight"><pre><span></span><code><span class="n">mazePlanning</span><span class="p">(</span><span class="n">runs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="n">Psweeping</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Prioritised Sweeping&#39;</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|10/10
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|10/10
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|10/10
+</code></pre></div>
+<p><img alt="png" src="output_31_1.png" /></p>
+<h2 id="prioritized-sweeping-on-different-maze-sizes">Prioritized sweeping on different maze sizes</h2>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">maze</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">Grid</span><span class="p">(</span><span class="n">gridsize</span><span class="o">=</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span><span class="n">cols</span><span class="p">],</span> <span class="n">s0</span><span class="o">=</span><span class="nb">int</span><span class="p">((</span><span class="n">rows</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">cols</span><span class="p">,</span> <span class="n">goals</span><span class="o">=</span><span class="p">[</span><span class="n">rows</span><span class="o">*</span><span class="n">cols</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;maze&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">mazes</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">gridsizes</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="p">(</span><span class="mi">9</span> <span class="p">,</span> <span class="mi">12</span><span class="p">),</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">18</span><span class="p">),</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">26</span><span class="p">),</span> <span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">34</span><span class="p">),</span> <span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="mi">39</span><span class="p">,</span> <span class="mi">81</span><span class="p">),</span> <span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">104</span><span class="p">)][:</span><span class="n">m</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">rows</span><span class="p">,</span><span class="n">cols</span> <span class="ow">in</span> <span class="n">gridsizes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">maze</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span><span class="n">cols</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">sizes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">mz</span> <span class="ow">in</span>  <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">:</span> <span class="n">sizes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mz</span><span class="o">.</span><span class="n">nS_available</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">sizes</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">mazes</span><span class="p">()</span><span class="o">.</span><span class="n">sizes</span><span class="p">())</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>[0, 47, 92, 188, 372, 748, 1500]
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">mazes</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_35_0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">psweeping</span> <span class="o">=</span> <span class="n">Psweeping</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">mazes</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">19</span><span class="p">,</span><span class="mf">3.5</span><span class="p">])[</span><span class="mi">3</span><span class="p">],</span> <span class="n">α</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_36_0.png" /></p>
+<p>Let us examine the number of steps required by prioritised sweeping and compare it to the number of updates</p>
+<div class="highlight"><pre><span></span><code><span class="n">psweeping</span><span class="o">.</span><span class="n">t</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>48
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">psweeping</span><span class="o">.</span><span class="n">nUpdates</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>36288
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">time</span> <span class="n">dynaQ</span> <span class="o">=</span> <span class="n">DynaQ</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">mazes</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">19</span><span class="p">,</span><span class="mf">3.5</span><span class="p">])[</span><span class="mi">3</span><span class="p">],</span> <span class="n">α</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> \
+                    <span class="n">m</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">animate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>CPU times: user 43.1 s, sys: 7.77 s, total: 50.9 s
+Wall time: 25.7 s
+</code></pre></div>
+<p><img alt="png" src="output_40_1.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">dynaQ</span><span class="o">.</span><span class="n">t</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>63
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">dynaQ</span><span class="o">.</span><span class="n">nUpdates</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>240648
+</code></pre></div>
+<p>As we can see there is a big difference between the number of updates for each algorithms.</p>
+<p>After experimenting with the different mazes environment we can roughly come up with a reasonably flexible optimal number of steps for each environment which we stored in Tstar and is used in the below function.</p>
+<h2 id="runs-and-comparison-for-planning-algorithms">Runs and Comparison for Planning Algorithms</h2>
+<p>We need to write some new functions to perform several runs and comparisons while allowing the algorithm to stop before finishing all the episodes.
+The reason we cannot use our original Runs class is due to allowing for stopping before finishing all the episodes. We show this simple function below.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">PlanningRuns</span><span class="p">(</span><span class="n">algorithm</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">envs</span><span class="o">=</span><span class="n">mazes</span><span class="p">(),</span> <span class="n">Tstar</span> <span class="o">=</span> <span class="p">[</span><span class="mi">17</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">38</span><span class="p">,</span><span class="mi">55</span><span class="p">,</span><span class="mi">75</span><span class="p">,</span><span class="mi">110</span><span class="p">,</span><span class="mi">300</span><span class="p">]):</span>
+    <span class="n">nUpdates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">runs</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">envs</span><span class="o">.</span><span class="n">sizes</span><span class="p">())))</span><span class="o">*</span><span class="mi">10</span>
+    <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">runs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">env</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">envs</span><span class="p">):</span>
+            <span class="n">nUpdates</span><span class="p">[</span><span class="n">run</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">algorithm</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">Tstar</span><span class="o">=</span><span class="n">Tstar</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">seed</span><span class="o">=</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">run</span><span class="o">+</span><span class="mi">10</span><span class="p">))</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span><span class="o">.</span><span class="n">nUpdates</span>
+    <span class="k">return</span> <span class="n">nUpdates</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PlanningCompare</span><span class="p">:</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">algos</span><span class="o">=</span><span class="p">[</span><span class="n">DynaQ</span><span class="p">,</span> <span class="n">Psweeping</span><span class="p">],</span> <span class="n">runs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">envs</span> <span class="o">=</span> <span class="n">mazes</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">algos</span> <span class="o">=</span> <span class="n">algos</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nUpdates</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">algo</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">algos</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Maze Planning with </span><span class="si">%s</span><span class="s1">...........................&#39;</span><span class="o">%</span><span class="n">algo</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nUpdates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PlanningRuns</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">algo</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="n">runs</span><span class="p">,</span> <span class="n">envs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">envs</span> <span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+        <span class="n">sizes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">envs</span><span class="o">.</span><span class="n">sizes</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">nUpdate</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nUpdates</span><span class="p">):</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nUpdates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">algos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Gridworld size (#states)&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Updates until optimal solution&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">example_8_4</span><span class="p">():</span>
+    <span class="n">PlanningCompare</span><span class="p">()</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">time</span> <span class="n">example_8_4</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>Maze Planning with DynaQ...........................
+experience stopped at episode 5
+experience stopped at episode 5
+experience stopped at episode 11
+
+Maze Planning with Psweeping...........................
+experience stopped at episode 1
+experience stopped at episode 4
+experience stopped at episode 15
+experience stopped at episode 32
+experience stopped at episode 20
+</code></pre></div>
+<p><img alt="png" src="output_49_1.png" /></p>
+<div class="highlight"><pre><span></span><code>CPU times: user 28.8 s, sys: 646 ms, total: 29.5 s
+Wall time: 29.3 s
+</code></pre></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>This lesson covered two major planning algorithms, namely the Dyna-Q and the Prioritised Sweeping. These have variants, but what we covered are quite dominant algorithms in the RL planning landscape. We saw that Dyna-Q is quite good at finding a complete solution with the cost of a higher number of the uniformly selected past update. Prioritised Sweeping, on the other hand, is selective in its update and prioritises those expected to need the most attention due to the latest update, and they propagate backwards towards previously visited states. Prioritised sweeping is faster and more promising. However, we need to tune an extra hyperparameter of the threshold θ. In practice, a small value for θ seems to work fine, but we have to pay attention to the learning rate α as it also dictates the rate at which the update propagates backwards. If α is set to a small value, prioritised sweeping can suffer from a significant slowness in its performance.</p>
+<h2 id="your-turn">Your turn</h2>
+<ol>
+<li>consider what you would need to change in the prioritised sweeping in order to deal with a stochastic environment</li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright Abdulrahman Altahhan
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+        <script src="../../javascript/tablecontentsoverride.js"></script>
+      
+        <script src="../../javascript/config.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

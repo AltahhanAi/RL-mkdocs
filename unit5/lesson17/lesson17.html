@@ -1,0 +1,1779 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Abdulrahman Altahhan, 2024.">
+      
+      
+      
+        <link rel="prev" href="../lesson16/lesson16.html">
+      
+      
+        <link rel="next" href="../../unit6/lesson18/lesson18.html">
+      
+      
+      <link rel="icon" href="../../img/favicon.jpg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.4">
+    
+    
+      
+        <title>17. Application on Robot Navigation - Reinforcement Learning for Autonomous Agents</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.8608ea7d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lesson-16-rl-on-robotics" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    <div id="versionIndicator"><b>Version:</b> 04.06.21.a</div>
+    <img id="customlogo" src="../../../img/logo.svg" alt="University of Leeds logo.">
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Reinforcement Learning for Autonomous Agents" class="md-header__button md-logo" aria-label="Reinforcement Learning for Autonomous Agents" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Reinforcement Learning for Autonomous Agents
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              17. Application on Robot Navigation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../index.html" class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit1/lesson1/lesson1.html" class="md-tabs__link">
+          
+  
+  Unit 1
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit2/lesson5/lesson5.html" class="md-tabs__link">
+          
+  
+  Unit 2
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit3/lesson8/lesson8.html" class="md-tabs__link">
+          
+  
+  Unit 3
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit4/lesson12/lesson12.html" class="md-tabs__link">
+          
+  
+  Unit 4
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../lesson15/lesson15.html" class="md-tabs__link">
+          
+  
+  Unit 5
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit6/lesson18/lesson18.html" class="md-tabs__link">
+          
+  
+  Unit 6
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Reinforcement Learning for Autonomous Agents" class="md-nav__button md-logo" aria-label="Reinforcement Learning for Autonomous Agents" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Reinforcement Learning for Autonomous Agents
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 1
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson1/lesson1.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. Tabular Methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson2/lesson2.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2. K-Arm Bandit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson3/lesson3.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. MDP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson4/lesson4.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4. ROS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 2
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit2/lesson5/lesson5.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5. Dynamic Programming
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit2/lesson6/lesson6.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6. Monte Carlo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit2/lesson7/lesson7.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7. Mobile Robots
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 3
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit3/lesson8/lesson8.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8. Temporal Difference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit3/lesson9/lesson9.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9. n-Step Methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit3/lesson10/lesson10.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10. Planning in RL(optional)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit3/lesson11/lesson11.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11. Localisation and SLAM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 4
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 4
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit4/lesson12/lesson12.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12. Function Approximation Methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit4/lesson13/lesson13.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    13. Linear Approximation for Prediction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit4/lesson14/lesson14.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    14. Linear Approximation for Control
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Unit 5
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 5
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lesson15/lesson15.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    15. Linear Approximation with Eligibility Traces(prediction and control)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lesson16/lesson16.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    16. Nonlinear Approximation for Control
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="lesson17.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    17. Application on Robot Navigation
+    
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 6
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 6
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit6/lesson18/lesson18.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    18. Application on Games(optional)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<p>The notebook uses a library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries are written from scratch using standard Python libraries (numpy, matplotlib etc.).
+Please note that you will need permission from the author to use the code for research, commercially or otherwise.</p>
+<h1 id="lesson-16-rl-on-robotics">Lesson 16: RL on Robotics</h1>
+<p><strong>Learning outcomes</strong>
+1. understand how to create a simple Robot environment that links to Gazebo
+1. understand how to deal with the simulated environment in a grid world fashion
+1. appreciate the intricacy of applying RL to the robotics domain
+1. build on previous concepts to come up with a suitable solution to a problem at hand
+1. understand how a replay buffer helps us to come closer to supervised learning and appreciate the important role it plays in reaching convergence
+1. understand how to combine deep reinforcement learning with deep learning to create a powerful framework that allows automatic agent learning by observation or self-play.
+1. understand how a replay buffer helps us to come closer to supervised learning and appreciate the important role it plays in reaching convergence for difficult problems that involve image processing and reinforcement learning</p>
+<p><strong>Reading</strong>:
+We cover applications of RL on robotics based on previouse units which you can refere to.</p>
+<p>In this notebook, we deal with how to set up a robot environment class that can handle the publish-subscribe on topics and deal with services in ROS. We must have ROS and Gazebo installed and set up on our machine. The code is a starting point and is not fully developed. You will need to write the necessary functionality to address a specific requirement. The main idea of tackling robotics applications in a Jupyter notebook is to utilise the provided infrastructure and libraries of code we covered in earlier units.</p>
+<h1 id="instructions-for-running-experiments-on-azure-vm">Instructions for running Experiments on Azure VM</h1>
+<p>The VM usage limit is set to 40 hours. Please turn off the machine when not using it to preserve your time. The VM is not set to disconnect you automatically so that you can leave it training the robot continuously for assessment 2.</p>
+<p>Please turn off the screen save and screen lock in Xfce(Applications-&gt;Settings-&gt;Light Locker) as it may cause the machine to become not responsive, which in turn, causes Azure to stop it automatically.</p>
+<p>If the VM becomes corrupted for some reason, then you can reimage it by going to Azure Lab page and selecting the three dots, then reimage. <strong>Reimage will reset the VM to its initial settings but it causes all data you have on the machine to be lost.</strong> You are advised to backup your data, you may want to use OneDrive or other backup methods.</p>
+<p><strong>Note If Gazebo stops for any reason, the provided code has a try-except statement (in lesson 4 Monte Carlo) that you can activate (comment in). It allows you to continue training even if the robot becomes not responsive without having to restart the experiment.</strong></p>
+<p>If you are running out of time, please let your tutor know in advance and they will try to increase your VM time allowance.</p>
+<h2 id="turtlebot3">Turtlebot3</h2>
+<p>Install <a href="https://emanual.robotis.com/docs/en/platform/turtlebot3/quick-start/#install-dependent-ros-packages-1">turtlebot3</a> packages. If you are in our VM, they would have been already installed.</p>
+<h2 id="more-realistic-simulation-running-gazebo">More realistic Simulation: Running Gazebo</h2>
+<p>You will need to launch a gazebo environment with Turtlebot3 in it. So long as the /scan(LaserScan), /odom (Odometry) and /cmd_vel(Twist) topics are available, the environment should work fine. Our target is to build an environment that will allow us to use the algorithms we developed in earlier units directly.</p>
+<p>To launch an environment, you should open a terminal and run the following command</p>
+<p>ros2 launch turtlebot3_gazebo turtlebot3_house.launch</p>
+<p>Note that you cannot do that here because that will block the notebook from executing other code. 
+You must select restart your notebook kernel, ex. Kernel-&gt; Restart and Run ALL, whenever you want to re-establish a connection with the environment.</p>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">rclpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ros</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rclpy.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">geometry_msgs.msg</span><span class="w"> </span><span class="kn">import</span> <span class="n">Twist</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nav_msgs.msg</span><span class="w">  </span><span class="kn">import</span> <span class="n">Odometry</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sensor_msgs.msg</span><span class="w"> </span><span class="kn">import</span> <span class="n">LaserScan</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">std_srvs.srv</span><span class="w"> </span><span class="kn">import</span> <span class="n">Empty</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gazebo_msgs.srv</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpawnModel</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Inf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">random</span><span class="w"> </span><span class="kn">import</span> <span class="n">randint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">atan2</span><span class="p">,</span> <span class="n">atan</span><span class="p">,</span> <span class="n">pi</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="n">ros</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># !export PATH=&quot;home/rl/.local/bin:/opt/ros/humble/share:$PATH&quot;</span>
+<span class="c1"># !python3 -c &quot;import rclpy as ros; ros.init()&quot;</span>
+</code></pre></div>
+<h2 id="moving-the-robotactions">Moving the robot(Actions)</h2>
+<p>We start by controlling the robot only</p>
+<p>Go to /opt/ros/humble/share/turtlebot3_gazebo/models/turtlebot3_burger/model.sdf and adjust the <update_rate>30</update_rate> to <update_rate>5</update_rate> for the odomotry turtlebot3_diff_drive. This will change its frequency from 30 to 5 so that it aligns with the scanner frequency.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">():</span> <span class="k">return</span> <span class="s1">&#39;node&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Env</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+
+<span class="c1"># initialisation--------------------------------------------------------------</span>
+    <span class="c1"># frequency: how many often (in seconds) the spin_once is invoked, or the publisher is publishing to the /cmd_vel</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">(),</span> 
+                 <span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">20</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span> 
+                 <span class="n">speed</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">θspeed</span><span class="o">=</span><span class="n">pi</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span> 
+                 <span class="n">rewards</span><span class="o">=</span><span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                 <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">freq</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">speed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">θspeed</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">θspeed</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">Twist</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span> <span class="o">=</span> <span class="n">rewards</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+        <span class="c1"># do not change----------------------------------------------------</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># initial x position</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># initial y position</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">θ</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># initial θ angle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="c1"># change to how many beams you are using</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tol</span> <span class="o">=</span> <span class="mf">.6</span>  <span class="c1"># meter from goal as per the requirement (tolerance)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">goals</span> <span class="o">=</span>  <span class="p">[[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">]]</span>
+        <span class="c1"># -----------------------------------------------------------------</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">controller</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span><span class="n">Twist</span><span class="p">,</span> <span class="s1">&#39;/cmd_vel&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_timer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span> <span class="n">LaserScan</span><span class="p">,</span> <span class="s1">&#39;/scan&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">odometr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span> <span class="n">Odometry</span><span class="p">,</span> <span class="s1">&#39;/odom&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">odom</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">range_max</span> <span class="o">=</span> <span class="mf">3.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">range_min</span> <span class="o">=</span> <span class="mf">.28</span>               <span class="c1"># change as you see fit</span>
+
+
+        <span class="c1"># establish a reset client </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_world</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_client</span><span class="p">(</span><span class="n">Empty</span><span class="p">,</span> <span class="s1">&#39;/reset_world&#39;</span><span class="p">)</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_world</span><span class="o">.</span><span class="n">wait_for_service</span><span class="p">(</span><span class="n">timeout_sec</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;world client service...&#39;</span><span class="p">)</span>
+
+
+        <span class="c1"># compatibility----------------------------------------------</span>
+        <span class="n">nturns</span> <span class="o">=</span> <span class="mi">15</span> <span class="c1"># number of turns robot takes to complete a full circle</span>
+        <span class="n">resol</span> <span class="o">=</span> <span class="n">speed</span><span class="o">/</span><span class="mi">2</span>
+
+        <span class="n">θresol</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">/</span><span class="n">nturns</span>
+        <span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xdim</span> <span class="o">=</span> <span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># realted to the size of the environment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ydim</span> <span class="o">=</span> <span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># realted to the size of the environment</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">resol</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">resol</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">θresol</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">θresol</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cols</span>  <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xdim</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">resol</span><span class="p">)</span> <span class="o">+</span><span class="mi">1</span>   <span class="c1"># number of grid columns, related to linear speed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rows</span>  <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ydim</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">resol</span><span class="p">)</span> <span class="o">+</span><span class="mi">1</span>   <span class="c1"># number of grid rows,    related to linear speed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orts</span>  <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">θresol</span><span class="p">)</span>     <span class="o">+</span><span class="mi">1</span>   <span class="c1"># number of angles,       related to angular speed</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cols</span>              <span class="c1"># Grid size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">orts</span> <span class="c1"># State space size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nA</span> <span class="o">=</span> <span class="mi">3</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Vstar</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># for compatibility</span>
+        <span class="c1"># --------------------------------------------------------------- </span>
+        <span class="c1"># self.rate = self.create_rate(30)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;speed  = &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;θspeed = &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">θspeed</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;freq   = &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span>
+
+<span class="c1"># sensing--------------------------------------------------------------</span>
+    <span class="c1"># odometry (position and orientation) readings</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">odom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">odoms</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">odoms</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">odoms</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">θ</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaw</span><span class="p">(</span><span class="n">odoms</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">odom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">θ</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;odom = &#39;</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">odom</span> <span class="p">)</span>
+
+    <span class="c1"># laser scanners readings</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scans</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">scans</span><span class="o">.</span><span class="n">ranges</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="p">[</span><span class="n">scans</span><span class="o">==</span><span class="n">Inf</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_max</span>
+        <span class="c1"># if self.verbose: print(&#39;scan = &#39;, self.scans[:10].round(2))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;scan = &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:],</span> <span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="p">[:</span><span class="mi">5</span><span class="p">]]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+
+    <span class="c1"># converting to the quaternion self.z to Euler</span>
+    <span class="c1"># see https://www.allaboutcircuits.com/technical-articles/dont-get-lost-in-deep-space-understanding-quaternions/#</span>
+    <span class="c1"># see https://eater.net/quaternions/video/intro</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">yaw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orient</span><span class="p">):</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">orient</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">orient</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">orient</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">orient</span><span class="o">.</span><span class="n">w</span>
+        <span class="n">yaw</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="n">w</span><span class="o">*</span><span class="n">z</span><span class="p">),</span> <span class="n">w</span><span class="o">*</span><span class="n">w</span> <span class="o">+</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="o">*</span><span class="n">y</span> <span class="o">-</span> <span class="n">z</span><span class="o">*</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">yaw</span> <span class="k">if</span> <span class="n">yaw</span><span class="o">&gt;</span><span class="mi">0</span> <span class="k">else</span> <span class="n">yaw</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span> <span class="c1"># in radians, [0, 2pi]</span>
+
+    <span class="c1"># angular distance of robot to a goal.............................................</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">θgoal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">goal</span><span class="p">):</span>
+        <span class="n">xgoal</span><span class="p">,</span> <span class="n">ygoal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">goals</span><span class="p">[</span><span class="n">goal</span><span class="p">]</span> 
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
+        <span class="n">θgoal</span> <span class="o">=</span> <span class="n">atan2</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">xgoal</span><span class="o">-</span><span class="n">x</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">ygoal</span><span class="o">-</span><span class="n">y</span><span class="p">))</span> <span class="c1"># anglegoal</span>
+        <span class="c1"># if θgoal&lt;=0  θgoal += 2*pi</span>
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">θgoal</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># in radians, [0, 2pi]</span>
+
+    <span class="c1"># Eucleadian distance of robot to nearest goal......................................   </span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">distgoal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dists</span> <span class="o">=</span> <span class="p">[</span><span class="n">Inf</span><span class="p">,</span> <span class="n">Inf</span><span class="p">]</span>        <span class="c1"># distances of robot to the two goals</span>
+        <span class="k">for</span> <span class="n">goal</span><span class="p">,</span> <span class="p">(</span><span class="n">xgoal</span><span class="p">,</span> <span class="n">ygoal</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">goals</span><span class="p">):</span>
+            <span class="n">dists</span><span class="p">[</span><span class="n">goal</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">xgoal</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">ygoal</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+        <span class="n">dist</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">dists</span><span class="p">)</span>         <span class="c1"># nearest goal distance</span>
+        <span class="n">goal</span> <span class="o">=</span> <span class="n">dists</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>  <span class="c1"># nearest goal index</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;seeking goal ____________________&#39;</span><span class="p">,</span> <span class="n">goal</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">dist</span><span class="o">**</span><span class="mf">.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">goal</span>
+
+    <span class="c1"># robot reached goal ...............................................................</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">atgoal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">tol</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tol</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
+        <span class="n">atgoal</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">xgoal</span><span class="p">,</span> <span class="n">ygoal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">goals</span><span class="p">:</span>
+            <span class="n">atgoal</span> <span class="o">=</span> <span class="n">xgoal</span> <span class="o">+</span> <span class="n">tol</span> <span class="o">&gt;</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">xgoal</span> <span class="o">-</span> <span class="n">tol</span>  <span class="ow">and</span>  \
+                     <span class="n">ygoal</span> <span class="o">+</span> <span class="n">tol</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="n">ygoal</span> <span class="o">-</span> <span class="n">tol</span>
+
+            <span class="k">if</span> <span class="n">atgoal</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Goal has been reached woohoooooooooooooooooooooooooooooo!!&#39;</span><span class="p">);</span> <span class="k">break</span>
+        <span class="k">return</span> <span class="n">atgoal</span>
+
+    <span class="c1"># robot hits a wall...................................................................</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">atwall</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rng</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="c1"># check only 2*rng front scans for collision, given the robot does not move backward</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="p">[</span><span class="o">-</span><span class="n">rng</span><span class="p">:],</span> <span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="p">[:</span><span class="n">rng</span><span class="p">]]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_min</span> 
+        <span class="c1">#return self.scans.min()&lt;self.range_min</span>
+
+    <span class="c1"># reward function to produce a suitable policy..........................................</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">imp</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">stype</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">atgoal</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">atwall</span><span class="p">(),</span> <span class="n">a</span><span class="o">==</span><span class="mi">1</span><span class="p">,</span> <span class="n">a</span><span class="o">!=</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">dist</span><span class="p">,</span> <span class="n">goal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">distgoal</span><span class="p">()</span>
+        <span class="n">θgoal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">θgoal</span><span class="p">(</span><span class="n">goal</span><span class="p">)</span>
+
+        <span class="c1"># get angular distance to reward/penalise robot relative to its orientation towards a goal</span>
+        <span class="n">θdist</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">θ</span> <span class="o">-</span> <span class="n">θgoal</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">goal</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span> <span class="n">θdist</span> <span class="o">-=</span> <span class="n">pi</span>
+        <span class="n">θdist</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">θdist</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="p">[</span><span class="n">stype</span><span class="p">]</span> 
+        <span class="k">if</span> <span class="n">stype</span><span class="p">:</span> <span class="n">reward</span> <span class="o">-=</span> <span class="n">imp</span><span class="o">*</span><span class="p">(</span><span class="n">dist</span><span class="o">+</span><span class="n">θdist</span><span class="p">)</span> 
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> 
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reward components=&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;Total reward=&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> 
+                  <span class="s1">&#39;state reward=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="p">[</span><span class="n">stype</span><span class="p">],</span>
+                  <span class="s1">&#39;goal dist=&#39;</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> 
+                  <span class="s1">&#39;|θ-θgoal|=&#39;</span><span class="p">,</span> <span class="n">θdist</span><span class="p">)</span>
+                <span class="c1">#   &#39;θrobot=&#39;, self.θ, </span>
+                <span class="c1">#   &#39;θgoal =&#39;, θgoal, </span>
+
+        <span class="c1"># reset without restarting an episode if the robot hits a wall</span>
+        <span class="k">if</span> <span class="n">stype</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span> 
+
+        <span class="k">return</span> <span class="n">reward</span><span class="p">,</span> <span class="n">stype</span><span class="o">==</span><span class="mi">0</span><span class="p">,</span> <span class="n">stype</span><span class="o">==</span><span class="mi">1</span>
+
+<span class="c1"># State representation-------------------------------------------------</span>
+   <span class="c1"># change this to generate a suitable state representation</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">s_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">xi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">xdim</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">resol</span><span class="p">)</span>     <span class="c1"># x index = col, assuming the grid middle is (0,0)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">ydim</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">resol</span><span class="p">)</span>     <span class="c1"># y index = row, assuming the grid middle is (0,0)</span>
+
+        <span class="c1"># pi/2 to be superficially resilient to slight angle variation to keep θi unchanged</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">θi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">θ</span><span class="o">+</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">%</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">θresol</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">si</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">yi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cols</span>     <span class="c1"># position state in the grid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nC</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">θi</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">si</span>      <span class="c1"># position state with orientation</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;grid cell= &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">si</span><span class="p">,</span> <span class="s1">&#39;state = &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span> 
+
+
+<span class="c1"># Control--------------------------------------------------------------    </span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">spin_n</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="n">ros</span><span class="o">.</span><span class="n">spin_once</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">control</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">)</span> 
+
+    <span class="c1"># move then stop to get a defined action</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">θspeed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">speed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">speed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span>
+        <span class="k">if</span> <span class="n">θspeed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">θspeed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">θspeed</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">+=</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;step = &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+        <span class="k">if</span>  <span class="n">a</span><span class="o">==-</span><span class="mi">1</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">x</span>  <span class="o">=</span> <span class="o">-</span><span class="n">speed</span>  <span class="c1"># backwards</span>
+        <span class="k">elif</span> <span class="n">a</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">x</span>  <span class="o">=</span>  <span class="n">speed</span>  <span class="c1"># forwards</span>
+        <span class="k">elif</span> <span class="n">a</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span>  <span class="n">θspeed</span> <span class="c1"># turn left</span>
+        <span class="k">elif</span> <span class="n">a</span><span class="o">==</span><span class="mi">2</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="o">-</span><span class="n">θspeed</span> <span class="c1"># turn right</span>
+
+        <span class="c1"># Now move and stop so that we can have a well defined actions  </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spin_n</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">a</span><span class="o">==</span><span class="mi">1</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">spin_n</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+        <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">wall</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_</span><span class="p">(),</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">.0</span>
+        <span class="c1">#  spin less so that we have smoother actions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spin_n</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">//</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># reseting--------------------------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;resetting world..........................................&#39;</span><span class="p">)</span>
+        <span class="c1"># to ensure earlier queued actions are flushed, there are better ways to do this</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_world</span><span class="o">.</span><span class="n">call_async</span><span class="p">(</span><span class="n">Empty</span><span class="o">.</span><span class="n">Request</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>  <span class="c1"># move slightly forward to update the odometry to prevent repeating an episode unnecessary</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_world</span><span class="o">.</span><span class="n">call_async</span><span class="p">(</span><span class="n">Empty</span><span class="o">.</span><span class="n">Request</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_</span><span class="p">()</span>
+
+    <span class="c1"># for compatibility, do not delete</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">pass</span>
+</code></pre></div>
+<p>Ok, let us now test our little environment, to do so, open a terminal and launch the simple environment be executing the following command:</p>
+<p><code> ros2 launch turtlebot3_gazebo turtlebot3_simple.launch.py </code></p>
+<p>To make the testing smoother, you can right-click Gazebo and keep the window on top.
+You can also press ctrl+R to reset the environment.</p>
+<h2 id="rotational-and-translational-calibration">Rotational and Translational Calibration</h2>
+<p>Let us calibrate the rotational and translational movements of our robot settings. The idea here is to be able to get a consistent behaviour where a robot can consistently complete a full circle in a specified number of times <em>most of the times</em>. This is a trial and error process, we usually need to experiment with different settings, bearing in minde the accuracy and efficiency of the robot training that will take place later.</p>
+<p>The frequency plays an important role as it specifies how many times the velocity changes commands are going to be executed per seconds. This is via our subscription to the /cmd_vel topic and the create_timer() function of the Node class.
+The second important factor is the number of times the spin_once() is going to be executed. Spining a few times after publishing a command helps stablise the behaviour and gives us more consistency because it helps flush any delayed execution as well as any delayed subscription due to the robot hardware limitation which is simulated to an extent in Gazebo.</p>
+<h3 id="rotation-in-place-to-form-a-full-2pi-circle">Rotation in place to form a full <span class="arithmatex">\(2\pi\)</span> circle</h3>
+<p>You could try to increase the θspeed but that will result in more slippage.
+It is also possible to increase the speed of execution (rather that the speed of the robot) by playing with n which is the number of times a spin_once() is executed. You could also speed up the clock by increasing the hz (frequency) of execution.</p>
+<div class="highlight"><pre><span></span><code><span class="n">hz</span> <span class="o">=</span> <span class="mi">20</span>       <span class="c1"># increase to speed up, default is 20, max 30 to speed up</span>
+<span class="n">n</span>  <span class="o">=</span> <span class="mi">28</span>       <span class="c1"># decrease to shorten the movements, default is 30, min 5 to speed up</span>
+
+<span class="n">env</span> <span class="o">=</span> <span class="n">Env</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">θspeed</span><span class="o">=</span><span class="n">pi</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">hz</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>resetting world..........................................
+step =  1
+scan =  [1.19 2.51 2.43 2.41 2.39 2.38 2.39 1.54 1.51 2.62]
+odom =  [ 0. -0.  0.]
+odom =  [0. 0. 0.]
+odom =  [0. 0. 0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+scan =  [1.22 2.53 2.45 2.39 2.37 2.37 2.4  1.54 1.51 2.62]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+scan =  [1.22 2.53 2.45 2.39 2.38 2.38 2.4  1.52 1.49 2.62]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+seeking goal ____________________ 0
+reward components= Total reward= -7.24 state reward= 0 goal dist= 2.83 |θ-θgoal|= 0.79
+grid cell=  144 state =  1011
+step =  2
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+scan =  [1.19 2.52 2.43 2.4  2.39 2.38 2.39 1.53 1.52 2.6 ]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+scan =  [1.2  2.51 2.45 2.4  2.36 2.38 2.39 1.54 1.5  2.62]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+scan =  [1.21 2.51 2.44 2.4  2.39 2.39 2.38 1.54 1.53 2.61]
+odom =  [ 0. -0.  0.]
+seeking goal ____________________ 0
+reward components= Total reward= -7.24 state reward= 0 goal dist= 2.83 |θ-θgoal|= 0.79
+grid cell=  144 state =  1011
+grid cell=  144 state =  1011
+speed  =  0.5
+θspeed =  0.63
+freq   =  0.05
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">rotate_test</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span> <span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mi">39</span><span class="p">):</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># %time rotate_test(env)</span>
+</code></pre></div>
+<h3 id="translation-calibration-moving-in-a-straight-line">Translation calibration, moving in a straight line</h3>
+<p>You could try to increase the speed but that will result in bending.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">forward_test</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span> <span class="p">)</span>
+    <span class="c1"># for _ in range(2): env.step(0)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+<span class="c1"># forward_test(env)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># env.reset()</span>
+</code></pre></div>
+<h3 id="manual-solution-policy-to-the-given-problem">Manual solution (policy) to the given problem</h3>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">optimal_policy1</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span> <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+<span class="c1"># %time optimal_policy1(env)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">optimal_policy2</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span> <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">):</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+<span class="c1"># %time optimal_policy2(env)</span>
+</code></pre></div>
+<h1 id="applying-an-rl-algorithms-to-train-a-turtlebot3-to-autonomously-reach-the-goals">Applying an RL Algorithms to Train a Turtlebot3 to Autonomously Reach the Goals</h1>
+<p>Now let us apply Sarsa on this problem</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rl.rl</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># env_slow = Env(speed=.5 , θspeed=pi/2, verbose=False) # slower more thorough</span>
+<span class="c1"># env_fast = Env(speed= 1., θspeed=.75*pi, verbose=False) # useful for testing</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># env = env_fast</span>
+<span class="c1"># short max_t so that an episode does not take long</span>
+<span class="c1"># sarsa = Sarsa(env=env, α=.1, max_t=200, episodes=300, seed=0, **demoGame()).interact()</span>
+</code></pre></div>
+<h3 id="resume-training-and-extend-training">Resume Training and Extend training</h3>
+<p>If training intrrupted for any reason (including finishing the assigned number of episodes), you can resume it by passing resume=True to the interact() function.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># env.reset()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># sarsa.interact(resume=True)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># sarsa.episodes = 1000</span>
+<span class="c1"># # sarsa.rewards=[100, -10, 0, -1]</span>
+<span class="c1"># %time sarsa.interact(resume=True)</span>
+</code></pre></div>
+<h2 id="vectorised-environment">Vectorised Environment</h2>
+<p>Let us now try to changed teh states from a number/index into vector.
+We will simply utilise the laser scans. We can use them as is or try to turn them into some form of a hot encoding or tile coding. Below we show a simple implementaiton which you can build on. Note that we will import algorithms from RLv instead of RL so that we can use the vectorised linear model RL algorithms such Sarsa and Q_learning.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">vEnv</span><span class="p">(</span><span class="n">Env</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nscans</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nF</span> <span class="o">=</span> <span class="n">nscans</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">s_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">max</span><span class="p">,</span> <span class="nb">min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_min</span>
+        <span class="n">φ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scans</span>
+        <span class="n">φ</span><span class="p">[</span><span class="n">φ</span><span class="o">==</span><span class="n">Inf</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span>
+        <span class="n">φ</span><span class="p">[</span><span class="n">φ</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">φ</span><span class="p">[</span><span class="n">φ</span><span class="o">&lt;</span><span class="nb">min</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">φ</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">φ</span><span class="o">/</span><span class="nb">max</span>
+        <span class="k">return</span>  <span class="n">φ</span><span class="o">/</span><span class="n">φ</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> 
+
+    <span class="c1"># def s_(self):</span>
+    <span class="c1">#     nF, scans, range_max = self.nF, self.scans, self.range_max</span>
+    <span class="c1">#     φ = np.r_[scans[-nF//2:], scans[:nF//2]]</span>
+    <span class="c1">#     φ[φ==Inf] = range_max</span>
+    <span class="c1">#     # φ[φ &gt; range_max/2] = 0</span>
+    <span class="c1">#     # φ[φ != 0] = 1</span>
+    <span class="c1">#     # print(φ)</span>
+    <span class="c1">#     return φ/φ.sum()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">venv</span> <span class="o">=</span> <span class="n">vEnv</span><span class="p">(</span><span class="n">speed</span><span class="o">=</span> <span class="mf">.5</span><span class="p">,</span> <span class="n">θspeed</span><span class="o">=</span><span class="n">pi</span><span class="o">/</span><span class="mi">5</span><span class="p">,</span> <span class="n">rewards</span><span class="o">=</span><span class="p">[</span><span class="mi">30</span><span class="p">,</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># useful for testing</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>[WARN] [1715334431.685891644] [rcl.logging_rosout]: Publisher already registered for provided node name. If this is due to multiple nodes with the same name then all logs for that logger name will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.
+
+
+resetting world..........................................
+step =  1
+odom =  [0. 0. 0.]
+scan =  [1.23 2.52 2.44 2.4  2.38 2.38 2.4  1.53 1.52 2.63]
+odom =  [0.   0.   6.28]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+scan =  [1.19 2.49 2.44 2.4  2.36 2.39 2.41 1.56 1.52 2.6 ]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+scan =  [1.21 2.51 2.44 2.39 2.38 2.39 2.38 1.55 1.5  2.61]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+seeking goal ____________________ 0
+reward components= Total reward= -7.24 state reward= 0 goal dist= 2.83 |θ-θgoal|= 0.79
+step =  2
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+scan =  [1.19 2.52 2.44 2.4  2.38 2.39 2.38 1.53 1.5  2.63]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+scan =  [1.2  2.51 2.43 2.39 2.37 2.38 2.4  1.51 1.52 2.62]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+scan =  [1.21 2.51 2.44 2.38 2.39 2.38 2.4  1.53 1.52 2.6 ]
+seeking goal ____________________ 0
+reward components= Total reward= -7.24 state reward= 0 goal dist= 2.83 |θ-θgoal|= 0.79
+speed  =  0.5
+θspeed =  0.63
+freq   =  0.05
+</code></pre></div>
+<p>Now it is time to apply Sarsa on robotics! Note that this might not generate a useful policy yet. You must adjust the above code and tune your RL method hyperparameters.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rl.rlln</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">time</span> <span class="n">vsarsa</span> <span class="o">=</span> <span class="n">Sarsaλ</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">venv</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.05</span><span class="p">,</span> <span class="n">ε</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">max_t</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">demoGame</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>CPU times: user 35min 38s, sys: 1min 23s, total: 37min 2s
+Wall time: 7h 53min 35s
+</code></pre></div>
+<p><img alt="png" src="output_41_1.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">time</span> <span class="n">vtruesarsa</span> <span class="o">=</span> <span class="n">trueSarsaλ</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">venv</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.05</span><span class="p">,</span> <span class="n">ε</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">max_t</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">demoGame</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>CPU times: user 30min 2s, sys: 1min 9s, total: 31min 12s
+Wall time: 7h 4min 40s
+</code></pre></div>
+<p><img alt="png" src="output_42_1.png" /></p>
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># venv.θspeed = pi/3 </span>
+<span class="c1"># that means we are changing the env dynamics which is more challenging for the agent</span>
+<span class="c1"># vsarsa.ε = .1</span>
+<span class="c1"># vsarsa.dε= 1</span>
+<span class="c1"># vsarsa.εmin</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">vsarsa</span><span class="o">.</span><span class="n">episodes</span> <span class="o">=</span> <span class="mi">540</span>
+<span class="c1"># sarsa.rewards=[100, -10, 0, -1]</span>
+<span class="o">%</span><span class="n">time</span> <span class="n">vsarsa</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">venv</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>CPU times: user 30.8 s, sys: 1.42 s, total: 32.3 s
+Wall time: 6min 31s
+
+
+
+
+
+&lt;RLv.Sarsaλ at 0x7f5ffd716f40&gt;
+</code></pre></div>
+<p><img alt="png" src="output_45_2.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">vtruesarsa</span><span class="o">.</span><span class="n">episodes</span> <span class="o">=</span> <span class="mi">530</span>
+<span class="c1"># sarsa.rewards=[100, -10, 0, -1]</span>
+<span class="o">%</span><span class="n">time</span> <span class="n">vtruesarsa</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">venv</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>CPU times: user 1min 25s, sys: 3.76 s, total: 1min 29s
+Wall time: 18min 5s
+
+
+
+
+
+&lt;RLv.trueSarsaλ at 0x7f60340968b0&gt;
+</code></pre></div>
+<p><img alt="png" src="output_46_2.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">venv</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>resetting world..........................................
+step =  116815
+scan =  [0.23 0.24 0.28 0.28 0.12 0.12 0.12 0.15 0.17 0.18]
+odom =  [2.3  1.6  0.57]
+scan =  [1.2  2.52 2.43 2.39 2.38 2.37 2.41 1.54 1.51 2.62]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+scan =  [1.19 2.52 2.45 2.4  2.39 2.39 2.4  1.54 1.51 2.6 ]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+scan =  [1.2  2.51 2.44 2.39 2.38 2.4  2.39 1.54 1.52 2.61]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+seeking goal ____________________ 0
+reward components= Total reward= -7.24 state reward= 0 goal dist= 2.83 |θ-θgoal|= 0.79
+step =  116816
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+scan =  [1.22 2.52 2.43 2.39 2.39 2.39 2.41 1.54 1.52 2.6 ]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+scan =  [1.21 2.52 2.45 2.41 2.37 2.4  2.4  1.54 1.5  2.62]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+odom =  [ 0. -0.  0.]
+scan =  [1.21 2.52 2.44 2.39 2.37 2.38 2.39 1.53 1.49 2.61]
+odom =  [ 0. -0.  0.]
+seeking goal ____________________ 0
+reward components= Total reward= -7.24 state reward= 0 goal dist= 2.83 |θ-θgoal|= 0.79
+
+
+
+
+
+array([0.01292713, 0.01281209, 0.0227836 , 0.02324465, 0.01027762,
+       0.00855598, 0.00619121, 0.00852212, 0.01901032, 0.01732261,
+       0.01271966, 0.01092166, 0.0123869 , 0.01278423, 0.01308601,
+       0.02420145, 0.02379162, 0.02363867, 0.02289693, 0.02216109,
+       0.02112418, 0.0060394 , 0.0024645 , 0.00575699, 0.00831019,
+       0.02626327, 0.02679824, 0.02755685, 0.02754739, 0.02787054,
+       0.02779497, 0.02766693, 0.02734911, 0.01158986, 0.01050995,
+       0.01039502, 0.01457711, 0.01629029, 0.00589362, 0.00818161,
+       0.01017182, 0.02215024, 0.02146195, 0.01321665, 0.01336568,
+       0.01321665, 0.01286833, 0.01212773, 0.01087723, 0.00950818,
+       0.02127673, 0.02375081, 0.02529406, 0.02671511, 0.0276625 ,
+       0.02650686, 0.01138107, 0.01230194, 0.01287275, 0.01305804],
+      dtype=float32)
+</code></pre></div>
+<h2 id="training-headless">Training Headless</h2>
+<p>To train more efficiently, turn off the gui in gazebo. To do so, go to the .launch file that you have launched gazebo with and comment out the follwoing lines:</p>
+<div class="highlight"><pre><span></span><code>   IncludeLaunchDescription(
+       PythonLaunchDescriptionSource(
+           os.path.join(pkg_gazebo_ros, &#39;launch&#39;, &#39;gzclient.launch.py&#39;)
+       ),
+   ),
+</code></pre></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright Abdulrahman Altahhan
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+        <script src="../../javascript/tablecontentsoverride.js"></script>
+      
+        <script src="../../javascript/config.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

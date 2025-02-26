@@ -1,0 +1,1766 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="Abdulrahman Altahhan, 2025">
+      
+      
+      
+        <link rel="prev" href="../lesson12/lesson12.html">
+      
+      
+        <link rel="next" href="../lesson14/lesson14.html">
+      
+      
+      <link rel="icon" href="../../img/favicon.jpg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.4">
+    
+    
+      
+        <title>13. Linear Approximation for Prediction - Reinforcement Learning for Autonomous Agents</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.8608ea7d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../css/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lesson-12-state-value-approximation-methods-for-prediction" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+    <div id="versionIndicator"><b>Version:</b> 04.06.21.a</div>
+    <img id="customlogo" src="../../../img/logo.svg" alt="University of Leeds logo.">
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Reinforcement Learning for Autonomous Agents" class="md-header__button md-logo" aria-label="Reinforcement Learning for Autonomous Agents" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Reinforcement Learning for Autonomous Agents
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              13. Linear Approximation for Prediction
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../index.html" class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit1/lesson1/lesson1.html" class="md-tabs__link">
+          
+  
+  Unit 1
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit2/lesson5/lesson5.html" class="md-tabs__link">
+          
+  
+  Unit 2
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit3/lesson8/lesson8.html" class="md-tabs__link">
+          
+  
+  Unit 3
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../lesson12/lesson12.html" class="md-tabs__link">
+          
+  
+  Unit 4
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit5/lesson15/lesson15.html" class="md-tabs__link">
+          
+  
+  Unit 5
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../unit6/lesson18/lesson18.html" class="md-tabs__link">
+          
+  
+  Unit 6
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Reinforcement Learning for Autonomous Agents" class="md-nav__button md-logo" aria-label="Reinforcement Learning for Autonomous Agents" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Reinforcement Learning for Autonomous Agents
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 1
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson1/lesson1.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. Tabular Methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson2/lesson2.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2. K-Arm Bandit
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson3/lesson3.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. MDP
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit1/lesson4/lesson4.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4. ROS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 2
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit2/lesson5/lesson5.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5. Dynamic Programming
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit2/lesson6/lesson6.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6. Monte Carlo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit2/lesson7/lesson7.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7. Mobile Robots
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 3
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit3/lesson8/lesson8.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8. Temporal Difference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit3/lesson9/lesson9.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9. n-Step Methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit3/lesson10/lesson10.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10. Planning in RL(optional)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit3/lesson11/lesson11.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11. Localisation and SLAM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Unit 4
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 4
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lesson12/lesson12.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12. Function Approximation Methods
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    13. Linear Approximation for Prediction
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="lesson13.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    13. Linear Approximation for Prediction
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#state-representation-one-hot-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      State Representation: One-hot Encoding
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="State Representation: One-hot Encoding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vectorising-grid-world-with-one-hot-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vectorising Grid World with One-hot Encoding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lesson14/lesson14.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    14. Linear Approximation for Control
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 5
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 5
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit5/lesson15/lesson15.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    15. Linear Approximation with Eligibility Traces(prediction and control)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit5/lesson16/lesson16.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    16. Nonlinear Approximation for Control
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit5/lesson17/lesson17.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    17. Application on Robot Navigation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Unit 6
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Unit 6
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unit6/lesson18/lesson18.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    18. Application on Games(optional)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#state-representation-one-hot-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      State Representation: One-hot Encoding
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="State Representation: One-hot Encoding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vectorising-grid-world-with-one-hot-encoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vectorising Grid World with One-hot Encoding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<p>The notebook uses a library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries are written from scratch using standard Python libraries (numpy, matplotlib etc.).
+Please note that you will need permission from the author to use the code for research, commercially or otherwise.</p>
+<h1 id="lesson-12-state-value-approximation-methods-for-prediction">Lesson 12: State-Value Approximation Methods for Prediction</h1>
+<p><strong>Learning outcomes</strong></p>
+<ol>
+<li>understand the intractability of some real-world state space</li>
+<li>understand state space representation via a set of features and its advantages</li>
+<li>understand the properties of different function approximation models</li>
+<li>understand how to generalize tabular on-policy prediction methods to function approximation methods</li>
+</ol>
+<p>In this lesson, we deal with function approximation to represent the state. We will use different encoding regimes. One straightforward idea is to represent the whole space as a binary vector, where each entry represents a state. Another idea is to combine multiple entries/components from multiple vectors to represent the state and more. It is a good idea to start by reading section 9.5 of our book.</p>
+<p><strong>Reading</strong>:
+The accompanying reading of this lesson is <strong>chapter 9</strong> of our text book available online <a href="http://incompleteideas.net/book/RLbook2020.pdf">here</a>. Please note that we explain the ideas of this topic from a practical perspective and not from a theoretical perspective which is already covered in the textbook.</p>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">rl.rl</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</code></pre></div>
+<style>.container {width:90% !important}</style>
+
+<h2 id="state-representation-one-hot-encoding">State Representation: One-hot Encoding</h2>
+<h3 id="vectorising-grid-world-with-one-hot-encoding">Vectorising Grid World with One-hot Encoding</h3>
+<p>In this section we aim to vectroise the grid world that we developed in the early lessons of a previous unit. The idea is to move gradually away from the tabular representation towards state-value function approximation where we <em>approximate</em> each state as a vector of features. Note that we where <em>estimating</em> the state-value function in the tabular form. So given that we assume limited states, it is possible, at least in theory to reach an exact value for all state-values or the action-values. When we deal with vector representation of a state, we depart from having finite number of states to the possibility of having infinite number of states in the world. Therefore, in this case we will be <em>approximating</em> the state representation and in turn we are <em>estimating an approximate</em> state-value and action-value functions and hence the name of our methods are Function Approximation Methods. </p>
+<p>To encode a state, we set to 1 the corresponding component while all other features are set to 0. </p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">vGrid</span><span class="p">(</span><span class="n">Grid</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nF</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="c1"># num of features to encode a state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nF</span> <span class="o">=</span> <span class="n">nF</span> <span class="k">if</span> <span class="n">nF</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">nS</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># vectorised state representation: one-hot encoding (1 component represents a state)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">s_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">φ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nF</span><span class="p">)</span>
+        <span class="n">φ</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> 
+        <span class="k">return</span> <span class="n">φ</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">S_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">S</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">S</span>
+        <span class="c1"># S is a *matrix* that represents the full state space, this is only needed for Grid visualisation</span>
+        <span class="n">sc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span>  <span class="c1"># store current state to be retrieved later</span>
+        <span class="k">for</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nS</span><span class="p">):</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_</span><span class="p">()]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">s_</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">sc</span> 
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">S</span>
+</code></pre></div>
+<p>Note that we need to pass 'vGrid' as the prefix for functions that deals with the different Grid types (such as maze and ranwalk ) to return a vGrid type instead of the usual Grid type in order to get the vectorised state representation that we defined above.</p>
+<div class="highlight"><pre><span></span><code><span class="n">randwalk</span><span class="p">(</span><span class="n">vGrid</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<span class="n">randwalk</span><span class="p">(</span><span class="n">vGrid</span><span class="p">)</span><span class="o">.</span><span class="n">s_</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_9_0.png" /></p>
+<div class="highlight"><pre><span></span><code>array([0., 0., 0., 1., 0., 0., 0.])
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">randwalk</span><span class="p">()</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<span class="n">randwalk</span><span class="p">()</span><span class="o">.</span><span class="n">s_</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_10_0.png" /></p>
+<div class="highlight"><pre><span></span><code>3
+</code></pre></div>
+<p>Compare the return of the above calls, in the vGrid we obtained a vector that represents the current state while in the Grid we get the index of the current state. </p>
+<p>We can also define a vrandwalk to be a vectroised random walk grid as follows.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">vrandwalk</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span>  <span class="k">return</span> <span class="n">randwalk</span>  <span class="p">(</span><span class="n">vGrid</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">vrandwalk_</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span> <span class="k">return</span> <span class="n">randwalk_</span> <span class="p">(</span><span class="n">vGrid</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">vgrid</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span>      <span class="k">return</span> <span class="n">grid</span>      <span class="p">(</span><span class="n">vGrid</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">vmaze</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span>      <span class="k">return</span> <span class="n">maze</span>      <span class="p">(</span><span class="n">vGrid</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">vcliffwalk</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span> <span class="k">return</span> <span class="n">cliffwalk</span> <span class="p">(</span><span class="n">vGrid</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">vwindy</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span>     <span class="k">return</span> <span class="n">windy</span>     <span class="p">(</span><span class="n">vGrid</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">vrandwalk</span><span class="p">()</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<span class="n">vrandwalk</span><span class="p">()</span><span class="o">.</span><span class="n">s_</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_13_0.png" /></p>
+<div class="highlight"><pre><span></span><code>array([0., 0., 0., 1., 0., 0., 0.])
+</code></pre></div>
+<h1 id="prediction-with-function-approximation">Prediction with Function Approximation</h1>
+<h2 id="mrp-with-linear-function-approximation">MRP with <em>Linear</em> Function Approximation</h2>
+<p>Linear Feature Representation</p>
+<p>In a linear model we will devise, customary to linear regression models, a set of weights that correspond with each feature, so we have a weight vector that have the same size of the feature vector along with the bias, we will defer treating the bias to when it becomes necessary.</p>
+<p>Because we are dealing with linear models(regardless of the representation), the value function is given as</p>
+<p><span class="arithmatex">\(V(s) = w^\top x\)</span></p>
+<p>The update for the weights parameters will be applied similar to what we did for the tabular but this time we will use the dot product. </p>
+<p>In hot encoding, each component's weight is really the value function for the corresponding state. We should get identical results of those that we obtained for the problems that we tackled in the tabular form, ex. random walk, the maze, the cliff walking etc. </p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">vMRP</span><span class="p">(</span><span class="n">MRP</span><span class="p">):</span>
+
+    <span class="c1"># set up the weights, must be done whenever we train</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">nF</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">v0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">V_</span> <span class="c1"># this allows us to use a very similar syntax for our updates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">S_</span><span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">#-------------------------------------------buffer related-------------------------------------</span>
+    <span class="c1"># allocate a suitable buffer</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">allocate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">allocate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">max_t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">nF</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span> <span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">nS</span><span class="o">+</span><span class="mi">10</span><span class="p">)</span>    
+
+    <span class="c1">#---------------------------------------- retrieve Vs ------------------------------------------</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">V_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">S_</span><span class="p">())</span> 
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">ΔV</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">s</span><span class="p">):</span> <span class="c1"># gradient: we should have used ∇ but jupyter does not like it</span>
+        <span class="k">return</span> <span class="n">s</span>
+</code></pre></div>
+<p>Note how we redefined the V as a function instead of as a array which allows us to use a very similar syntax for our updates, we will replace the squared brackets with rounded brackets and that's it!! thanks to the way we originally structured our MRP infrastructure. To appreciate this, let us see how we can redefine our offline MC algorithm along with the online TD update to deal with function approximation. Below we show how.</p>
+<h2 id="gradient-mc-with-function-approximation">Gradient MC with Function Approximation</h2>
+<div class="highlight"><pre><span></span><code>        -∇ Jt = -∇ 1/2(δt^2) = 
+        -∇ 1/2(Gt - V(s))^2 = 
+        -2(1/2)(Gt - V(s))*(∇ Gt - ∇ V(s)) = 
+        -1(Gt - V(s))*(0-s)=
+        (Gt - V(s))*s
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MC</span><span class="p">(</span><span class="n">vMRP</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="kc">True</span> 
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">init</span><span class="p">()</span> <span class="c1"># this is needed to bring w to the scope of the child class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="kc">True</span> 
+
+    <span class="c1"># ----------------------------- 🌘 offline, MC learning: end-of-episode learning ----------------------    </span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">offline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># obtain the return for the latest episode</span>
+        <span class="n">Gt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+            <span class="n">rn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="n">Gt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">*</span><span class="n">Gt</span> <span class="o">+</span> <span class="n">rn</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="n">Gt</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">(</span><span class="n">s</span><span class="p">))</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ΔV</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</code></pre></div>
+<p>This definition is almost identical to the tabular definition except for the following:
+1. we update now a set of weights instead of one entry in a table. So in the left hand side we see w instead of V[s].
+2. we use V(.) instead of V[.] on the right hand side (we could have used operator overloading to keep using the [.] but it is a bit more involving) 
+3. we multiply by the gradient ∇V(s) that is given by the MRP parent class.</p>
+<p>Note that s here is the state representation of the actual state, i.e. it is a vector of components.</p>
+<p>Note also that although the parent class deals with linear function approximation, the MC class does not assume that, it just needs the gradient of the V. So, as along as we make sure the parent MRP class does provide this function, we can define other types of MRP that use other types of function approximation like the tile coding or neural networks and we would not need to change the TD definition. 
+Please refer to section 9.3 of the book for more details.</p>
+<p>Let us now apply this vectorised from of the MC, or more precisely the gradient MC algorithm, on the random walk problem that use one-hot encoding. </p>
+<div class="highlight"><pre><span></span><code><span class="n">mcwalk</span> <span class="o">=</span> <span class="n">MC</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">vrandwalk</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.01</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;offline MC learning&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="output_22_0.png" /></p>
+<h2 id="online-semi-gradient-td-with-linear-function-approximation">Online Semi-Gradient TD with Linear Function Approximation</h2>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TD</span><span class="p">(</span><span class="n">vMRP</span><span class="p">):</span>
+    <span class="c1"># ----------------------------- 🌖 online learning ----------------------    </span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">online</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">rn</span><span class="p">,</span><span class="n">sn</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="n">rn</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">(</span><span class="n">sn</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">(</span><span class="n">s</span><span class="p">))</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ΔV</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</code></pre></div>
+<p>Again, note also that although the parent class deals with linear function approximation, the TD class does not assume that, it just needs the gradient of V. So, as along as we make sure the parent MRP class does provide this function, we can define other types of MRP that use other types of function approximation like the tile coding or neural networks and we would not need to change the TD definition. Therefore we can use a class factory to be able to change the parent class when we need to.</p>
+<p>We called this algorithmm a semi-gradient since we took the gradient of the value function V(s) and not the gradient of the target V(sn). The reason is to do be consistent with MC which is considered the theoretical baseline for TD. Nevertheless, there are algorithms that takes the gradient of both, although these are usually not as fast as semi-gradient TD, especially with linear function approximation, refer to section 9.3 of our book for more details.</p>
+<p>Let us now apply this vectorised from of the TD, or more precisely the semi-gradient TD algorithm. We call it semi-gradient because we to the gradient of one of the terms of TD error which is the estimation of the current state and we left the target estimation of the next state as is. Please refer to section 9.3 of the book.</p>
+<div class="highlight"><pre><span></span><code><span class="n">TDwalk</span> <span class="o">=</span> <span class="n">TD</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">vrandwalk</span><span class="p">(),</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;TD learning&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="output_26_0.png" /></p>
+<p>We need to pass the env explicitly because we have inherited the MRP and the new environment would have no took effect.</p>
+<h2 id="offline-semi-gradient-td-with-function-approximation">Offline Semi-Gradient TD with Function Approximation</h2>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TDf</span><span class="p">(</span><span class="n">vMRP</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># ----------------------------- 🌘 offline TD learning ----------------------------   </span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">offline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+            <span class="n">sn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">rn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="n">rn</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">(</span><span class="n">sn</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">(</span><span class="n">s</span><span class="p">))</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ΔV</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">tdwalk</span> <span class="o">=</span> <span class="n">TDf</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">vrandwalk</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.05</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;offline TD learning&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="output_30_0.png" /></p>
+<p>Let us rerun example 6.2 to double check that our algorithm is working well. This time we are using a vectorised grid and a linear model for TD and MC.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># runing the book example 6.2 which compare TD and MC on randome walk, but this time we use vector representation</span>
+<span class="n">example_6_2</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">vrandwalk</span><span class="p">(),</span> <span class="n">alg1</span><span class="o">=</span><span class="n">TDf</span><span class="p">,</span> <span class="n">alg2</span><span class="o">=</span><span class="n">MC</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|100/100
+</code></pre></div>
+<p><img alt="png" src="output_32_1.png" /></p>
+<h2 id="one-hot-encoding-with-redundant-features-for-prediction">One-hot-encoding with redundant features for prediction</h2>
+<p>As an auxiliary step towards generalising our classes to deal with any linear function approximation, below we create a random walk problem with 1000 redundant features to test whether our infrastructure classes are working.</p>
+<div class="highlight"><pre><span></span><code><span class="n">vTDwalk</span> <span class="o">=</span> <span class="n">TD</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">vrandwalk_</span><span class="p">(</span><span class="n">nF</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;TD learning&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="output_34_0.png" /></p>
+<h2 id="state-representation-state-aggregation">State Representation: State aggregation</h2>
+<p><span class="arithmatex">\(\underbrace{\{s_0\}}_{F_0}, \underbrace{\{s_1, s_2, ..., s_{100}\}}_{F_1}, \underbrace{\{s_{101}, s_{102}, ..., s_{200}\}}_{F_2},...,  \underbrace{\{s_{901}, s_{902}, ..., s_{1000}\}}_{F_{10}}, \underbrace{\{s_{1001}\}}_{F_{11}},\)</span></p>
+<p>For the state aggregation to work as intended, the goals must have a separate state representation from the groups; hence we dedicate the first and the last components for these two terminal states as we have shown above (or even put both of them in the same component). We then divide the non-goal states into 100, where each 100 are represented via a component and whenever the agent is at any of the 100 states the corresponding component will be on and all other components are off. </p>
+<p>Let us now move to a different state representation technique that generalizes the simple state-to-component one-hot encoding regime that we used earlier. We would like to move closer toward bridging continuous and discrete state space and so aggregation seems an obvious choice. In state aggregation, we group a set of states together and represent them all in one component(feature) and we use again one-hot encoding. This time one component represents a group of states instead of one state. Therefore, we turn a component(feature) on whenever the agent is at <em>any</em> of the group of states that corresponds to it. </p>
+<p><span class="arithmatex">\(F_i: \underbrace{\{s_0, s_1, ..., s_{99}\}}_{F_0}, \underbrace{\{s_{100}, ..., s_{199}\}}_{F_1},...,  \underbrace{\{s_{900}, ..., s_{999}\}}_{F_9}\)</span></p>
+<p>Therefore, if the agent is in state <span class="arithmatex">\(s_{100}\)</span>, in state <span class="arithmatex">\(s_{199}\)</span> or in any state in between, the feature <span class="arithmatex">\(F_1\)</span> will be on = 1 and the rest <span class="arithmatex">\(F_0, F_2...F_9\)</span> are all <span class="arithmatex">\(0\)</span>'s. The feature vector that represents the current state would be <span class="arithmatex">\(F =[0,1,0,0,0,0,0,0,0,0]\)</span></p>
+<p>This way also we treat the goal(terminal) states like other non-terminal states in terms of representation, and that is ok since we will leave the terminal state treatment to the learning algorithms. Recall that the <em>return</em> at time step <span class="arithmatex">\(t\)</span> is the sum of expected <em>future</em> rewards from time step <span class="arithmatex">\(t+1\)</span> to the end of an episode at time step <span class="arithmatex">\(T\)</span> and is given by:  </p>
+<p><span class="arithmatex">\(G_t = R_{t+1} + R_{t+2} + ... + R_{T}\)</span></p>
+<p>So the <em>reward</em> of current state does not participate in its <em>return</em> unlike the rewards of all future rewards that form the current state return. Hence the <em>terminal state value</em> (or expected return) is always set to 0 because the agent stays there and it will not obtain any <em>future</em> rewards from that state on. This is different than the <em>terminal state reward</em> itself given by the environment which may or may not be 0. Our algorithms do the following to treat terminal states: when the next state s' is a terminal state all of our algorithms will assign 0 to the terminal state's value estimation by multiplying it by (1-done), done is True on terminal state so (1-done)=0 at the terminal state. This alleviate us from having to designate a separate component to represent the terminal states and simplifies greatly our implementation.</p>
+<p>We call each group a tile, so a tile covers a group of states, think of a state in this context as the unit that we measure the tile's area with (hence the bridging of continuous and discrete state space). The above example has 10 tiles each of size 100 sates, while using tiles of size 200 mean that each covers or encompasses 200 states and will result in a feature vector of 5 components. </p>
+<p>Similar to vectors and matrices, tiles comes in different dimensions. When we deal with random walk problems we have 1-d tiles, while when we deal with a usual grid we will be dealing with 2-d tiles. The tile(group) size is stored in a variable called <strong>tilesize</strong>. Refer to example 9.2 in the book for more details. </p>
+<p>Below we provided an explanation of a precise process that we can use to achieve the above representation. </p>
+<div class="highlight"><pre><span></span><code><span class="mi">15</span><span class="o">//</span><span class="mi">3</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>5
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">nS</span> <span class="o">=</span> <span class="mi">1002</span>
+<span class="n">nS</span> <span class="o">=</span> <span class="mi">900</span>
+<span class="n">goals</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">nS</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">tilesize</span> <span class="o">=</span> <span class="mi">200</span>
+
+<span class="c1">#------------calculating number of componenets(features)-----------</span>
+<span class="n">nF</span> <span class="o">=</span>  <span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">nS</span><span class="o">//</span><span class="n">tilesize</span><span class="p">)</span>   <span class="c1"># 1 in case of nS is not divisible by tilesize</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;number of groups = &#39;</span><span class="p">,</span> <span class="n">nF</span><span class="p">)</span>
+
+<span class="c1">#------------obtainng an index (feature)---------------------------</span>
+<span class="n">s</span>   <span class="o">=</span>  <span class="mi">100</span><span class="c1"># goals[1] # goals[0]</span>
+<span class="n">ind</span> <span class="o">=</span>  <span class="n">s</span><span class="o">//</span><span class="n">tilesize</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;the goal</span><span class="se">\&#39;</span><span class="s1">s index = &#39;</span><span class="p">,</span> <span class="n">ind</span><span class="p">)</span>
+
+<span class="c1">#------------assigning the feature---------------------------------</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nF</span><span class="p">)</span>
+<span class="n">w</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>number of groups =  5
+the goal&#39;s index =  0
+[1. 0. 0. 0. 0.]
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">#In python the operator // rounds up if we used a negative number</span>
+<span class="nb">print</span><span class="p">(</span>   <span class="mi">1002</span><span class="o">//</span><span class="mi">200</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="mi">1002</span><span class="o">//</span><span class="mi">200</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>5
+6
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">aggGrid</span><span class="p">(</span><span class="n">vGrid</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tilesize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tilesize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jump</span> <span class="o">=</span> <span class="n">tilesize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nF</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">nS</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">tilesize</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">s_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">φ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nF</span><span class="p">)</span> 
+        <span class="n">φ</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">tilesize</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> 
+        <span class="k">return</span> <span class="n">φ</span>
+</code></pre></div>
+<p>As we can see, we have encoded the states via our s_( ) function which uses one-hot encoding. 
+The index is specified via the aggregation which is achieved by using the //tilesize operation.</p>
+<h3 id="1000-states-random-walk-with-jumps">1000 states random walk with jumps</h3>
+<p>To shorten the time of transfer between the states and to adapt it to work well with state aggregation we inherited from the class vGrid which inherited from Grid, which in turn allows the agent to jump any number of states. vGrid also provide access to S_() function which is needed to obtain the V_ values of the random walk process.</p>
+<p>In the example below we choose to allow for a random jumps of up to 50 steps and we aggregate/group the states into 50 instead of 100 because this will result in around 20 feature similar to our 19-state random walk problem that we saw earlier in previous lessons (it is 19+2 states with terminal states).</p>
+<p><span class="arithmatex">\(\underbrace{\{s_0, s_1, ..., s_{49}\}}_{F_0}, \underbrace{\{s_{50}, ..., s_{99}\}}_{F_1},...,  \underbrace{\{s_{950}, ..., s_{999}\}}_{F_{19}}\)</span></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># assuming that vstar is a function that returns Vstar values</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aggrandwalk_</span><span class="p">(</span><span class="n">nS</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">tilesize</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">vstar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span> 
+    <span class="n">env</span> <span class="o">=</span> <span class="n">randwalk_</span><span class="p">(</span><span class="n">aggGrid</span><span class="p">,</span> <span class="n">nS</span><span class="o">=</span><span class="n">nS</span><span class="p">,</span> <span class="n">tilesize</span><span class="o">=</span><span class="n">tilesize</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vstar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="n">env</span><span class="o">.</span><span class="n">Vstar</span> <span class="o">=</span> <span class="n">vstar</span><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="c1"># vstar is a function</span>
+    <span class="k">return</span> <span class="n">env</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">aggTDwalk</span> <span class="o">=</span> <span class="n">TD</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">aggrandwalk_</span><span class="p">(</span><span class="n">nS</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">tilesize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">40</span><span class="p">,</span><span class="mf">.5</span><span class="p">],</span> <span class="n">jump</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span> 
+                 <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">visual</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;TD learning&#39;</span><span class="p">,</span> <span class="n">pause</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="output_45_0.png" /></p>
+<p><img alt="png" src="output_45_1.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">env</span> <span class="o">=</span> <span class="n">aggrandwalk_</span><span class="p">(</span><span class="n">nS</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">tilesize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">40</span><span class="p">,</span><span class="mf">.5</span><span class="p">])</span>
+<span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">pause</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">env</span><span class="o">.</span><span class="n">jump</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+</code></pre></div>
+<p><img alt="png" src="output_46_0.png" /></p>
+<p>Let us now apply our online TD on a 25 state aggregation problem with 5 groups.</p>
+<div class="highlight"><pre><span></span><code><span class="n">aggTDwalk</span> <span class="o">=</span> <span class="n">TD</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">aggrandwalk_</span><span class="p">(</span><span class="n">nS</span><span class="o">=</span><span class="mi">24</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="n">tilesize</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span><span class="n">α</span><span class="o">=</span><span class="mf">.05</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mf">.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;TD learning&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="output_48_0.png" /></p>
+<h2 id="n-step-td-with-linear-function-approximation">n-step TD with linear function approximation</h2>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TDn</span><span class="p">(</span><span class="n">vMRP</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># there is a way to save storage by using t%(self.n+1) but we left it for clarity</span>
+
+    <span class="c1"># ----------------------------- 🌖 online learning ----------------------    </span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">online</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">τ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>  <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="k">if</span> <span class="n">τ</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span> <span class="k">return</span>
+
+        <span class="c1"># we take the min so that we do not exceed the episode limit (last step+1)</span>
+        <span class="n">τn</span> <span class="o">=</span> <span class="n">τ</span><span class="o">+</span><span class="n">n</span> <span class="p">;</span> <span class="n">τn</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">τn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">skipstep</span><span class="p">)</span>
+        <span class="n">τ1</span> <span class="o">=</span> <span class="n">τ</span><span class="o">+</span><span class="mi">1</span>
+
+        <span class="n">sτ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">τ</span> <span class="p">]</span>
+        <span class="n">sn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">τn</span><span class="p">]</span>
+        <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">[</span><span class="n">τn</span><span class="p">]</span>
+
+        <span class="c1"># n steps τ+1,..., τ+n inclusive of both ends</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">(</span><span class="n">τ1</span><span class="p">,</span><span class="n">τn</span><span class="p">)</span><span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">**</span><span class="n">n</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">(</span><span class="n">sn</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">(</span><span class="n">sτ</span><span class="p">))</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ΔV</span><span class="p">(</span><span class="n">sτ</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># try increase nS to 102+2 to see the effect</span>
+<span class="n">aggTDwalk</span> <span class="o">=</span> <span class="n">TDn</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">aggrandwalk_</span><span class="p">(</span><span class="n">nS</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">tilesize</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.02</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mf">.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;TD learning&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="output_51_0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">aggTDwalk</span> <span class="o">=</span> <span class="n">TDn</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">aggrandwalk_</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.01</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mf">.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;TD learning&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="output_52_0.png" /></p>
+<p>Note that we had to reduce the learning rate α because the increased number of steps entails more updates and hence larger update magnitude.</p>
+<h2 id="solving-the-1000-random-walk-via-dynamic-programmingdp">Solving the 1000 Random Walk via Dynamic Programming(DP)</h2>
+<p>It might be hard to notice that the stairs looks a bit off (bottom steps start over the straight line and top ones appears under the line). The problem is in fact not in our TDn algorithm, instead it is in the Vstar solution (the straight line). Because we add the ability for the agent to jump, the old solution is not valid any more albeit very close.</p>
+<p>To arrive to a more accurate solution, we can hand in the problem to a dynamic programming algorithm to solve it for us. Below we show a solution for the 1000 random walk with jumps based on Dynamic Programming techniques that we covered in lesson 3. Particularly we use the policy evaluation method since we are dealing with prediction and the policy is stationary (agent moves either to the left or to the right with equal .5 probabilities.)</p>
+<p>DP will help us to see how far the initial guess (the one similar to 19-states but with 1000 states random walk <em>without</em> the jumps) from the actual solution of the 1000-states random walk with the jumps. </p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">DP</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">aggrandwalk_</span><span class="p">(),</span> <span class="n">compare</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">θ</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
+    <span class="n">π</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">env</span><span class="o">.</span><span class="n">nS</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span><span class="o">*</span><span class="mf">.5</span>
+    <span class="n">Vstar</span> <span class="o">=</span> <span class="n">Policy_evaluation</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">π</span><span class="o">=</span><span class="n">π</span><span class="p">,</span> <span class="n">V0</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">Vstar</span><span class="p">,</span> <span class="n">θ</span><span class="o">=</span><span class="n">θ</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;V* obtained&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">compare</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">Vstar</span><span class="p">,</span>   <span class="n">label</span><span class="o">=</span><span class="s1">&#39;solution for 1000-random walk without jumps&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Vstar</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;solution for 1000-random walk with    jumps&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">Vstar</span>
+</code></pre></div>
+<p>Let us compare the default straight line solution to the V* solution for the random walk problem when we employ the jumping procedure. This will take a couple of minutes so please wait for it.</p>
+<div class="highlight"><pre><span></span><code><span class="n">aggVstar</span> <span class="o">=</span> <span class="n">DP</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">aggrandwalk_</span><span class="p">(),</span> <span class="n">compare</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>100%|████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00&lt;00:00,  2.14it/s]
+
+
+V* obtained
+</code></pre></div>
+<p><img alt="png" src="output_58_2.png" /></p>
+<p>This shows that the initial guess and the DP solution are close but not quite the same. Note that if we decrease θ the algorithm will get a more accurate estimation (the blue line will bend further) but it will take longer to run, the length of the run shows one of the issues of DP compared to more resilient and faster RL algorithms such as TD. Trye set  θ=1e-3 to see how long it will take and share the length within the group discussion.</p>
+<h2 id="solving-the-1000-random-walk-with-online-n-step-td-with-linear-function-approximation-and-state-aggregation">Solving the 1000 Random Walk with Online n-step TD with linear function approximation and state aggregation</h2>
+<p>We can integrate finding a DP solution with the comparison as below, but since we have already found a solution in the previous steps we can simply also utilise the solution for comparison directly as we do in subsequent cells. Note that the level of accuracy, specified in θ, can be adjusted. </p>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">time</span> <span class="n">nstepTD_MC_randwalk_αcompare</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">aggrandwalk_</span><span class="p">(</span><span class="n">vstar</span><span class="o">=</span><span class="n">DP</span><span class="p">),</span> \
+                                   <span class="n">algorithm</span><span class="o">=</span><span class="n">TDn</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">envlabel</span><span class="o">=</span><span class="s1">&#39;1000&#39;</span><span class="p">,</span> <span class="n">MCshow</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>100%|████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00&lt;00:00,  2.30it/s]
+
+
+V* obtained
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+CPU times: user 39min 16s, sys: 18min 26s, total: 57min 43s
+Wall time: 8min 32s
+</code></pre></div>
+<p><img alt="png" src="output_62_2.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">time</span> <span class="n">nstepTD_MC_randwalk_αcompare</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">aggrandwalk_</span><span class="p">(</span><span class="n">Vstar</span><span class="o">=</span><span class="n">aggVstar</span><span class="p">),</span> \
+                                   <span class="n">algorithm</span><span class="o">=</span><span class="n">TDn</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">envlabel</span><span class="o">=</span><span class="s1">&#39;1000&#39;</span><span class="p">,</span> <span class="n">MCshow</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+CPU times: user 39min 59s, sys: 20min 33s, total: 1h 33s
+Wall time: 8min 2s
+</code></pre></div>
+<p><img alt="png" src="output_63_1.png" /></p>
+<h2 id="offline-n-step-td-with-linear-function-approximation">Offline n-step TD with linear function approximation</h2>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TDnf</span><span class="p">(</span><span class="n">vMRP</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># offline method we need to store anyway</span>
+
+    <span class="c1"># ----------------------------- 🌘 offline TD learning ----------------------------   </span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">offline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span>        
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">+</span><span class="n">n</span><span class="p">):</span> <span class="c1"># T+n to reach T+n-1</span>
+            <span class="n">τ</span>  <span class="o">=</span> <span class="n">t</span> <span class="o">-</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">τ</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+
+            <span class="c1"># we take the min so that we do not exceed the episode limit (last step+1)</span>
+            <span class="n">τ1</span> <span class="o">=</span> <span class="n">τ</span><span class="o">+</span><span class="mi">1</span>
+            <span class="n">τn</span> <span class="o">=</span> <span class="n">τ</span><span class="o">+</span><span class="n">n</span> <span class="p">;</span> <span class="n">τn</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">τn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">sτ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">τ</span> <span class="p">]</span>
+            <span class="n">sn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">τn</span><span class="p">]</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">[</span><span class="n">τn</span><span class="p">]</span>
+
+            <span class="c1"># n steps τ+1,..., τ+n inclusive of both ends</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">(</span><span class="n">τ1</span><span class="p">,</span><span class="n">τn</span><span class="p">)</span><span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">**</span><span class="n">n</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">(</span><span class="n">sn</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">(</span><span class="n">sτ</span><span class="p">))</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ΔV</span><span class="p">(</span><span class="n">sτ</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="solving-the-1000-with-offline-n-step-td-with-linear-function-approximation-and-state-aggregation">Solving the 1000 with Offline n-step TD with linear function approximation and state aggregation</h2>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">time</span> <span class="n">nstepTD_MC_randwalk_αcompare</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">aggrandwalk_</span><span class="p">(</span><span class="n">Vstar</span><span class="o">=</span><span class="n">aggVstar</span><span class="p">),</span>\
+                                   <span class="n">algorithm</span><span class="o">=</span><span class="n">TDnf</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alglabel</span><span class="o">=</span><span class="s1">&#39;offline TD&#39;</span><span class="p">,</span> <span class="n">envlabel</span><span class="o">=</span><span class="s1">&#39;1000&#39;</span><span class="p">,</span> <span class="n">MCshow</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+15%|[92m█████████████[0m|5/32
+
+/var/folders/5s/t5nyc5mx7gd0_0g56wdmpgmrq78pqs/T/ipykernel_13119/3845626547.py:23: RuntimeWarning: invalid value encountered in multiply
+  self.w += self.α*(self.G(τ1,τn)+ (1-done)*self.γ**n *self.V(sn) - self.V(sτ))*self.ΔV(sτ)
+
+
+100%|[92m██████████████████████████████████████████████████████████████████████████████████████████[0m|32/32
+CPU times: user 35min 31s, sys: 18min 28s, total: 54min
+Wall time: 7min 13s
+</code></pre></div>
+<p><img alt="png" src="output_67_3.png" /></p>
+<h2 id="state-representation-tile-coding">State Representation: Tile Coding</h2>
+<p>Tile coding is a powerful state representation, it takes the idea of state aggregation one step ahead. It is assumed that the state space is <em>continuous</em> and we aim to discretize it by partitioning it <em>several</em> times. In state aggregation that is what we have done. Effectively we have partitioned the state space into tiles. Here, we will do it for more than 1 time. </p>
+<p>We call each state partition that covers a specific area of the space as a <em>tiling</em> and we have <span class="arithmatex">\(d\)</span> tilings. Each tiling has <span class="arithmatex">\(n\)</span> tiles as we saw earlier in state aggregation. Each component of a tiling vector is called a <em>tile</em>.  The length of the tile encoding vector is <span class="arithmatex">\(d\times n\)</span>.</p>
+<p>Therefore, instead of having one component on as in the state aggregation, we design a larger vector where we have more components that are turned on to help us differentiate further between the states. Note that the early grouping that we did in the previous section is actually a tile encoding with <em>one tiling</em>.</p>
+<p>When an agent is in state <span class="arithmatex">\(s\)</span> we will have exactly <span class="arithmatex">\(d\)</span> components turned on and the rest <span class="arithmatex">\(d\times n - d = d \times (n-1)\)</span> are <span class="arithmatex">\(0\)</span>s (while in state aggregation we had <span class="arithmatex">\(1\)</span> component on and the rest of the <span class="arithmatex">\(n-1\)</span> components were <span class="arithmatex">\(0\)</span>).
+What is left is to understand how to construct and turn these <span class="arithmatex">\(d\)</span> components on. For construction we simply look at the state space and cover it with a set of tiles (tiling) so that when an agent in a state, one of the tiles will be on. This can be simply a state partitioning. Then we lay another tiling, this time we shift (or offset/stride similar to what we do in CNN!) them so that there is some level of overlapping between the two tiling and so on. When we have two tilings, we will have two tiles on.</p>
+<p><span class="arithmatex">\(\underbrace{\{s_0, s_1, ..., s_{199}\}}_{F_{0,0}}, \underbrace{\{s_{200}, ..., s_{399}\}}_{F_{1,0}},...,  \underbrace{\{s_{800}, ..., s_{999}\}}_{F_{4,0}}\)</span></p>
+<p><span class="arithmatex">\(\underbrace{\{s_1, s_2, ..., s_{200}\}}_{F_{0,1}}, \underbrace{\{s_{201}, ..., s_{400}\}}_{F_{1,1}},...,  \underbrace{\{s_{801}, ..., s_{999}\}}_{F_{4,1}}\)</span></p>
+<p><span class="arithmatex">\(\underbrace{\{s_2, s_3, ..., s_{201}\}}_{F_{0,2}}, \underbrace{\{s_{202}, ..., s_{401}\}}_{F_{1,2}},...,  \underbrace{\{s_{802}, ..., s_{999}\}}_{F_{4,2}}\)</span></p>
+<p>So if the agent in stat <span class="arithmatex">\(s_{200}\)</span> then its state tile coding representation would be:</p>
+<p>$F = [0, 1, 0, 0, 0, \quad 1, 0, 0, 0, 0, \quad 1, 0, 0, 0, 0] $</p>
+<p>Finally, if the tiling creates a strain on the memory requirement, we combine it with <em>hashing</em>. Hashing can save us lots of space and computation time. Note that when we use hashing we would need to construct a state vector that is of the size of the hashed features which is smaller than that of a <span class="arithmatex">\(d\times n\)</span> .
+Note that although we assumed that the state space is continuous, we can usually <em>treat</em> the state space as if it is continuous. See section 9.4.5 along with 9.4.4.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">tiledGrid</span><span class="p">(</span><span class="n">vGrid</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ntilings</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">tilesize</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tilesize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jump</span> <span class="o">=</span> <span class="n">tilesize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ntilings</span> <span class="o">=</span> <span class="n">ntilings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ntiles</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">nS</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">tilesize</span><span class="p">)</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">nF</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntiles</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ntilings</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">s_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">φ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">ntilings</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntiles</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">tiling</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntilings</span><span class="p">):</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="nb">min</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">+</span> <span class="n">tiling</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">)</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">tilesize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntiles</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">φ</span><span class="p">[</span><span class="n">tiling</span><span class="p">,</span> <span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">φ</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+</code></pre></div>
+<p>Let us now define a tiled random walk environment with 1000 states handy to be used in our next set of experiments. As usual it has a rewards of (-1,1) for the far left and far right states while it has a tile size of 200. We can use multiple tilings for it to cover its states. We will use our original guess as the optimal Vstar estimation for the state values,however we will allow Vstar to be assigned a more correct values based on DP.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">tiledrandwalk_</span><span class="p">(</span><span class="n">nS</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">ntilings</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tilesize</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">vstar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">randwalk_</span><span class="p">(</span><span class="n">tiledGrid</span><span class="p">,</span> <span class="n">nS</span><span class="o">=</span><span class="n">nS</span><span class="p">,</span> <span class="n">ntilings</span><span class="o">=</span><span class="n">ntilings</span><span class="p">,</span> <span class="n">tilesize</span><span class="o">=</span><span class="n">tilesize</span><span class="p">,</span>  <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vstar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="n">env</span><span class="o">.</span><span class="n">Vstar</span> <span class="o">=</span> <span class="n">vstar</span><span class="p">(</span><span class="n">env</span><span class="p">)</span> 
+    <span class="k">return</span> <span class="n">env</span>
+    <span class="c1">#return randwalk_(tiledGrid, nS=nS, Vstar=Vstar, ntilings=ntilings, tilesize=tilesize,  **kw)</span>
+</code></pre></div>
+<h3 id="studying-the-effect-of-number-of-tilings">Studying the Effect of Number of Tilings</h3>
+<p>Below we run the tiled random walk problem with different number of tilings to show there effect.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">TDtiledwalk</span><span class="p">(</span><span class="n">ntilings</span><span class="p">):</span>
+    <span class="n">env</span><span class="o">=</span><span class="n">tiledrandwalk_</span><span class="p">(</span><span class="n">nS</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">tilesize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ntilings</span><span class="o">=</span><span class="n">ntilings</span><span class="p">)</span>
+    <span class="n">TD</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.02</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;TD learning, </span><span class="si">%d</span><span class="s1"> tilings&#39;</span><span class="o">%</span><span class="n">ntilings</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">TDtiledwalk</span><span class="p">(</span><span class="n">ntilings</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="output_74_0.png" /></p>
+<p>TDtiledwalk(ntilings=2)</p>
+<div class="highlight"><pre><span></span><code><span class="n">TDtiledwalk</span><span class="p">(</span><span class="n">ntilings</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="output_76_0.png" /></p>
+<p>TDtiledwalk(ntilings=4)</p>
+<div class="highlight"><pre><span></span><code><span class="n">TDtiledwalk</span><span class="p">(</span><span class="n">ntilings</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="output_78_0.png" /></p>
+<p>Note how the increased number of tilings enhanced the estimation and reduced the error and the values become smoother with less stair-style effect. So in fact ntilings has a smoothening effect on the value function and helps to improve the estimation of our algorithms. </p>
+<h3 id="td-on-1000-tiled-coded-random-walk">TD on 1000 Tiled Coded Random Walk</h3>
+<div class="highlight"><pre><span></span><code><span class="n">TDwalk</span> <span class="o">=</span> <span class="n">TD</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">tiledrandwalk_</span><span class="p">(</span><span class="n">ntilings</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">Vstar</span><span class="o">=</span><span class="n">DP</span><span class="p">(</span><span class="n">tiledrandwalk_</span><span class="p">())),</span><span class="n">α</span><span class="o">=</span><span class="mf">.005</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;True Online TD(</span><span class="si">%.2f</span><span class="s1">) learning&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p><img alt="png" src="output_81_0.png" /></p>
+<p>When using function approximation, the objective function needs to be differentiable and we used the sum of squared error (SE) from which we obtained the gradient. This makes sense since it is easily differentiable objective function instead of the harder RMSE (root of the mean squared error). However we can still use our RMSE to measure the performance as we did in previous lesson that we have used previously. </p>
+<p>Below we compare between 1 tiling and 50 tilings for the tiled random walk problem to generate figure 9.10 of the book. We used Monte Carlo because it is a full gradient algorithm since the target does not involve a next step estimate, but we can use TD as well.</p>
+<p>First let us find the Vstar for a 200 jumps problem (the previous one was for 50 so we cannot use it).</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">MCtiltingsRuns</span><span class="p">():</span>
+    <span class="n">Vstar</span><span class="o">=</span><span class="n">DP</span><span class="p">(</span><span class="n">tiledrandwalk_</span><span class="p">(),</span><span class="n">θ</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ntilings</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">]:</span>
+        <span class="n">env</span><span class="o">=</span><span class="n">tiledrandwalk_</span><span class="p">(</span><span class="n">ntilings</span><span class="o">=</span><span class="n">ntilings</span><span class="p">,</span> <span class="n">tilesize</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">Vstar</span><span class="o">=</span><span class="n">Vstar</span><span class="p">)</span>
+        <span class="n">α</span> <span class="o">=</span><span class="mf">.001</span><span class="o">/</span><span class="n">ntilings</span>
+        <span class="n">mcs</span> <span class="o">=</span> <span class="n">Runs</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">MC</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span><span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">5000</span><span class="p">),</span> <span class="n">v0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> 
+                   <span class="n">runs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">plotE</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;MC with </span><span class="si">%d</span><span class="s1"> tilings&#39;</span><span class="o">%</span><span class="n">ntilings</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">.45</span><span class="p">)</span>
+
+<span class="n">figure_9_10</span><span class="o">=</span><span class="n">MCtiltingsRuns</span> 
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">figure_9_10</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>100%|████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:02&lt;00:00,  2.82s/it]
+
+
+V* obtained
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|30/30
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|30/30
+</code></pre></div>
+<p><img alt="png" src="output_84_2.png" /></p>
+<p>This figure takes a long time to produce due to the extensivity of the experiments. As we can see, adding more tilings further reduced the error of the value function estimation and hence enhanced the algorithm's performance.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>In this lesson we have covered the different aspects of using function approximation in the context of reinforcement learning methods We have seen how to generalize the ideas covered in previous lessons to parametric models via semi-gradient methods including Semi-gradient Sarsa.</p>
+<h1 id="units-conclusion">Unit's conclusion</h1>
+<p>This lesson concludes our unit where we have studied important formulation of RL which assumed that we use a parametric representation for our state space using function approximation instead of a table. In the next unit, we continue on that front to cover control algorithms that use function approximation and we will see a set of applications of RL in various domains.</p>
+<h2 id="your-turn">Your turn</h2>
+<ol>
+<li>Use tile coding on a grid world problem with Sarsa and see its effect.</li>
+<li>Sutton referred to idea of tile coding and that it is almost trivial to update the weights and rather than doing the dot product we can just pick the components that are active and update accordingly. Can you think of a way to implement such strategy for the state aggregation case? what kind of update we will end up with?</li>
+<li>When we varies ntilings in TDtiledwalk() function we more fluctuate in the error. Can you think of ways to counter this undesirable effect.</li>
+<li>In TDtiledwalk() try to reduce the learning rate <span class="arithmatex">\(\alpha\)</span> when we increase ntilings ex.: <span class="arithmatex">\(\alpha\)</span>=.02/ntilings. Adjust the code and see its effect.</li>
+<li>Prove the above state form of equation 13.9.</li>
+<li>Have a look at the following code and see if this implementation for aggGrid makes any difference to the random walk results obtained earlier. Note how this divides the non-terminal states by subtracting the 2 goal states form the count to define nF and then to obtain the hot-encoding it tests whether the state is a goal state and it always subtract 1.  $ i = (s-1)//200$ gives <span class="arithmatex">\(F_i: \underbrace{\{s_1, s_2, ..., s_{200}\}}_{F_0}, \underbrace{\{s_{201}, ..., s_{400}\}}_{F_1},...,  \underbrace{\{s_{801}, ..., s_{1000}\}}_{F_4}, \underbrace{\{s_{1001}, s_0\}}_{F_5}\)</span>. This implementation is more complicated but it will show us a more uniformed division for the non-terminal states. Note that you would need to add 2 also to the nS in randwalk_() so that you can visually see the desired effect of evenly dividing the non-terminal states equally.</li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright Abdulrahman Altahhan
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+        <script src="../../javascript/tablecontentsoverride.js"></script>
+      
+        <script src="../../javascript/config.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
