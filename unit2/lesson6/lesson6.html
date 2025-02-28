@@ -7,7 +7,7 @@
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
       
-        <meta name="author" content="Abdulrahman Altahhan, 2024.">
+        <meta name="author" content="Dr Abdulrahman Altahhan">
       
       
       
@@ -1518,8 +1518,6 @@
 
 
 
-<p>The notebook uses a library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries are written from scratch using standard Python libraries (numpy, matplotlib etc.).
-Please note that you will need permission from the author to use the code for research, commercially or otherwise.</p>
 <h1 id="lesson-5-tabular-methods-monte-carlo">Lesson 5-Tabular Methods: Monte Carlo</h1>
 <p><strong>Learning outcomes</strong>
 1. understand the difference between learning the expected return and computing it via dynamic programming
@@ -1529,9 +1527,6 @@ Please note that you will need permission from the author to use the code for re
 1. understand the implication of satisfying and not satisfying the explore-start requirement for the MC control and how to mitigate it via the reward function
 1. understand how to move from prediction to control by extending the V function to a Q function and make use of the idea of generalised policy iteration-GPI
 1. understand how policy gradient methods work and appreciate how they differ from value function methods</p>
-<!-- **Reading**:
-The accompanying reading of this lesson is **chapter 5** from our textbook by Sutton and Barto available online [here](http://incompleteideas.net/book/RLbook2020.pdf). Please note that we explain the ideas of this topic from a practical perspective and not from a theoretical perspective, which is already covered in the textbook. Please note that off-policy methods are not covered and hence can be skipped safely when reading from the textbook. -->
-
 <p>In this lesson, we develop the ideas of Monte Carlo methods. Monte Carlo methods are powerful and widely used in settings other than RL. You may have encountered them in a previous module where they were mainly used for sampling. We will also use them here to sample observations and average their expected returns. Because they average the returns, Monte Carlo methods have to wait until <em>all</em> trajectories are available to estimate the return. Later, we will find out that Temporal Difference methods do not wait until the end of the episode to update their estimate and outperform MC methods.</p>
 <p>Note that we have now moved to <em>learning</em> instead of <em>computing</em> the value function and its associated policy. This is because we expect our agent to learn from <em>interacting with the environment</em> instead of using the dynamics of the environment, which is usually hard to compute except for a simple lab-confined environment. </p>
 <p>Remember that we are dealing with <em>expected return</em>, and we are either finding an <em>exact solution for this expected return</em> as when we solve the set of Bellman equations or finding an <em>approximate solution for the expected return</em> as in DP or MC.
@@ -1813,9 +1808,6 @@ For further reading you can consult chapter 5 from the Sutton and Barto <a href=
 
 
 
-
-  
-  
 
 
 

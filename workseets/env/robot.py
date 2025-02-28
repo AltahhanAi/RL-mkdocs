@@ -1,6 +1,6 @@
 '''
    Author: Abdulrahman Altahhan,  2025.
-   version: 3.1
+   version: 3.2
 
     This library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries 
     are written from scratch using standard Python libraries (numpy, matplotlib etc.).
@@ -22,12 +22,12 @@ from random import randint
 from math import atan2, atan, pi
 import matplotlib.pyplot as plt
 
+from rl.rlln import *
+# ====================================================================================================
+def name(): return 'node'+str(randint(1,1000))
 # ====================================================================================================
 
-def name(): return 'node'+str(randint(1,1000))
-
 class Env(Node):
-
 # initialisation--------------------------------------------------------------
     # frequency: how many often (in seconds) the spin_once is invoked, or the publisher is publishing to the /cmd_vel
     def __init__(self, name=name(), 
@@ -210,7 +210,6 @@ class Env(Node):
         if self.verbose: print('grid cell= ', self.si, 'state = ', self.s)
         return self.s 
 
-
 # Control--------------------------------------------------------------    
     def spin_n(self, n):
         for _ in range(n): ros.spin_once(self)
@@ -258,3 +257,17 @@ class Env(Node):
     def render(self, **kw):
         pass
 
+# ====================================================================================================
+class vEnv(Env):
+    def __init__(self, nscans=60, **kw):
+        self.nF = nscans
+        super().__init__(**kw)
+    
+    def s_(self):
+        max, min = self.range_max, self.range_min
+        φ = self.scans
+        φ[φ==Inf] = max
+        φ[φ==np.nan] = 0
+        φ[φ<min] = 0
+        φ = 1 - φ/max
+        return  φ/φ.sum()
