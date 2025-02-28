@@ -7,7 +7,7 @@
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
       
-        <meta name="author" content="Abdulrahman Altahhan, March 2024.">
+        <meta name="author" content="Dr Abdulrahman Altahhan">
       
       
       
@@ -611,42 +611,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1d-probability" class="md-nav__link">
-    <span class="md-ellipsis">
-      1D Probability
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2d-probability-joint-probability" class="md-nav__link">
-    <span class="md-ellipsis">
-      2D Probability: Joint Probability
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2d-probability-conditional-probability" class="md-nav__link">
-    <span class="md-ellipsis">
-      2D Probability: Conditional Probability
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4d-probability-random-dynamic" class="md-nav__link">
-    <span class="md-ellipsis">
-      4D Probability: Random Dynamic
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#inducing-the-dynamics-by-interacting-with-the-environment" class="md-nav__link">
     <span class="md-ellipsis">
       Inducing the dynamics by interacting with the environment
@@ -661,30 +625,6 @@
       Sources Stochasticity- Dynamics and Policy
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#accommodating-for-jumps-in-the-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Accommodating for jumps in the environment
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Accommodating for jumps in the environment">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#state-transition-probability-reward-marginalisation" class="md-nav__link">
-    <span class="md-ellipsis">
-      State-Transition probability: reward marginalisation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1227,42 +1167,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1d-probability" class="md-nav__link">
-    <span class="md-ellipsis">
-      1D Probability
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2d-probability-joint-probability" class="md-nav__link">
-    <span class="md-ellipsis">
-      2D Probability: Joint Probability
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2d-probability-conditional-probability" class="md-nav__link">
-    <span class="md-ellipsis">
-      2D Probability: Conditional Probability
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4d-probability-random-dynamic" class="md-nav__link">
-    <span class="md-ellipsis">
-      4D Probability: Random Dynamic
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#inducing-the-dynamics-by-interacting-with-the-environment" class="md-nav__link">
     <span class="md-ellipsis">
       Inducing the dynamics by interacting with the environment
@@ -1277,30 +1181,6 @@
       Sources Stochasticity- Dynamics and Policy
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#accommodating-for-jumps-in-the-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Accommodating for jumps in the environment
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Accommodating for jumps in the environment">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#state-transition-probability-reward-marginalisation" class="md-nav__link">
-    <span class="md-ellipsis">
-      State-Transition probability: reward marginalisation
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1320,8 +1200,6 @@
 
 
 
-<p>The notebook uses a library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries are written from scratch using standard Python libraries (numpy, matplotlib etc.).
-Please note that you will need permission from the author to use the code for research, commercially or otherwise.</p>
 <h1 id="lesson-5-dynamic-programming-model-based-approach">Lesson 5- Dynamic Programming: Model-Based Approach</h1>
 <p><strong>Unit 2: Learning Outcomes</strong><br />
 By the end of this unit, you will be able to:  </p>
@@ -1341,8 +1219,6 @@ By the end of this unit, you will be able to:  </p>
 </ol>
 <p>In this lesson, we will take the first approach. We will learn how to use a model of the environment to solve an RL problem. The model is given in the form of the dynamics of the environment. These usually come in the form of 4 dimensions of conditional probability involving an answer to the following question: what is the probability of obtaining a certain reward r in a certain state s' given that the agent was previously in a state s and applied action a.</p>
 <p>We will assume that there is already a model for the environment and try to take advantage of this model to come up with the best policy. Nevertheless, we will see simple ways to build such models and come back to this question later when we tackle planning algorithms in RL.</p>
-<p><strong>Reading</strong>:
-The accompanying reading of this lesson are <strong>chapters 3 and 4</strong> from our textbook by Sutton and Barto available online <a href="http://incompleteideas.net/book/RLbook2020.pdf">here</a>.</p>
 <p><strong>Plan</strong>
 As usual, in general there are two types of RL problems that we will attempt to design methods to deal with 
 1. Prediction problem
@@ -1351,7 +1227,6 @@ For These problems we will design Policy Evaluation Methods that attempt to find
 <li>Control problems 
 For These problems we will design Value Iteration methods which utilise the idea of Generalised Policy Iteration. They attempt to find the best policy, via estimating an action-value function for a current policy then moving to a better and improved policy by choosing a greedy action often.</li>
 </ol>
-<p>To help you, Abdulrahman recorded a set of videos that covers the material</p>
 <h2 id="basics-dynamic-programming">Basics Dynamic Programming</h2>
 <iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=55e740c0-8e7f-4735-b5cd-3a8911e9fc16&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create"  width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="8. Dynamic Programming 1.mkv"></iframe>
 
@@ -1362,137 +1237,11 @@ For These problems we will design Value Iteration methods which utilise the idea
 
 <iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=7523c957-a9cb-4e87-b55c-1c449702ba9c&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create"  width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="9. policy evaluation.mkv"></iframe>
 
-<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">Grid</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-</code></pre></div>
-<p>We start by generating conditional probabilities from random joint probabilities, then we move into generating them from a model.</p>
-<h2 id="1d-probability">1D Probability</h2>
-<p>Let us start by defining a 1D probability function </p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">P</span><span class="p">(</span><span class="n">nS</span><span class="p">):</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nS</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nS</span><span class="p">):</span>
-        <span class="n">p</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span>
-
-    <span class="k">return</span> <span class="n">p</span><span class="o">/</span><span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="n">p</span> <span class="o">=</span> <span class="n">P</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>[0.37548211 0.24436176 0.03478805 0.01064735 0.33472073] 1.0
-</code></pre></div>
-<h2 id="2d-probability-joint-probability">2D Probability: Joint Probability</h2>
-<p>Let us move to defining a joint probability function </p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">P</span><span class="p">(</span><span class="n">nS</span><span class="p">,</span><span class="n">nA</span><span class="p">):</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nS</span><span class="p">,</span><span class="n">nA</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nS</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nA</span><span class="p">):</span>
-            <span class="n">p</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span>
-
-
-    <span class="c1"># /p.sum() to make sure that this is a joint probability density, i.e. p.sum()==1</span>
-    <span class="k">return</span> <span class="n">p</span><span class="o">/</span><span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> 
-<span class="n">p</span> <span class="o">=</span> <span class="n">P</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>[[0.17464052 0.12339209]
- [0.10853332 0.1073298 ]
- [0.03067933 0.03055074]
- [0.06509827 0.06226649]
- [0.15006026 0.14744918]] 0.9999999999999999
-</code></pre></div>
-<p>Note that p[s,a] in the above is interpreted as the probability of being in state <em>s</em> and taking action <em>a</em> at the same time</p>
-<h2 id="2d-probability-conditional-probability">2D Probability: Conditional Probability</h2>
-<p>Let us move to defining a conditional probability function. Remember that a conditional probability must satisfy that Bayes rule.</p>
-<p>In the below pr[sn,a] is interpreted as pr[sn|a] the probability of moving to state sn given that we took action a </p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">P</span><span class="p">(</span><span class="n">nS</span><span class="p">,</span><span class="n">nA</span><span class="p">):</span>
-    <span class="n">pr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nS</span><span class="p">,</span><span class="n">nA</span><span class="p">))</span> <span class="c1"># joint</span>
-    <span class="n">p</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nS</span><span class="p">,</span><span class="n">nA</span><span class="p">))</span> <span class="c1"># conditional</span>
-
-    <span class="c1"># first create a joint probability</span>
-    <span class="k">for</span> <span class="n">sn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nS</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nA</span><span class="p">):</span>
-            <span class="n">pr</span><span class="p">[</span><span class="n">sn</span><span class="p">,</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span>
-
-    <span class="c1"># to make sure that this is a joint probability density</span>
-    <span class="n">pr</span><span class="o">=</span><span class="n">pr</span><span class="o">/</span><span class="n">pr</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> 
-
-    <span class="c1"># now create a conditional probability via Bayes rule</span>
-    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nA</span><span class="p">):</span>
-        <span class="n">p</span><span class="p">[:,</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">pr</span><span class="p">[:,</span><span class="n">a</span><span class="p">]</span><span class="o">/</span><span class="n">pr</span><span class="p">[:,</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-
-
-    <span class="k">return</span> <span class="n">p</span>
-
-<span class="n">p</span> <span class="o">=</span> <span class="n">P</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>[[0.16261181 0.29707477]
- [0.19121227 0.1445241 ]
- [0.41842684 0.19879146]
- [0.14277596 0.06602533]
- [0.08497312 0.29358434]]
-[1. 1.]
-</code></pre></div>
-<h2 id="4d-probability-random-dynamic">4D Probability: Random Dynamic</h2>
-<p>Our goal now is to be able to obtain a probability that can represent a random environment dynamics. Such a probability has the form of p[sn,rn | s,a] which represents the probability of moving to next state sn and obtaining the reward rn given that the agent was in state s and took action a.</p>
-<p>We generalise the above method of obtaining conditional probabilities from random joint probability density to 4-d. We have not dealt with 3-d cases for brevity. This time we will make it a bit more efficient by avoiding the four for loops and utilising the vectorised version of the rand() function in numpy and we convert to a conditional in-place to avoid having two probabilities p and pr.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">dynrand</span><span class="p">(</span><span class="n">nS</span><span class="p">,</span> <span class="n">nA</span><span class="p">,</span> <span class="n">nR</span><span class="p">):</span> <span class="c1"># states, actions, rewards dimensions </span>
-    <span class="c1">#first joint: p[sn,rn, s,a]</span>
-    <span class="n">p</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">nS</span><span class="p">,</span><span class="n">nR</span><span class="p">,</span>  <span class="n">nS</span><span class="p">,</span><span class="n">nA</span><span class="p">)</span>
-    <span class="n">p</span> <span class="o">/=</span> <span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-
-    <span class="c1">#convert it to conditional: p[sn,rn| s,a] </span>
-    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nS</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nA</span><span class="p">):</span>
-            <span class="n">p</span><span class="p">[:,:,</span> <span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span> <span class="o">/=</span> <span class="n">p</span><span class="p">[:,:,</span> <span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-
-    <span class="k">return</span> <span class="n">p</span>
-
-<span class="n">p</span> <span class="o">=</span> <span class="n">dynrand</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>[[[[0.33929711 0.0608615 ]
-   [0.24024123 0.02720279]
-   [0.19929774 0.23603235]]
-
-  [[0.28847357 0.25786912]
-   [0.20711515 0.15895581]
-   [0.1864589  0.03933985]]]
-
-
- [[[0.09390373 0.23816355]
-   [0.09103142 0.22100381]
-   [0.01013988 0.14884069]]
-
-  [[0.05826466 0.13310033]
-   [0.14192641 0.17366847]
-   [0.2242753  0.32088934]]]
-
-
- [[[0.06008514 0.28096335]
-   [0.14680999 0.2805682 ]
-   [0.28111859 0.14183835]]
-
-  [[0.15997578 0.02904214]
-   [0.1728758  0.13860091]
-   [0.09870959 0.11305943]]]]
-[[1. 1.]
- [1. 1.]
- [1. 1.]]
-</code></pre></div>
 <h2 id="inducing-the-dynamics-by-interacting-with-the-environment">Inducing the dynamics by interacting with the environment</h2>
-<p>Now we move into obtaining the dynamics from an actual environment instead of generating the dynamics randomly as we did earlier.</p>
-<p>We will use mainly the random walk environment and the grid world environment and generate their dynamics. These are deterministic simple environments. Nevertheless, they are very useful to demonstrate the ideas of RL. </p>
+<p>We cover obtaining the dynamics from an actual environment. We will use mainly the random walk environment and the grid world environment and generate their dynamics. These are deterministic simple environments. Nevertheless, they are very useful to demonstrate the ideas of RL. </p>
 <p>Note that when we move to the real world the dynamics become much more complex and building or obtaining the dynamic becomes impractical in most cases. Therefore, towards that end instead of dealing directly with the environment's dynamics, we will see later how we can substitute this requirement by having to <em>interact</em> with the environment to gain <em>experience</em> which will help us <em>infer</em> a good <em>estimate</em> of the <em>expected</em> value function (discounted sum of rewards) which in turn will help us to <em>infer</em> a close to <em>optimal policy</em> for the task in hand. </p>
 <p>The exercise of dealing with probabilities and then using them in designing a Dynamic Programming solution is valuable since most of the other solutions utilise the basic ideas (policy iteration, value iteration algorithms and policy improvements theorem) that we cover here and will mainly show us that we can devise a form of Bellman equation that is suitable for interaction, where we use sampling, model-free algorithms instead of using probabilities(dynamics), model-based algorithms. </p>
 <p>Dynamic programming suffers from what Bellman described as the curse of dimensionality which indicates that the computational resources required to solve a problem grow exponentially with the dimensionality of the problem. So in our case, the dimensionality is the number of states (as well as actions and rewards). So for example if the dynamic programming solution computational complexity is <span class="arithmatex">\(2^{|S|}\)</span> and the number of states <span class="arithmatex">\(|S|=10\)</span> then it costs <span class="arithmatex">\(2^{10}=1024\)</span> but when the number of states <span class="arithmatex">\(|S|\)</span> grows to 100 the cost becomes <span class="arithmatex">\(2^{100}=1267650600228229401496703205376\)</span>.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">10</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">100</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>1024
-1267650600228229401496703205376
-</code></pre></div>
 <h2 id="sources-stochasticity-dynamics-and-policy">Sources Stochasticity- Dynamics and Policy</h2>
 <p>One important point to make is that stochasticity comes from different elements of the MDP and from the policy itself.</p>
 <ol>
@@ -1512,114 +1261,6 @@ For These problems we will design Value Iteration methods which utilise the idea
 </li>
 </ol>
 <p>These sources of stochasticity dictate using suitable techniques to obtain the dynamics and to evaluate or improve stochastic and deterministic policy.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">dynamics</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk</span><span class="p">(),</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stoch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">1000</span> <span class="p">):</span> <span class="c1">#, maxjump=1</span>
-    <span class="n">rewards</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">rewards_set</span><span class="p">()</span>
-    <span class="n">nS</span><span class="p">,</span> <span class="n">nA</span><span class="p">,</span> <span class="n">nR</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">nS</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">,</span> <span class="n">rewards</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">p</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nS</span><span class="p">,</span><span class="n">nR</span><span class="p">,</span>  <span class="n">nS</span><span class="p">,</span><span class="n">nA</span><span class="p">))</span>
-
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">repeat</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">stoch</span> <span class="k">else</span> <span class="mi">1</span><span class="p">):</span> <span class="c1"># in case the env is stochastic (non-deterministic)</span>
-        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nS</span><span class="p">):</span>
-            <span class="c1"># if s in env.goals: continue # uncomment to explicitly make pr of terminal states=0</span>
-            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nA</span><span class="p">):</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span> <span class="ow">and</span> <span class="n">show</span><span class="p">:</span> <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span> <span class="c1"># render the first repetition only</span>
-                <span class="n">env</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span>
-                <span class="n">sn</span><span class="p">,</span><span class="n">rn</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-                <span class="n">rd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">rewards</span><span class="o">==</span><span class="n">rn</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># get which reward index we need to update</span>
-                <span class="n">p</span><span class="p">[</span><span class="n">sn</span><span class="p">,</span><span class="n">rd</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span><span class="mi">1</span>
-
-    <span class="c1"># making sure that it is a conditional probability that satisfies Bayes rule</span>
-    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nS</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nA</span><span class="p">):</span>
-            <span class="n">sm</span><span class="o">=</span><span class="n">p</span><span class="p">[:,:,</span> <span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">sm</span><span class="p">:</span> <span class="n">p</span><span class="p">[:,:,</span> <span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span> <span class="o">/=</span> <span class="n">sm</span>
-
-    <span class="k">return</span> <span class="n">p</span>
-</code></pre></div>
-<p>Note that we excluded the terminal states so that their dynamics are always 0. This is not entirely necessary, since in our algorithm implementations we always initiate the terminal states' values to 0 and avoid updating them. </p>
-<p>Note also that states and actions can be immediately interpreted as indexes. Rewards on the other hand are allowed to be real values. Therefore, we need to obtain the index of the reward value that we need to update since p[sn, rn, s,a] expects an index in rn.</p>
-<p>Let us now test our dynamics extraction procedure on a deterministic random walk environment:</p>
-<div class="highlight"><pre><span></span><code><span class="n">p</span> <span class="o">=</span> <span class="n">dynamics</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk</span><span class="p">(),</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-<span class="c1"># print(p)</span>
-</code></pre></div>
-<p><img alt="png" src="output_26_0.png" /></p>
-<div class="highlight"><pre><span></span><code>(7, 2, 7, 2)
-[[1. 1.]
- [1. 1.]
- [1. 1.]
- [1. 1.]
- [1. 1.]
- [1. 1.]
- [1. 1.]]
-</code></pre></div>
-<p>The above shows that the probabilities of agent having been in state 0:6 (rows) and have gone left (column 0) all sum up to 1 except for the last terminal state 6 because once the agent is there it stays there and cannot move left. Also it shows equally that the probabilities of agent having been in state 0:6 and have gone right (column 1) all sum up to 1 except for the first terminal state 0 because once the agent is there it stays there and cannot move right. </p>
-<p>To further explain and dissect the generated probability dynamics we examine different states probabilities with different rewards.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">print_dynamcis</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-----------------------------Agent was in non-terminal state </span><span class="si">%d</span><span class="s1">---------------------------------&#39;</span><span class="o">%</span><span class="n">s</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Pr[of moving to states 0:6 and obtaining reward 0 |give agent was in state </span><span class="si">%d</span><span class="s1"> and moved left(0)]&#39;</span><span class="o">%</span><span class="n">s</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Pr[of moving to states 0:6 and obtaining reward 0 |give agent was in state </span><span class="si">%d</span><span class="s1"> and moved right(1)]&#39;</span><span class="o">%</span><span class="n">s</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">[:,</span><span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Pr[of moving to states 0:6 and obtaining reward 1 |give agent was in state </span><span class="si">%d</span><span class="s1"> and moved left(0)]&#39;</span><span class="o">%</span><span class="n">s</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">[:,</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Pr[of moving to states 0:6 and obtaining reward 1 |give agent was in state </span><span class="si">%d</span><span class="s1"> and moved right(1)]&#39;</span><span class="o">%</span><span class="n">s</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">[:,</span><span class="mi">1</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">print_dynamcis</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>-----------------------------Agent was in non-terminal state 2---------------------------------
-Pr[of moving to states 0:6 and obtaining reward 0 |give agent was in state 2 and moved left(0)]
-[0. 1. 0. 0. 0. 0. 0.]
-Pr[of moving to states 0:6 and obtaining reward 0 |give agent was in state 2 and moved right(1)]
-[0. 0. 0. 1. 0. 0. 0.]
-Pr[of moving to states 0:6 and obtaining reward 1 |give agent was in state 2 and moved left(0)]
-[0. 0. 0. 0. 0. 0. 0.]
-Pr[of moving to states 0:6 and obtaining reward 1 |give agent was in state 2 and moved right(1)]
-[0. 0. 0. 0. 0. 0. 0.]
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">print_dynamcis</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>-----------------------------Agent was in non-terminal state 5---------------------------------
-Pr[of moving to states 0:6 and obtaining reward 0 |give agent was in state 5 and moved left(0)]
-[0. 0. 0. 0. 1. 0. 0.]
-Pr[of moving to states 0:6 and obtaining reward 0 |give agent was in state 5 and moved right(1)]
-[0. 0. 0. 0. 0. 0. 0.]
-Pr[of moving to states 0:6 and obtaining reward 1 |give agent was in state 5 and moved left(0)]
-[0. 0. 0. 0. 0. 0. 0.]
-Pr[of moving to states 0:6 and obtaining reward 1 |give agent was in state 5 and moved right(1)]
-[0. 0. 0. 0. 0. 0. 1.]
-</code></pre></div>
-<p>Note that the probability of the penultimate state is a bit different than a mid-state such as 2. The reason is that when the agent move left it will get a 0 reward while when it moves right it will get a reward of 1.</p>
-<div class="highlight"><pre><span></span><code><span class="n">print_dynamcis</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>-----------------------------Agent was in non-terminal state 0---------------------------------
-Pr[of moving to states 0:6 and obtaining reward 0 |give agent was in state 0 and moved left(0)]
-[1. 0. 0. 0. 0. 0. 0.]
-Pr[of moving to states 0:6 and obtaining reward 0 |give agent was in state 0 and moved right(1)]
-[0. 1. 0. 0. 0. 0. 0.]
-Pr[of moving to states 0:6 and obtaining reward 1 |give agent was in state 0 and moved left(0)]
-[0. 0. 0. 0. 0. 0. 0.]
-Pr[of moving to states 0:6 and obtaining reward 1 |give agent was in state 0 and moved right(1)]
-[0. 0. 0. 0. 0. 0. 0.]
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">print_dynamcis</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>-----------------------------Agent was in non-terminal state 6---------------------------------
-Pr[of moving to states 0:6 and obtaining reward 0 |give agent was in state 6 and moved left(0)]
-[0. 0. 0. 0. 0. 1. 0.]
-Pr[of moving to states 0:6 and obtaining reward 0 |give agent was in state 6 and moved right(1)]
-[0. 0. 0. 0. 0. 0. 0.]
-Pr[of moving to states 0:6 and obtaining reward 1 |give agent was in state 6 and moved left(0)]
-[0. 0. 0. 0. 0. 0. 0.]
-Pr[of moving to states 0:6 and obtaining reward 1 |give agent was in state 6 and moved right(1)]
-[0. 0. 0. 0. 0. 0. 1.]
-</code></pre></div>
-<p>Uncomment the xor relationship and see the effect on the resultant policy.</p>
-<h2 id="accommodating-for-jumps-in-the-environment">Accommodating for jumps in the environment</h2>
 <p>Some environments might allow the agent to jump over some obstacles or simply skip cells. For these, we define slightly altered dynamics to take the jumps into account. Below we show the definition.</p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">dynamics</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk</span><span class="p">(),</span> <span class="n">stoch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span> <span class="c1"># , maxjump=1</span>
 
@@ -1650,94 +1291,6 @@ Pr[of moving to states 0:6 and obtaining reward 1 |give agent was in state 6 and
 
     <span class="k">return</span> <span class="n">p</span>
 </code></pre></div>
-<h3 id="state-transition-probability-reward-marginalisation">State-Transition probability: reward marginalisation</h3>
-<p>Now that we have induced the dynamics from the <em>environment</em>, we are ready to infer the state-transition probability from the <em>dynamics</em>.  Note that many older papers of RL refer to the 3-d state-transition probability without referring to the 4-d dynamics. The state-transition probability p[sn | s,a] is a conditional probability that specifies the probability of moving to the next state sn given that the agent was in state s and applied action a regardless of the rewards. In other words, the state-transition probability does not refer to the reward altogether. Therefore, all we have to do to infer it from the dynamics is to marginalise the dynamics with respect to the reward, which is what the below code snippet is doing.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># state-transition probability induced from the dynamics</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">ssa</span><span class="p">(</span><span class="n">p</span><span class="p">):</span> 
-    <span class="c1"># states dim, action dim</span>
-    <span class="n">nS</span><span class="p">,</span> <span class="n">nA</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-    <span class="n">tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nS</span><span class="p">,</span> <span class="n">nS</span><span class="p">,</span> <span class="n">nA</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nS</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nA</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">sn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nS</span><span class="p">):</span>
-                <span class="n">tr</span><span class="p">[</span><span class="n">sn</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="n">sn</span><span class="p">,:,</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">tr</span>
-</code></pre></div>
-<p>Let us now apply this function on the obtained random walk dynamics.</p>
-<div class="highlight"><pre><span></span><code><span class="n">tr</span> <span class="o">=</span> <span class="n">ssa</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-<span class="c1"># print(tr)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>[[1. 1.]
- [1. 1.]
- [1. 1.]
- [1. 1.]
- [1. 1.]
- [1. 1.]
- [1. 1.]]
-</code></pre></div>
-<p>Again the state-transition probability satisfies similar properties of the dynamics.</p>
-<p>Finally, we can apply a similar logic to obtain the reward function, see page 49 of the book.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># reward function induced from the dynamics</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">rsa</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">rewards</span><span class="p">):</span>
-    <span class="c1"># state dim, reward dim</span>
-    <span class="n">nS</span><span class="p">,</span> <span class="n">nA</span><span class="p">,</span> <span class="n">nR</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nS</span><span class="p">,</span><span class="n">nA</span><span class="p">))</span>
-    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nS</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nA</span><span class="p">):</span>
-             <span class="k">for</span> <span class="n">rn_</span><span class="p">,</span> <span class="n">rn</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rewards</span><span class="p">):</span> <span class="c1"># get the reward rn and its index rn_</span>
-                <span class="c1"># print(rn_, rn)</span>
-                <span class="n">r</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="n">rn</span><span class="o">*</span><span class="n">p</span><span class="p">[:,</span><span class="n">rn_</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">r</span>
-</code></pre></div>
-<p>Note: that in the book authors use <span class="arithmatex">\(r +\gamma v(s)\)</span> to mean the reward at time step <span class="arithmatex">\(t+1\)</span>, in fact for consistency they should have used <span class="arithmatex">\(r'\)</span> instead as they do for <span class="arithmatex">\(s'\)</span>. In our code treatment we have chosen to use <span class="arithmatex">\(rn\)</span> in place of <span class="arithmatex">\(r'\)</span>.</p>
-<div class="highlight"><pre><span></span><code><span class="n">rewards</span> <span class="o">=</span> <span class="n">randwalk</span><span class="p">()</span><span class="o">.</span><span class="n">rewards_set</span><span class="p">()</span>
-<span class="n">r</span> <span class="o">=</span> <span class="n">rsa</span><span class="p">(</span><span class="n">dynamics</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk</span><span class="p">(),</span>  <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">rewards</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_46_0.png" /></p>
-<div class="highlight"><pre><span></span><code>100%|█████████████████████████████████████████████| 1/1 [00:00&lt;00:00,  2.05it/s]
-
-[[0. 0.]
- [0. 0.]
- [0. 0.]
- [0. 0.]
- [0. 0.]
- [0. 1.]
- [0. 0.]]
-</code></pre></div>
-<p>As we can see, the expected reward of the state-action pair (5, right)=1 because the agent obtains a reward of 1 when it is at state 5 and moves right (as it will end up in the far right terminal state with a reward of 1). The state-action pairs (6, right)=0 because the return/value for terminal states is always 0 (to be able to apply the recursive rule for the return, i.e. once the agent is at the terminal state 6 the process terminates and the agent will not receive any further reward).</p>
-<p>We can do the same for the longer randwalk_()</p>
-<div class="highlight"><pre><span></span><code><span class="n">rewards</span> <span class="o">=</span> <span class="n">randwalk_</span><span class="p">()</span><span class="o">.</span><span class="n">rewards_set</span><span class="p">()</span>
-<span class="n">r</span> <span class="o">=</span> <span class="n">rsa</span><span class="p">(</span><span class="n">dynamics</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk_</span><span class="p">(),</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">rewards</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_49_0.png" /></p>
-<div class="highlight"><pre><span></span><code>100%|█████████████████████████████████████████████| 1/1 [00:02&lt;00:00,  2.54s/it]
-
-[[ 0.  0.]
- [-1.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  0.]
- [ 0.  1.]
- [ 0.  0.]]
-</code></pre></div>
-<p>Can you explain the numbers we get above.</p>
 <h1 id="dynamic-programming-methods">Dynamic Programming Methods</h1>
 <p>Ok so we are ready now to move to Dynamic programming algorithms to solve the RL problem of finding a best estimate of a value function and or finding an optimal policy.</p>
 <h2 id="policy-evaluation">Policy evaluation</h2>
@@ -1783,80 +1336,19 @@ Pr[of moving to states 0:6 and obtaining reward 1 |give agent was in state 6 and
 <p>Note that <span class="arithmatex">\(\gamma\)</span> must be <span class="arithmatex">\(&lt; 1\)</span> to guarantee convergence of the Bellman equation because, in general, we do not know whether the policy guarantees reaching a terminal(goal) state; if we do, then <span class="arithmatex">\(\gamma=1\)</span> is ok. </p>
 <p>Refer to section 4.1 in the book: 'The existence and uniqueness of <span class="arithmatex">\(v_\pi\)</span> guaranteed as long as either  <span class="arithmatex">\(\gamma&lt; 1\)</span> or eventual termination is guaranteed from all states under the policy <span class="arithmatex">\(\pi\)</span>'.</p>
 <p>This condition can be relaxed when we move to sampling instead of dynamic programming in the next consequent lessons.</p>
-<p>Ok, let us test our policy evaluation method on a policy where the agent goes right always.</p>
-<div class="highlight"><pre><span></span><code><span class="n">Policy_evaluation</span><span class="p">(</span><span class="n">π</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_59_0.png" /></p>
-<div class="highlight"><pre><span></span><code>policy evaluation stopped @ iteration 6:
-
-
-
-
-
-array([0.        , 0.96059601, 0.970299  , 0.9801    , 0.99      ,
-       1.        , 0.        ])
-</code></pre></div>
-<p>As we can see, the values for the deterministic policy that always move the agent to the right produce a set of state values of 1 for the non-terminal states 1:5. This is what we expect since the accumulated return of this policy, given that γ=1, is 1 for these states since the agent is rewarded with 1 only when it reaches the far right terminal state, while when it is terminated at the far left state, it is rewarded with 0 (all other intermediate states also has a reward of 0).</p>
-<p>To further test our policy evaluation method, we will pass a different policy to it. This time we pass a simple probabilistic policy that gives left and right actions the same probability of 0.5. In this case, since γ=1, the expected analytical values of the intermediate states are given as &#8537;, 2/6, 3/6, 4/6, &#8538;, which represent the probabilities of ending up in the far right state given the agent has started in them (so pr(s=1)=&#8537;).</p>
-<div class="highlight"><pre><span></span><code><span class="n">env</span> <span class="o">=</span> <span class="n">randwalk</span><span class="p">()</span>
-<span class="n">π</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">env</span><span class="o">.</span><span class="n">nS</span><span class="p">,</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">))</span><span class="o">*</span><span class="mf">.5</span> <span class="c1"># probability of moving left and right are equal</span>
-<span class="n">Policy_evaluation</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">π</span><span class="o">=</span><span class="n">π</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_62_0.png" /></p>
-<div class="highlight"><pre><span></span><code>policy evaluation stopped @ iteration 19:
-
-
-
-
-
-array([0.        , 0.14840421, 0.30070568, 0.45997221, 0.62919208,
-       0.81145008, 0.        ])
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="o">/</span><span class="mi">6</span><span class="p">])</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>array([0.16666667, 0.33333333, 0.5       , 0.66666667, 0.83333333])
-</code></pre></div>
-<p>As we can see the values of this optimal policy (moving always right) progressively increase from left to right towards the goal that is most rewarding and the obtained values are exactly what we expected which is reassuring.</p>
-<p>Let us try to evaluate a random policy</p>
-<div class="highlight"><pre><span></span><code><span class="n">env</span> <span class="o">=</span> <span class="n">randwalk</span><span class="p">()</span>
-<span class="n">π</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">nS</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">π</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>[1 1 1 1 1 0 0]
-</code></pre></div>
-<p>Now we call our policy evaluaiton subroutine.</p>
-<div class="highlight"><pre><span></span><code><span class="n">Policy_evaluation</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">π</span><span class="o">=</span><span class="n">π</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_68_0.png" /></p>
-<div class="highlight"><pre><span></span><code>policy evaluation stopped @ iteration 1:
-
-
-
-
-
-array([0., 0., 0., 0., 0., 0., 0.])
-</code></pre></div>
-<p>As we can see the set of values are different than the above optimal policy and they are in harmony with the policy.</p>
 <h3 id="policy-evaluation-for-2d-mdp-grid-world">Policy Evaluation for 2d MDP Grid World</h3>
 <p>Let us test our policy evaluation algorithm on the following simple 3x3 grid world</p>
-<div class="highlight"><pre><span></span><code><span class="n">env3x3</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">gridsize</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">s0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">goals</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<p><div class="highlight"><pre><span></span><code><span class="n">env3x3</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">gridsize</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">s0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">goals</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">π</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># guarantee to reach the terminal state hence γ=1 is ok</span>
 <span class="n">π_</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># no way to terminal state hence γ=1 leads to an infinite loop</span>
 <span class="n">env3x3</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;π&#39;</span><span class="p">,</span> <span class="n">π</span><span class="o">=</span><span class="n">π</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="output_71_0.png" /></p>
+<img alt="png" src="output_71_0.png" />
 <div class="highlight"><pre><span></span><code><span class="n">V0</span> <span class="o">=</span> <span class="p">[</span><span class="mf">.6</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.2</span><span class="p">,</span> <span class="mf">.1</span><span class="p">,</span> <span class="mf">.2</span><span class="p">,</span> <span class="mf">.1</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="n">V</span> <span class="o">=</span> <span class="n">Policy_evaluation</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env3x3</span><span class="p">,</span> <span class="n">π</span><span class="o">=</span><span class="n">π</span><span class="p">,</span> <span class="n">V0</span><span class="o">=</span><span class="n">V0</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">.9</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">env3x3</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="n">V</span><span class="o">=</span><span class="n">V</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="output_72_0.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">V</span> <span class="o">=</span> <span class="n">Policy_evaluation</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env3x3</span><span class="p">,</span> <span class="n">π</span><span class="o">=</span><span class="n">π</span><span class="p">,</span> <span class="n">V0</span><span class="o">=</span><span class="n">V0</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="c1"># V = Policy_evaluation(env=env3x3, π=π_, V0=V0, γ=1) #finite </span>
-</code></pre></div>
-<p><img alt="png" src="output_73_0.png" /></p>
-<div class="highlight"><pre><span></span><code>policy evaluation stopped @ iteration 5:
-</code></pre></div>
-<p>Let us now try this on a slightly more complex environment such as a the maze world</p>
+<img alt="png" src="output_72_0.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">env</span> <span class="o">=</span> <span class="n">maze</span><span class="p">()</span>
 <span class="n">π</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">nS</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span> <span class="c1"># always go up</span>
 <span class="n">V</span> <span class="o">=</span> <span class="n">Policy_evaluation</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">π</span><span class="o">=</span><span class="n">π</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1868,28 +1360,18 @@ array([0., 0., 0., 0., 0., 0., 0.])
 <p>Let us now generate a random policy and evaluate it for a maze environment.</p>
 <div class="highlight"><pre><span></span><code><span class="n">env</span> <span class="o">=</span> <span class="n">maze</span><span class="p">()</span>
 <span class="n">π</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">nS</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">π</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>[1 0 1 2 1 3 2 1 0 1 1 2 3 1 0 3 1 2 3 3 3 3 3 2 0 0 2 1 0 1 0 3 0 0 3 3 0
- 2 1 0 2 0 1 1 2 0 2 1 1 1 1 0 3 1]
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;π&#39;</span><span class="p">,</span> <span class="n">π</span><span class="o">=</span><span class="n">π</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_79_0.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">V</span> <span class="o">=</span> <span class="n">Policy_evaluation</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">π</span><span class="o">=</span><span class="n">π</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="output_80_0.png" /></p>
-<div class="highlight"><pre><span></span><code>policy evaluation stopped @ iteration 1:
-</code></pre></div>
+<p><img alt="png" src="output_80_0.png" />
+    policy evaluation stopped @ iteration 1:</p>
 <p>As we can see, the randomly generated policy is chaotic and carry little value for the agent. However, evaluating different policies is highly important for an agent since it can guide the improvement of its adopted policy (based on this ability). One example is to keep evaluating random policies until some computational resources are consumed and pick the best. Below we show such a strategy of searching for an optimal policy. You can apply all other search algorithms that you have come across before in conventional AI (breadth-first etc.).</p>
 <div class="highlight"><pre><span></span><code><span class="n">env</span> <span class="o">=</span> <span class="n">maze</span><span class="p">()</span>
 <span class="n">Vmax</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">env</span><span class="o">.</span><span class="n">nS</span><span class="p">))</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">dynamics</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Vmax before search&#39;</span><span class="p">,</span> <span class="n">Vmax</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>100%|████████████████████████████████████████████| 1/1 [00:00&lt;00:00, 945.09it/s]
-
-Vmax before search 0.0
+<div class="highlight"><pre><span></span><code>Vmax before search 0.0
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -1962,69 +1444,8 @@ Vmax before search 0.0
     <span class="k">return</span> <span class="n">π</span><span class="p">,</span> <span class="n">Q</span>
 </code></pre></div>
 <p>We can now apply policy iteration to a proper Environments. We start by a random walk and then we move into grid world.</p>
-<div class="highlight"><pre><span></span><code><span class="n">env</span><span class="o">=</span><span class="n">randwalk</span><span class="p">()</span>
-<span class="n">π</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">Policy_iteration</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_88_0.png" /></p>
-<div class="highlight"><pre><span></span><code>policy evaluation stopped @ iteration 2:
-policy improvement stopped @ iteration 6:
-</code></pre></div>
-<p>To visualise the policy we would need to pass the environment explicitly and then render the environment.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">π</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>[0 1 1 1 1 1 0]
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;π&#39;</span><span class="p">,</span> <span class="n">π</span><span class="o">=</span><span class="n">π</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_91_0.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;π&#39;</span><span class="p">,</span> <span class="n">π</span><span class="o">=</span><span class="n">π</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_92_0.png" /></p>
-<p>Note that we do not need to break ties randomly for the policy (we jsu use Q[s].argmax()) because we are not sampling.</p>
 <h3 id="2-d-grid-world-mdp-examples">2-d Grid World MDP Examples</h3>
-<p>Let us take another example, of a simple 3x3 grid world and run the policy iteration algorithm on.
-We start with a deterministic policy. The reward is 0 everywhere except for the goal where the agent will be rewarded by 1.</p>
-<div class="highlight"><pre><span></span><code><span class="n">env3x3</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">gridsize</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">reward</span><span class="o">=</span><span class="s1">&#39;reward_1&#39;</span><span class="p">,</span> <span class="n">s0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">goals</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">π0</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># guarantee to reach the terminal state only if γ&lt;1</span>
-<span class="n">π0_</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># guarantee to reach the terminal state only if γ&lt;1</span>
-</code></pre></div>
-<p>Whether the initial policy is guaranteed to reach the terminal state or not, γ=1 leads to an infinite loop, because subsequent policies are not guaranteed to reach the terminal state.</p>
-<div class="highlight"><pre><span></span><code> <span class="n">env3x3</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;π&#39;</span><span class="p">,</span> <span class="n">π</span><span class="o">=</span><span class="n">π0</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_97_0.png" /></p>
-<p>Let us show the values before applying the agorithms</p>
-<div class="highlight"><pre><span></span><code><span class="n">V0</span> <span class="o">=</span> <span class="p">[</span><span class="mf">.6</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.2</span><span class="p">,</span> <span class="mf">.1</span><span class="p">,</span> <span class="mf">.2</span><span class="p">,</span> <span class="mf">.1</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">env3x3</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="n">V</span><span class="o">=</span><span class="n">V0</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_99_0.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">π</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">Policy_iteration</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env3x3</span><span class="p">,</span> <span class="n">V0</span><span class="o">=</span><span class="n">V0</span><span class="p">,</span> <span class="n">π0</span><span class="o">=</span><span class="n">π0</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">π</span><span class="p">,</span> <span class="n">Q</span>
-</code></pre></div>
-<p><img alt="png" src="output_100_0.png" /></p>
-<div class="highlight"><pre><span></span><code>policy evaluation stopped @ iteration 3:
-policy improvement stopped @ iteration 2:
-
-
-
-
-
-(array([ 1,  1,  3,  1,  1,  3,  1,  1, -1]),
- array([[-4.90099501, -3.940399  , -4.90099501, -3.940399  ],
-        [-4.90099501, -2.9701    , -3.940399  , -2.9701    ],
-        [-3.940399  , -2.9701    , -2.9701    , -1.99      ],
-        [-3.940399  , -2.9701    , -4.90099501, -2.9701    ],
-        [-3.940399  , -1.99      , -3.940399  , -1.99      ],
-        [-2.9701    , -1.99      , -2.9701    , -1.        ],
-        [-2.9701    , -1.99      , -3.940399  , -2.9701    ],
-        [-2.9701    , -1.        , -2.9701    , -1.99      ],
-        [ 0.        ,  0.        ,  0.        ,  0.        ]]))
-</code></pre></div>
-<p>Let us now check the values after applying the algorithm</p>
-<div class="highlight"><pre><span></span><code><span class="n">env3x3</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="n">V</span><span class="o">=</span><span class="n">Q</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-</code></pre></div>
-<p><img alt="png" src="output_102_0.png" /></p>
-<p>Note that if we set γ=1 we need then to set epochs, otherwise, the algorithm enters an infinite loop because all state values converge to 1.</p>
-<p>Let us try it on a slightly more complex environment such as the maze.</p>
+<p>Let us try it on a slightly complex environment such as the maze.</p>
 <div class="highlight"><pre><span></span><code><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">()</span>
 <span class="n">π</span> <span class="o">=</span> <span class="n">Policy_iteration</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div>
@@ -2032,108 +1453,9 @@ policy improvement stopped @ iteration 2:
 <div class="highlight"><pre><span></span><code>policy evaluation stopped @ iteration 2:
 policy improvement stopped @ iteration 16:
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;π&#39;</span><span class="p">,</span> <span class="n">π</span><span class="o">=</span><span class="n">π</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_106_0.png" /></p>
-<h2 id="stochastic-policy-iteration">Stochastic Policy Iteration</h2>
-<p>We can also create a stochastic policy iteration method. It only differs from the deterministic policy iteration in two places (in the if ε_greedy statements): 
-1. in the policy evaluation, we need to marginalize by multiplying by the action probability as we did earlier for the policy evaluation method
-2. In calculating the probability of taking an optimal action (to account for the stochastic non-determinism nature of the policy), we allow the agent to take random actions ε% of the time. </p>
-<p>We show the method below.</p>
-<div class="highlight"><pre><span></span><code><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># change the seed to get a different dynamics</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># stochast policy iteration</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">Policy_iteration_stoch</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk</span><span class="p">(),</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">V0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">π0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">.99</span><span class="p">,</span> <span class="n">θ</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">ε</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span> 
-
-    <span class="c1"># env parameters</span>
-    <span class="n">nS</span><span class="p">,</span> <span class="n">nA</span><span class="p">,</span> <span class="n">nR</span><span class="p">,</span> <span class="n">rewards</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">nS</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">nR</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">rewards_set</span><span class="p">()</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="n">dynamics</span><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-
-    <span class="c1"># policy parameters</span>
-    <span class="n">V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nS</span><span class="p">)</span>      <span class="k">if</span> <span class="n">V0</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">V0</span><span class="p">);</span> <span class="n">V</span><span class="p">[</span><span class="n">env</span><span class="o">.</span><span class="n">goals</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># initial state values</span>
-    <span class="n">π</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span> <span class="p">((</span><span class="n">nS</span><span class="p">,</span><span class="n">nA</span><span class="p">))</span> <span class="k">if</span> <span class="n">π0</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">π0</span><span class="p">);</span> <span class="n">π</span><span class="o">=</span><span class="n">π</span><span class="o">/</span><span class="n">π</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span> <span class="c1"># initial **stochastic** policy </span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nS</span><span class="p">,</span> <span class="n">nA</span><span class="p">))</span> <span class="c1"># state action values storage</span>
-    <span class="c1"># π = randint(1,nA,(nS,nA))</span>
-
-    <span class="n">j</span><span class="o">=</span><span class="mi">0</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">j</span><span class="o">+=</span><span class="mi">1</span>
-        <span class="c1"># 1. Policy evaluation---------------------------------------------------</span>
-        <span class="n">i</span><span class="o">=</span><span class="mi">0</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">Δ</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">i</span><span class="o">+=</span> <span class="mi">1</span>
-            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nS</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">goals</span><span class="p">:</span> <span class="k">continue</span> <span class="c1"># S not S+</span>
-                <span class="n">v</span><span class="p">,</span> <span class="n">V</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">V</span><span class="p">[</span><span class="n">s</span><span class="p">],</span> <span class="mi">0</span>
-                <span class="k">for</span> <span class="n">sn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nS</span><span class="p">):</span> <span class="c1"># S+</span>
-                    <span class="k">for</span> <span class="n">rn_</span><span class="p">,</span> <span class="n">rn</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rewards</span><span class="p">):</span> <span class="c1"># get the reward rn and its index rn_ </span>
-                        <span class="c1"># stochastic policy</span>
-                        <span class="c1"># V[s] += sum(π[s,a]*p[sn,rn_, s,a ]*(rn + γ*V[sn]) for a in range(nA)) </span>
-                        <span class="n">V</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">+=</span> <span class="n">p</span><span class="p">[</span><span class="n">sn</span><span class="p">,</span><span class="n">rn_</span><span class="p">,</span>  <span class="n">s</span><span class="p">,</span> <span class="n">π</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span><span class="o">*</span><span class="p">(</span><span class="n">rn</span> <span class="o">+</span> <span class="n">γ</span><span class="o">*</span><span class="n">V</span><span class="p">[</span><span class="n">sn</span><span class="p">])</span>
-
-                <span class="n">Δ</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">Δ</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">v</span><span class="o">-</span><span class="n">V</span><span class="p">[</span><span class="n">s</span><span class="p">]))</span>
-            <span class="k">if</span> <span class="n">Δ</span><span class="o">&lt;</span><span class="n">θ</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;policy evaluation stopped @ iteration </span><span class="si">%d</span><span class="s1">:&#39;</span><span class="o">%</span><span class="n">i</span><span class="p">);</span> <span class="k">break</span>
-
-        <span class="c1"># 2. Policy improvement----------------------------------------------------</span>
-        <span class="n">policy_stable</span><span class="o">=</span><span class="kc">True</span>
-        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nS</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">goals</span><span class="p">:</span> <span class="k">continue</span> <span class="c1"># S not S+</span>
-            <span class="n">Qs</span> <span class="o">=</span> <span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nA</span><span class="p">):</span>
-                <span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
-                <span class="k">for</span> <span class="n">sn</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nS</span><span class="p">):</span> <span class="c1"># S+</span>
-                    <span class="k">for</span> <span class="n">rn_</span><span class="p">,</span> <span class="n">rn</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rewards</span><span class="p">):</span> <span class="c1"># get the reward rn and its index rn_</span>
-                        <span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="n">p</span><span class="p">[</span><span class="n">sn</span><span class="p">,</span><span class="n">rn_</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">rn</span> <span class="o">+</span> <span class="n">γ</span><span class="o">*</span><span class="n">V</span><span class="p">[</span><span class="n">sn</span><span class="p">])</span>
-
-                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span><span class="o">-</span><span class="n">Qs</span><span class="p">[</span><span class="n">a</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span> <span class="n">policy_stable</span><span class="o">=</span><span class="kc">False</span>
-            <span class="n">π</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">Qs</span><span class="o">*</span><span class="mi">0</span> <span class="o">+</span> <span class="n">ε</span><span class="o">/</span><span class="n">nA</span>
-            <span class="n">π</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">()]</span> <span class="o">+=</span> <span class="mi">1</span><span class="o">-</span><span class="n">ε</span>     <span class="c1"># greedy step  </span>
-
-        <span class="k">if</span> <span class="n">policy_stable</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;policy improvement stopped @ iteration </span><span class="si">%d</span><span class="s1">:&#39;</span><span class="o">%</span><span class="n">j</span><span class="p">);</span> <span class="k">break</span>
-
-    <span class="k">if</span> <span class="n">show</span><span class="p">:</span> <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;maxQ&#39;</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="n">Q</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">π</span><span class="p">,</span> <span class="n">Q</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">env</span><span class="o">=</span><span class="n">randwalk</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">25</span><span class="p">,</span><span class="mf">.5</span><span class="p">])</span>
-<span class="n">π</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">Policy_iteration_stoch</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>100%|███████████████████████████████████████████| 1/1 [00:00&lt;00:00, 3279.36it/s]
-
-policy evaluation stopped @ iteration 1:
-policy improvement stopped @ iteration 1:
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="n">π</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_111_0.png" /></p>
-<p>As we can see the policy chooses to take right majority of the times  1-ε+ ε/nA=.95 while taking left occasionally  ε/nA.</p>
-<div class="highlight"><pre><span></span><code><span class="n">env3x3</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">gridsize</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">s0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">goals</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">V0</span> <span class="o">=</span> <span class="p">[</span><span class="mf">.6</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.2</span><span class="p">,</span> <span class="mf">.1</span><span class="p">,</span> <span class="mf">.2</span><span class="p">,</span> <span class="mf">.1</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">env3x3</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="n">V</span><span class="o">=</span><span class="n">V0</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_113_0.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">Q</span><span class="p">,</span> <span class="n">π</span> <span class="o">=</span> <span class="n">Policy_iteration_stoch</span><span class="p">(</span><span class="n">env3x3</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">.9</span><span class="p">,</span> <span class="n">ε</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">θ</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">π</span>
-</code></pre></div>
-<p><img alt="png" src="output_114_0.png" /></p>
-<div class="highlight"><pre><span></span><code>array([[0., 0., 0., 0.],
-       [0., 0., 0., 0.],
-       [0., 0., 0., 0.],
-       [0., 0., 0., 0.],
-       [0., 0., 0., 0.],
-       [0., 0., 0., 1.],
-       [0., 0., 0., 0.],
-       [0., 1., 0., 0.],
-       [0., 0., 0., 0.]])
-</code></pre></div>
 <h2 id="value-iteration-algorithm">Value Iteration Algorithm</h2>
 <p>Our final step to fully develop the ideas of dynamic programming is to shorten the time it takes for a policy to be evaluated and improved. One simple idea we will follow here is to slightly improve the evaluation and immediately improve the policy. We do these two steps iteratively until our policy has stopped to improve. This is a very effective strategy because we do not wait until the policy is fully evaluated to improve it; we weave and interleave the two loops together in one loop. Below we show this algorithm. Read section 4.4 to further your understanding of this algorithm.</p>
-<div class="highlight"><pre><span></span><code><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># change the seed to get a different dynamics</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">value_iteration</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk</span><span class="p">(),</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">V0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">.99</span><span class="p">,</span> <span class="n">θ</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span> 
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">value_iteration</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">randwalk</span><span class="p">(),</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">V0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">.99</span><span class="p">,</span> <span class="n">θ</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span> 
 
     <span class="c1"># env parameters</span>
     <span class="n">nS</span><span class="p">,</span> <span class="n">nA</span><span class="p">,</span> <span class="n">nR</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">nS</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">nR</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">rewards_set</span><span class="p">(),</span> <span class="mi">0</span>
@@ -2162,49 +1484,12 @@ policy improvement stopped @ iteration 1:
 
     <span class="k">return</span> <span class="n">Q</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">env</span> <span class="o">=</span> <span class="n">randwalk</span><span class="p">()</span>
-<span class="n">π</span> <span class="o">=</span> <span class="n">value_iteration</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;optimal action for state&#39;</span><span class="p">,</span> <span class="n">π</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_119_0.png" /></p>
-<div class="highlight"><pre><span></span><code>loop stopped @ iteration: 6 , Δ =  0
-optimal action for state [0 1 1 1 1 1 0]
-</code></pre></div>
-<p>As we can see our value iteration algorithm is effective in finding the optimal policy. Note that for the random walk environment the best policy is to move right to get a reward.</p>
 <h3 id="value-iteration-on-a-grid-world">Value Iteration on a Grid World</h3>
-<p>Now that you understand the value-iteration algorithm, you can apply it on a different and more complex envornment such as the grid world. As we did for the random walk, you have access to a grid world via the Grid class and its subroutines.</p>
-<div class="highlight"><pre><span></span><code><span class="n">env3x3</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">gridsize</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">reward</span><span class="o">=</span><span class="s1">&#39;reward_1&#39;</span><span class="p">,</span> <span class="n">s0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">goals</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">V0</span> <span class="o">=</span> <span class="p">[</span><span class="mf">.6</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.2</span><span class="p">,</span> <span class="mf">.1</span><span class="p">,</span> <span class="mf">.2</span><span class="p">,</span> <span class="mf">.1</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">env3x3</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">underhood</span><span class="o">=</span><span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="n">V</span><span class="o">=</span><span class="n">V0</span><span class="p">)</span>
-</code></pre></div>
-<p><img alt="png" src="output_123_0.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="n">Q</span> <span class="o">=</span> <span class="n">value_iteration</span><span class="p">(</span><span class="n">env3x3</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">V0</span><span class="o">=</span><span class="n">V0</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;optimal action for state&#39;</span><span class="p">,</span> <span class="n">Q</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">Q</span>
-</code></pre></div>
-<p><img alt="png" src="output_124_0.png" /></p>
-<div class="highlight"><pre><span></span><code>loop stopped @ iteration: 6 , Δ =  0
-optimal action for state [1 1 3 1 1 3 1 1 0]
-
-
-
-
-
-array([[-1.9375, -1.875 , -1.9375, -1.875 ],
-       [-1.9375, -1.75  , -1.875 , -1.75  ],
-       [-1.875 , -1.75  , -1.75  , -1.5   ],
-       [-1.875 , -1.75  , -1.9375, -1.75  ],
-       [-1.875 , -1.5   , -1.875 , -1.5   ],
-       [-1.75  , -1.5   , -1.75  , -1.    ],
-       [-1.75  , -1.5   , -1.875 , -1.75  ],
-       [-1.75  , -1.    , -1.75  , -1.5   ],
-       [ 0.    ,  0.    ,  0.    ,  0.    ]])
-</code></pre></div>
-<p>Let us try on a more complex grid environment.</p>
+<p>Now that you understand the value-iteration algorithm, you can apply it on a different and more complex envornment such as the grid worlds.</p>
+<p>Let us try on a grid environment.</p>
 <div class="highlight"><pre><span></span><code><span class="n">env</span><span class="o">=</span><span class="n">grid</span><span class="p">()</span>
 <span class="n">Q</span> <span class="o">=</span> <span class="n">value_iteration</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;optimal action for state&#39;</span><span class="p">,</span> <span class="n">Q</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-<span class="c1"># env.render(underhood=&#39;π&#39;, π=Q.argmax(1))</span>
 </code></pre></div>
 <p><img alt="png" src="output_126_0.png" /></p>
 <div class="highlight"><pre><span></span><code>loop stopped @ iteration: 10 , Δ =  0
@@ -2218,14 +1503,8 @@ optimal action for state [1 1 1 1 1 1 3 0 0 0 1 1 1 1 1 1 3 0 0 0 1 1 1 1 1 1 3 
 <p>Below we show the results of applying the value iteration method on a windy grid world. This is almost identical to the previous simple grid world without any obstacles, the only difference is that there is a wind blowing upwards, which shifts the agent 2 or 1 cell depending on its location. See page 130 of the book.</p>
 <div class="highlight"><pre><span></span><code><span class="n">env</span><span class="o">=</span><span class="n">windy</span><span class="p">()</span>
 <span class="n">Q</span> <span class="o">=</span> <span class="n">value_iteration</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;optimal action for state&#39;</span><span class="p">,</span> <span class="n">Q</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 </code></pre></div>
 <p><img alt="png" src="output_130_0.png" /></p>
-<div class="highlight"><pre><span></span><code>loop stopped @ iteration: 12 , Δ =  0
-optimal action for state [1 1 1 1 1 1 1 3 0 0 1 1 1 1 1 1 1 2 0 2 1 1 1 1 1 1 1 2 1 2 1 1 1 1 1 1 1
- 0 1 2 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 2 1 1 1 1 1 1 1 1 1 2]
-</code></pre></div>
-<h3 id="value-iteration-on-a-maze">value iteration on a maze</h3>
 <p>Let us now apply the policy-iteration on the maze env.</p>
 <div class="highlight"><pre><span></span><code><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">()</span>
 <span class="n">policy</span> <span class="o">=</span> <span class="n">value_iteration</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -2240,25 +1519,16 @@ optimal action for state [1 1 1 1 1 1 1 3 0 0 1 1 1 1 1 1 1 2 0 2 1 1 1 1 1 1 1 
 2. a step that improves the policy by adopting a greedy action. The usage of an action-value function Q(s,a) was key in allowing us to choose between actions since the state-value function V(s) does not differentiate between the values of actions</p>
 <p>We finally saw how the value-iteration algorithm has a similar structure to the policy-iteration algorithm with one important difference; it can arrive at an optimal policy by just taking a step <em>towards</em> the optimal policy by slightly refines its estimation of the action-value function without fully evaluating it.  Hence, it improves its policy more concisely and with much less overhead than the full policy iteration method.</p>
 <p>In the next lesson, we will take a different approach and move to cover sampling methods that do not use the dynamics of the environment explicitly and instead try to improve its policy by interacting with the environment.</p>
+<p><strong>Reading</strong>:
+For further reading you can consult chapter 4 from the Sutton and Barto <a href="http://incompleteideas.net/book/RLbook2020.pdf">book</a>.</p>
 <h2 id="your-turn">Your turn</h2>
-<ul>
-<li>Try to infer the state transition function tr(sn,s,a) and reward function r(s,a) for the randwalk_()</li>
-<li>Try the policy iteration on the maze8 which allows the agent to move diagonally, it is fun. You should arrive at an optimal policy for this maze environment where an agent can move diagonally and has 8 actions. You should be able to observe how efficient the policy is and how the agent is able to reach the goal location from anywhere in the environment.</li>
-</ul>
-<h2 id="challenges">Challenges</h2>
-<ol>
-<li>Alter policy_iteration_stoch to use a softmax policy instead of the ε-greedy policy that we used in the policy_iteration_stoch method.</li>
-<li>You can challenge yourself also by trying to combine policy_iteration and policy_iteration_stoch() in one method. Use a flag such as ε_greedy to distinguish between deterministic and probabilistic policies.</li>
-</ol>
+<p>Now it is time to experiemnt further and interact with code in <a href="../../workseets/worksheet5.ipynb">worksheet5</a>.</p>
 
 
 
 
 
 
-
-  
-  
 
 
 
