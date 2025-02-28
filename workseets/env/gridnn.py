@@ -1,7 +1,14 @@
-from env.grid import *
-import cv2
-#============================================================================================
-#======================Defining a Gridi: A Grid with Images States===========================
+
+
+'''
+   Author: Abdulrahman Altahhan,  2025.
+   version: 3.1
+
+    This library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries 
+    are written from scratch using standard Python libraries (numpy, matplotlib etc.).
+    Please note that you will need permission from the author to use the code for research, commercially or otherwise.
+'''
+
 ''' 
     Below we establish a class that will return after each step an observation which is the 
     image of the grid instead of its state id. This is essential to be able to deal with a 
@@ -12,6 +19,12 @@ import cv2
     folder in the folder of this notebook. If you want to change this behaviour or save images 
     in the same folder of this notebook adjust the code accordingly.
 '''
+
+
+from env.grid import *
+import cv2
+#============================================================================================
+#======================Defining a Gridi: A Grid with Images States===========================
 
 class iGrid(Grid):
     

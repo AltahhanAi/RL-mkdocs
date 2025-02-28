@@ -18,7 +18,7 @@
     
     
       
-        <title>Lesson3 - Reinforcement Learning and Robotics</title>
+        <title>Running Turtlesim in ROS 2 Foxy: A Step-by-Step Tutorial - Reinforcement Learning and Robotics</title>
       
     
     
@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#markov-decision-processes-mdp" class="md-skip">
+        <a href="#running-turtlesim-in-ros-2-foxy-a-step-by-step-tutorial" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Lesson3  
+              Running Turtlesim in ROS 2 Foxy: A Step-by-Step Tutorial
             
           </span>
         </div>
@@ -442,7 +442,7 @@
   
   
     <li class="md-nav__item">
-      <a href="lesson3.html" class="md-nav__link">
+      <a href="../lesson3/lesson3.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -464,7 +464,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../lesson4/lesson4.html" class="md-nav__link">
+      <a href="lesson4.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1051,6 +1051,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -1059,45 +1061,78 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#markov-decision-processes-mdp" class="md-nav__link">
+  <a href="#step-1-setup-your-ros-2-workspace" class="md-nav__link">
     <span class="md-ellipsis">
-      Markov Decision Processes (MDP)
+      Step 1: Setup Your ROS 2 Workspace
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#bellman-equation-for-v-and-q" class="md-nav__link">
+  <a href="#step-2-launch-turtlesim" class="md-nav__link">
     <span class="md-ellipsis">
-      Bellman Equation for V and Q
+      Step 2: Launch Turtlesim
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#bellman-optimality-equations-for-v-and-q" class="md-nav__link">
+  <a href="#step-3-interact-with-the-turtle" class="md-nav__link">
     <span class="md-ellipsis">
-      Bellman Optimality Equations for V and Q
+      Step 3: Interact with the Turtle
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 3: Interact with the Turtle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#move-the-turtle-using-velocity-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Move the Turtle Using Velocity Commands
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stop-the-turtle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stop the Turtle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rotate-the-turtle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rotate the Turtle
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-shutdown-the-turtlesim-node" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Shutdown the Turtlesim Node
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#grid-world-environments" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
-      Grid World Environments
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#conclusion" class="md-nav__link">
-    <span class="md-ellipsis">
-      Conclusion
+      Summary
     </span>
   </a>
   
@@ -1119,50 +1154,90 @@
 
 
 
-  <h1>Lesson3  </h1>
-
-<p>To help you, Abdulrahman recorded a set of videos that covers important concepts of RL.</p>
-<h2 id="markov-decision-processes-mdp">Markov Decision Processes (MDP)</h2>
-<p>We provided you with a simple code to in the worksheet below to demosntrate how the G changes with time steps.</p>
-<p><div class="highlight"><pre><span></span><code><span class="n">G</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">R</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">γ</span> <span class="o">=</span> <span class="mf">0.9</span>
-<span class="n">T</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">t</span><span class="o">&gt;</span> <span class="mi">70</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;G_&#39;</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="s1">&#39;=&#39;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
-    <span class="n">G</span> <span class="o">=</span> <span class="n">R</span> <span class="o">+</span> <span class="n">γ</span><span class="o">*</span><span class="n">G</span> 
+<h1 id="running-turtlesim-in-ros-2-foxy-a-step-by-step-tutorial">Running Turtlesim in ROS 2 Foxy: A Step-by-Step Tutorial</h1>
+<p><strong>learning outcomes:</strong></p>
+<p>By the end of this worksheet, you will be better able to:</p>
+<ul>
+<li><strong>explain</strong> the purpose and function of the Robot Operating System (ROS)</li>
+<li><strong>describe</strong> how "messages", "topics", and "message types" work in ROS</li>
+<li><strong>demonstrate</strong> skills to use ROS messages to make two ROS processes communicate</li>
+<li>Turtlesim is a simple simulation tool in ROS 2 that lets you interact with a turtle in a 2D environment. This tutorial will guide you through running the Turtlesim node and interacting with it using the ROS 2 terminal commands.</li>
+</ul>
+<h2 id="step-1-setup-your-ros-2-workspace">Step 1: Setup Your ROS 2 Workspace</h2>
+<p>Before running Turtlesim, ensure your ROS 2 Foxy environment is set up.</p>
+<p>In a terminal, source your ROS 2 Foxy installation:</p>
+<p><div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>/opt/ros/foxy/setup.bash
 </code></pre></div>
-    G_ 100 = 0
-    G_ 99 = 1.0
-    G_ 98 = 1.9
-    G_ 97 = 2.71
-    G_ 96 = 3.439
-    ...</p>
-<p><div class="highlight"><pre><span></span><code><span class="n">G</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">γ</span> <span class="o">=</span> <span class="mf">0.9</span> <span class="c1"># change to 1 to see the effect</span>
-<span class="n">T</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span> <span class="c1"># note that if we use a forward loop, our calculations will be all wrong although the code runs</span>
-    <span class="k">if</span> <span class="n">t</span><span class="o">&gt;</span><span class="mi">70</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;G_&#39;</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="s1">&#39;=&#39;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">γ</span><span class="o">**</span><span class="p">(</span><span class="n">T</span><span class="o">-</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="n">t</span><span class="o">&lt;</span><span class="n">T</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">R</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="n">t</span><span class="o">==</span><span class="n">T</span> <span class="k">else</span> <span class="mi">0</span>
-    <span class="n">G</span> <span class="o">=</span> <span class="n">R</span> <span class="o">+</span> <span class="n">γ</span><span class="o">*</span><span class="n">G</span>
+If you have a ROS 2 workspace, source it as well:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>~/ros2_ws/install/setup.bash
 </code></pre></div>
-    G_ 100 = 0 0
-    G_ 99 = 1.0 1.0
-    G_ 98 = 0.9 0.9
-    G_ 97 = 0.81 0.81
-    ...</p>
-<h2 id="bellman-equation-for-v-and-q">Bellman Equation for V and Q</h2>
-<h2 id="bellman-optimality-equations-for-v-and-q">Bellman Optimality Equations for V and Q</h2>
-<h2 id="grid-world-environments">Grid World Environments</h2>
-<p>Ok, so now we are ready to tackle the practicals, please go ahead and download the worksheet and run and experiement with the provided code to build some grid world environments and visualise them and make a simple robot agent takes some steps/actions within these environments!.</p>
-<p>You will need to download a python library (Grid.py) that we bespokley developed to help you run RL algorithms on toy problems and be abel to easily visualise them as needed, the code is optimised to run efficiently and you will be able to use these environmnets to test different RL algorithms extensively. Please place the library in the same directory of the worksheet. In general it would be a good idea to place all worksheets and libraries provided in one directory. This will make importing and runing code easier and more streamlined.</p>
-<p>In a grid world, we have a set of cells that the agent can move between them inside a box. The agent can move left, right, up and down. We can also allow the agent to move diagonally, but this is uncommon. </p>
-<p>We needed to be as efficient as possible, and hence we have chosen to represent each state by its count, where we count from the bottom left corner up to the right top corner, and we start with 0 up to nS-1 where nS is the number of states. This will allow us to streamline the process of accessing and storing a state and will be of at most efficiency. We also deal with actions similarly, i.e. each action of the nA actions is given an index 0..nA-1. For the usual grid, this means 0,1,2,3 for actions left, right, up and down. We represent a 2-d grid by a 1-d array, and so care must be taken on how the agent moves between cells. </p>
-<p>Moving left or right seems easy because we can add or subtract from the <em>current</em> state. But when the agent is on the edge of the box, we cannot allow for an action that takes it out of the box. So if the agent is on the far right, we cannot allow it to go further to the right. To account for this issue, we have written a valid() function to validate an action. Moving up and down is similar, but we need to add and subtract a full row, which is how many columns we have in our grid. the valid() function checks for the current state and what would be the next state, and it knows that an agent will overstep the boundary as follows: if s%cols!=0, this means that the agent was not on the left edge and executing a right action (s+a)%cols==0 will take it to the left edge. This means it was on the right edge and wanted to move off this right edge. Other checks are similar. We have also accounted for moving diagonally so the agent will not overstep the boundaries.</p>
-<p>We have also accounted for different reward schemes that we might want to use later in other lessons. These are formulated as an array of 4 elements [intermediate, goal1, goal2, cliff] the first reward represents the reward the agent obtains if it is on any intermediate cell. Intermediate cells are non-terminal cells. Goals or terminal states are those that a task would be completed if the agent steps into them. By setting the goals array, we can decide which cells are terminal/goals. As we can see, there are two goals, this will allow us to deal with all the classical problems we will tackle in our RL treatments, but we could have set up more. So, our reward array's second and third elements are for the goals. The last entry is for a cliff. A cliff cell is a special type of non-terminal cell where the agent will emulate falling off a cliff and usually is given a high negative reward and then will be hijacked and put in its start position when it steps into these types of cells. These types of cells are non-terminal in the sense that the agent did not achieve the task when it went to them, but they provoke a reset of the agent position with a large negative reward.</p>
-<p>The most important function in our class is the step(a) function. An agent will take a specific action in the environment via this function. Via this function, we return the reward from our environment and a flag (done) indicating whether the task is accomplished. This makes our environment compatible with the classic setup of an OpenAI Gym Atari games, which we deal with towards the end of our RL treatment.</p>
-<h2 id="conclusion">Conclusion</h2>
-<p>In this lesson, we covered the basics of RL functions and concepts that we will utilise in other lessons. We also provided you with a environment that you can directly utilise to build simple grid world environments. Please note that you are not required to study the Gris.py file or understand how the grid is programmatically built, but you need to understand how it operates.!</p>
+<h2 id="step-2-launch-turtlesim">Step 2: Launch Turtlesim</h2>
+<p>Now you are ready to launch the turtlesim_node.</p>
+<p>To run Turtlesim, use the following command in a terminal:</p>
+<div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>run<span class="w"> </span>turtlesim<span class="w"> </span>turtlesim_node
+</code></pre></div>
+<p>This will open a window displaying a turtle in a 2D world.</p>
+<h2 id="step-3-interact-with-the-turtle">Step 3: Interact with the Turtle</h2>
+<p>Now that Turtlesim is running, you can interact with the turtle using ROS 2 commands and topics.</p>
+<p>You can view the active topics in your ROS 2 environment using the following command:</p>
+<div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>topic<span class="w"> </span>list
+</code></pre></div>
+<p>This will list all topics being used. You should see something like:</p>
+<div class="highlight"><pre><span></span><code>/clock
+/turtle1/cmd_vel
+/turtle1/pose
+</code></pre></div>
+<ul>
+<li>/turtle1/cmd_vel: The topic for controlling the turtle’s velocity.</li>
+<li>/turtle1/pose: The topic for getting the turtle’s position and orientation.</li>
+</ul>
+<h3 id="move-the-turtle-using-velocity-commands">Move the Turtle Using Velocity Commands</h3>
+<p>You can use the cmd_vel topic to control the turtle’s movement. First, let’s send a velocity command to move the turtle forward. To send a forward velocity to the turtle, use the following command:</p>
+<div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>/turtle1/cmd_vel<span class="w"> </span>geometry_msgs/msg/Twist<span class="w"> </span><span class="s2">&quot;{linear: {x: 2.0}, angular: {z: 0.0}}&quot;</span>
+</code></pre></div>
+<ul>
+<li>linear.x = 2.0: Moves the turtle forward with a speed of 2.0.</li>
+<li>angular.z = 0.0: No rotation (straightforward).</li>
+</ul>
+<p>You will see the turtle start moving forward in the Turtlesim window.</p>
+<h3 id="stop-the-turtle">Stop the Turtle</h3>
+<p>To stop the turtle, publish a message with zero velocity:</p>
+<div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>/turtle1/cmd_vel<span class="w"> </span>geometry_msgs/msg/Twist<span class="w"> </span><span class="s2">&quot;{linear: {x: 0.0}, angular: {z: 0.0}}&quot;</span>
+</code></pre></div>
+<p>The turtle will stop moving.</p>
+<h3 id="rotate-the-turtle">Rotate the Turtle</h3>
+<p>To rotate the turtle, you can publish a message that applies angular velocity:</p>
+<div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>/turtle1/cmd_vel<span class="w"> </span>geometry_msgs/msg/Twist<span class="w"> </span><span class="s2">&quot;{linear: {x: 0.0}, angular: {z: 1.0}}&quot;</span>
+</code></pre></div>
+<ul>
+<li>linear.x = 0.0: No forward movement.</li>
+<li>angular.z = 1.0: Rotates the turtle clockwise.</li>
+</ul>
+<p>You will see the turtle start rotating in the Turtlesim window.</p>
+<p>3.3. View Turtle’s Pose
+To view the turtle’s current position and orientation, you can use the pose topic:</p>
+<div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/turtle1/pose
+</code></pre></div>
+<p>This will display real-time information about the turtle, such as its position (x, y) and orientation (theta), as well as its linear and angular velocities.</p>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">x</span><span class="o">:</span><span class="w"> </span>5.544
+<span class="nf">y</span><span class="o">:</span><span class="w"> </span>5.544
+<span class="nf">theta</span><span class="o">:</span><span class="w"> </span>0.0
+<span class="nf">linear_velocity</span><span class="o">:</span><span class="w"> </span>2.0
+<span class="nf">angular_velocity</span><span class="o">:</span><span class="w"> </span>0.0
+</code></pre></div>
+<p>This information updates every time the turtle moves.</p>
+<h2 id="step-4-shutdown-the-turtlesim-node">Step 4: Shutdown the Turtlesim Node</h2>
+<p>Once you are done, you can stop the Turtlesim node by pressing Ctrl+C in the terminal where the ros2 run turtlesim turtlesim_node command is running.</p>
+<h2 id="summary">Summary</h2>
+<p>In this tutorial, you learned how to:</p>
+<ul>
+<li>Launch the Turtlesim node in ROS 2 Foxy.</li>
+<li>Interact with the turtle by publishing velocity commands through the terminal.</li>
+<li>View the turtle’s pose by subscribing to the /turtle1/pose topic.</li>
+<li>Stop and control the turtle's movement using the ros2 topic pub command.</li>
+</ul>
+<p>This is a simple demonstration of how to control a simulated robot in ROS2 using the terminal. We will provide you with a way to control a simulated robot using python code in the next tutorial. </p>
 
 
 

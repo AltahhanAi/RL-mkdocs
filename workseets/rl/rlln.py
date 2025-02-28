@@ -1,3 +1,14 @@
+
+
+'''
+   Author: Abdulrahman Altahhan,  2025.
+   version: 3.1
+
+    This library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries 
+    are written from scratch using standard Python libraries (numpy, matplotlib etc.).
+    Please note that you will need permission from the author to use the code for research, commercially or otherwise.
+'''
+
 '''
     this library implement a *linear function approximation* for well-known 
     RL algorithms. It works by inheriting from the classes in the 
