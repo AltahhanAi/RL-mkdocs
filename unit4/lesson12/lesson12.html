@@ -78,7 +78,7 @@
             
             
     <div id="versionIndicator"><b>Version:</b> 04.06.21.a</div>
-    <img id="customlogo" src="../../../img/logo.svg" alt="University of Leeds logo.">
+    <img id="customlogo" src="../../img/logo.svg" alt="University of Leeds logo.">
 
           </div>
           
@@ -1147,6 +1147,14 @@
 
 
 <h1 id="lesson-12-introduction-to-function-approximation-methods">Lesson 12: Introduction to Function Approximation Methods</h1>
+<p><strong>Unit 4: Learning Outcomes</strong><br />
+By the end of this unit, you will be able to: </p>
+<ol>
+<li><strong>Apply</strong> RL techniques to control an agent in complex environment representations.  </li>
+<li><strong>Compare</strong> the trade-offs of on-policy and off-policy learning algorithms.  </li>
+<li><strong>Evaluate</strong> the convergence properties of RL algorithms in both tabular and function approximation settings, considering their practical limitations.  </li>
+</ol>
+<hr />
 <p>In this and subsequent lessons, we will learn about finding solutions for states represented by features (observations). In a real-world environment, it is hard and unrealistic to expect to be able to identify a state fully. Usually, we can only partially observe the state via a set of features that can help us to recognise or distinguish a state, but that does not mean that we have guarantees that the state is fully identifiable or that the features are unique for each different state. Nevertheless, we should be able to deal with these spaces. After all, RL is meant for real-world problems. We must come to terms with the issue that this partial observability can be dealt with effectively in most practical cases by using suitable features. Because the states that share inner properties usually tend to have similar features, by dealing with these states via these features, we usually succeed in generalising to other similar states. To that end, dealing with the features via a set of parameters is natural, as we did in several machine learning modules. Of course, we can bring along other non-parametric models, such as Gaussian processes. However, this falls outside the scope of our RL treatment. 
 In some cases, we might need to generalise the RL framework from the MDP’s underlying assumption of full observability to Partially Observable Markov Decision Processes or POMDP. In most cases, this might be unnecessary, and we can get away without dealing with the intricacy of POMDP. Again, POMDP is outside the scope of our coverage.
 What is left is then to move from a tabular to a parametric representation by adjusting the update rules we have dealt with so far to the parametric representation instead of the tabular one. </p>

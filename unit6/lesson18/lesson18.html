@@ -7,7 +7,7 @@
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
       
-        <meta name="author" content="Abdulrahman Altahhan, 2024.">
+        <meta name="author" content="Dr Abdulrahman Altahhan">
       
       
       
@@ -76,7 +76,7 @@
             
             
     <div id="versionIndicator"><b>Version:</b> 04.06.21.a</div>
-    <img id="customlogo" src="../../../img/logo.svg" alt="University of Leeds logo.">
+    <img id="customlogo" src="../../img/logo.svg" alt="University of Leeds logo.">
 
           </div>
           
@@ -1030,18 +1030,6 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    18. Application on Games(optional)
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="lesson18.html" class="md-nav__link md-nav__link--active">
         
   
@@ -1052,34 +1040,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#dependencies" class="md-nav__link">
-    <span class="md-ellipsis">
-      Dependencies
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -1113,23 +1073,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#dependencies" class="md-nav__link">
-    <span class="md-ellipsis">
-      Dependencies
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1144,77 +1087,20 @@
 
 
 
-<p>The notebook uses a library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries are written from scratch using standard Python libraries (numpy, matplotlib etc.).
-Please note that you will need permission from the author to use the code for research, commercially or otherwise.</p>
+<!-- By the end of this unit, you will be able to:
+
+1. **Apply** RL techniques to control an agent in game environments.   -->
+
 <h1 id="lesson-18-rl-application-on-games">Lesson 18: RL Application on Games</h1>
-<p><strong>Learning outcomes</strong>
-1. understand how to create a simple wrapper for a Gym environment to take advantage of its provided functionality
-1. understand how to integrate our previous classes with Gym to combine them in a powerful way
-1. appreciate the intricacy of applying RL to different domains such as games and robotics
-1. build on previous concepts to come up with suitable and sometimes novel algorithms to solve a problem at hand
-1. understand how to combine deep reinforcement learning with deep learning to create a powerful framework that allows automatic agent learning by observation or self-play.
-1. understand how a replay buffer helps us to come closer to supervised learning and appreciate the important role it plays in reaching convergence for difficult problems that involve image processing and reinforcement learning</p>
-<h2 id="dependencies">Dependencies</h2>
-<p>Let us first install the gym environment and other dependencies including tensorflow and keras.</p>
-<h1 id="gym">gym</h1>
-<p>!pip3 install gym
-!pip3 install pygame
-!pip3 install pyglet
-!pip3 install ale-py
-!pip3 install autorom
-!pip3 install 'gym[atari]' gym</p>
-<h1 id="pip-install-upgrade-gymatari">!pip install --upgrade 'gym[atari]'</h1>
-<p>!pip3 install --upgrade gym
-!pip3 install autorom[accept-rom-license]
-!pip3 install pydot
-Let us test if it is working</p>
-<div class="highlight"><pre><span></span><code><span class="err">!</span><span class="n">pip3</span> <span class="n">show</span> <span class="n">tensorflow</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>/bin/pip3:6: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
-  from pkg_resources import load_entry_point
-Name: tensorflow
-Version: 2.13.1
-Summary: TensorFlow is an open source machine learning framework for everyone.
-Home-page: https://www.tensorflow.org/
-Author: Google Inc.
-Author-email: packages@tensorflow.org
-License: Apache 2.0
-Location: /home/rl/.local/lib/python3.8/site-packages
-Requires: absl-py, astunparse, flatbuffers, gast, google-pasta, grpcio, h5py, keras, libclang, numpy, opt-einsum, packaging, protobuf, setuptools, six, tensorboard, tensorflow-estimator, termcolor, typing-extensions, wrapt, tensorflow-io-gcs-filesystem
-Required-by:
-</code></pre></div>
-<p>You should be able to see the location of your tensorflow. If you cannot you might need to do: sudo nano ~/.bashrc and append the tensorflow path as follows (be mindful to the python version, yours might be &gt; 3.6)</p>
-<p>export PYTHONPATH=/home/user/.local/lib/python3.6/site-packages:$PYTHONPATH.</p>
-<p>We can also check if our GPU is defined as follows.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.python.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">device_lib</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">device_lib</span><span class="o">.</span><span class="n">list_local_devices</span><span class="p">())</span>
-
-<span class="c1"># or</span>
-<span class="err">!</span><span class="n">python3</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;import tensorflow as tf; print(tf.config.list_physical_devices(&#39;GPU&#39;))&quot;</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>2024-05-06 09:48:12.076221: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
-2024-05-06 09:48:17.750243: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
-2024-05-06 09:48:17.768049: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2024-05-06 09:48:21.351978: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
-
-
-[name: &quot;/device:CPU:0&quot;
-device_type: &quot;CPU&quot;
-memory_limit: 268435456
-locality {
-}
-incarnation: 8559295629388873333
-xla_global_id: -1
-]
-2024-05-06 09:48:26.056521: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
-2024-05-06 09:48:26.108027: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
-2024-05-06 09:48:26.108689: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
-To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2024-05-06 09:48:27.028070: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
-[]
-</code></pre></div>
-<p>To run this notebook on a remote Azure lab server check this <a href="https://docs.microsoft.com/en-us/azure/lab-services/class-type-jupyter-notebook#template-virtual-machine">link</a></p>
+<p><strong>Unit 6: Learning Outcomes</strong>  </p>
+<ol>
+<li>understand how to create a simple wrapper for a Gym environment to take advantage of its provided functionality</li>
+<li>understand how to integrate our previous classes with Gym to combine them in a powerful way</li>
+<li>appreciate the intricacy of applying RL to different domains such as games and robotics</li>
+<li>build on previous concepts to come up with suitable and sometimes novel algorithms to solve a problem at hand</li>
+<li>understand how to combine deep reinforcement learning with deep learning to create a powerful framework that allows automatic agent learning by observation or self-play.</li>
+<li>understand how a replay buffer helps us to come closer to supervised learning and appreciate the important role it plays in reaching convergence for difficult problems that involve image processing and reinforcement learning</li>
+</ol>
 <p><strong>Reading</strong>:
 The accompanying reading of this lesson is <strong>chapter 16</strong> of our text book available online <a href="http://incompleteideas.net/book/RLbook2020.pdf">here</a>. Please note that we explain the ideas of this topic from a practical perspective and not from a theoretical perspective which is already covered in the textbook.</p>
 <p>This lesson deals with <a href="https://gym.openai.com/">gym openai</a>. OPenAI Gym provides a rich set of libraries and environments to try our algorithms on. These include the Atari games the DQN used in their Nature <a href="https://storage.googleapis.com/deepmind-media/DQN/DQNNaturePaper.pdf">paper</a> to show that Deep Reinforcement Learning can supersede human performance on Atari games with the <em>same</em> generic model that is used in <em>all</em> of the presented games. </p>
@@ -1229,48 +1115,14 @@ Note that the replay buffer dictates the choice of an off-policy algorithm i.e. 
 <p>We first tackle classical environments in OpenAI Gym as useful training for dealing with the library. In particular, we will start with their mountain car environment. We have already created our own class for this problem in the previous lesson, however, here, we will inherit their class, and we will override their rendering mechanism to be able to embed its visualisation in our notebook. </p>
 <p>This is a useful exercise to familiarise ourselves with Gym and verify our findings in the previous lesson. Therefore, we will repeat some of the experiments we conducted in the previous lesson. No commentary is provided as it replicates previous experiments on our newly created class that depends on Gym.
 Note that we have already set up our classes in previous lessons to be ready to integrate easily with Gym. We will show this in the following example.</p>
-<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">floor</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.random</span><span class="w"> </span><span class="kn">import</span> <span class="n">rand</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.cm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cm</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.animation</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">animation</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">gym</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">gym.envs.classic_control</span><span class="w"> </span><span class="kn">import</span> <span class="n">MountainCarEnv</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">gym</span><span class="w"> </span><span class="kn">import</span> <span class="n">wrappers</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pygame</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">ale_py</span><span class="w"> </span><span class="kn">import</span> <span class="n">ALEInterface</span>
-<span class="n">ale</span> <span class="o">=</span> <span class="n">ALEInterface</span><span class="p">()</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">ale_py.roms</span><span class="w"> </span><span class="kn">import</span> <span class="n">Breakout</span>
-<span class="c1"># ale.loadROM(Breakout)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>A.L.E: Arcade Learning Environment (version 0.8.1+53f58b7)
-[Powered by Stella]
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tf</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">precision_score</span><span class="p">,</span> <span class="n">recall_score</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras</span><span class="w"> </span><span class="kn">import</span> <span class="n">layers</span><span class="p">,</span> <span class="n">losses</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">fashion_mnist</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Model</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">clear_output</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.layers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Input</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Model</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.optimizers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Adam</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">nbimporter</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">Lesson14_EligibilityTraces_Prediction_Control</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-</code></pre></div>
+<h2 id="useful-resources">Useful Resources</h2>
+<p>There are plenty of videos and resources which you can search online for.
+- You may want to follow the following <a href="https://www.tensorflow.org/agents/tutorials/1_t_DQNnutorial#environment">tutorial</a> which shows how to deal with tensorflow on cart pole but the input is not the frames.
+- You may then follow this <a href="https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html#hyperparameters-and-utilities">tutorial</a> which uses deep learning on the frames of a cart pole problem.</p>
+<ul>
+<li>You may find it useful to watch this <a href="https://www.youtube.com/watch?v=a5XbO5Qgy5w">video</a> for a Keras tutorial with RL, or this <a href="https://www.youtube.com/watch?v=NP8pXZdU-5U">video</a> for a pytorch tutorial with RL. </li>
+<li>You may want to have a look at some <a href="https://neptune.ai/blog/best-reinforcement-learning-tutorials-examples-projects-and-courses">tutorials</a>.</li>
+</ul>
 <p>We start by showing you how to inherit from gym environment. We will do exactly what we did in the previous lesson regarding training a mountain car. This time we will utilise the openai gym environment rendering and </p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MountainCar</span><span class="p">(</span><span class="n">MountainCarEnv</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ntiles</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>   <span class="c1">#  ω: position window, rd: velocity window</span>
@@ -1625,52 +1477,10 @@ Note that in their paper DeepMinds trained for 200M frames, we set the max_t_exp
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>deque([(&#39;2&#39;, 1, &#39;3&#39;), (&#39;3&#39;, 2, &#39;4&#39;), (&#39;4&#39;, 2, &#39;5&#39;), (&#39;5&#39;, 1, &#39;4&#39;)], maxlen=4)
 </code></pre></div>
-<p>Now in order to sample we can directly sample from the buffer </p>
-<div class="highlight"><pre><span></span><code><span class="n">batch</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>[(&#39;2&#39;, 1, &#39;3&#39;), (&#39;5&#39;, 1, &#39;4&#39;), (&#39;3&#39;, 2, &#39;4&#39;)]
-</code></pre></div>
-<p>However, the above is not useful, usually we want to place all the actions and states and next states in their own list to feed them as a batch into a neural network. To put all states and actions together each in its own list we can use zip</p>
-<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">batch</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>(&#39;2&#39;, &#39;5&#39;, &#39;3&#39;)
-(1, 1, 2)
-(&#39;3&#39;, &#39;4&#39;, &#39;4&#39;)
-</code></pre></div>
-<p>We can also convert them into a numpy array directly.</p>
-<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">batch</span><span class="p">)]</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>[array([&#39;2&#39;, &#39;5&#39;, &#39;3&#39;], dtype=&#39;&lt;U1&#39;),
- array([1, 1, 2]),
- array([&#39;3&#39;, &#39;4&#39;, &#39;4&#39;], dtype=&#39;&lt;U1&#39;)]
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">buffer</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;2&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;3&#39;</span><span class="p">))</span>
-<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;3&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="p">))</span>
-<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;4&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;5&#39;</span><span class="p">))</span>
-<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;5&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="p">))</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span>
-<span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">sample</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="mi">3</span><span class="p">))]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>deque([(&#39;2&#39;, 1, &#39;3&#39;), (&#39;3&#39;, 2, &#39;4&#39;), (&#39;4&#39;, 2, &#39;5&#39;), (&#39;5&#39;, 1, &#39;4&#39;)], maxlen=4)
-[array([&#39;5&#39;, &#39;2&#39;, &#39;3&#39;], dtype=&#39;&lt;U1&#39;), array([1, 1, 2]), array([&#39;4&#39;, &#39;3&#39;, &#39;4&#39;], dtype=&#39;&lt;U1&#39;)]
-</code></pre></div>
 <h2 id="deep-mrp">Deep MRP</h2>
 <p>In this class we implement the basic functionality for dealing with creating, saving and loading deep learning models. In addition, we make these models the default functions used to obtain the value function via self.V_.
 We also adjust the stope_exp criterion so that the algorithm stops when a specific averaged reward is achieved or when a specific <em>total</em> number of steps (self.t_ not self.t) have been elapsed. This means also that we free ourselves from the notion of an episode, so our model can run as many episodes as it takes to achieve this total number of steps. We still can assign episodes=x to store metrics for last y episodes where y&lt;x.
 Note that nF is usually used in the Env(ironment) class but feature extraction is embedded the model itself in deep learning model so it is defined in the Deep_MRP class.</p>
-<div class="highlight"><pre><span></span><code><span class="mi">200000</span><span class="o">%</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mf">2e6</span><span class="p">)</span><span class="o">*</span><span class="mf">.1</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>True
-</code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="n">env</span><span class="o">=</span><span class="n">GymEnv</span><span class="p">()</span>
-<span class="n">env</span><span class="o">.</span><span class="n">nA</span>
-</code></pre></div>
-<div class="highlight"><pre><span></span><code>3
-</code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Deep_MRP</span><span class="p">(</span><span class="n">MRP</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                  <span class="n">env</span><span class="o">=</span><span class="n">GymEnv</span><span class="p">(),</span> 
@@ -1946,17 +1756,8 @@ Refer to keras <a href="https://www.tensorflow.org/tutorials/generative/autoenco
 <h2 id="discussion-and-activity">Discussion and Activity</h2>
 <p>Read the following classic Nips <a href="https://deepmind.com/research/publications/2019/playing-atari-deep-reinforcement-learning">paper</a> and Nature <a href="https://storage.googleapis.com/deepmind-media/DQN/DQNNaturePaper.pdf">paper</a> and discuss it in the discussion forum.</p>
 <h2 id="extra-resources">Extra Resources</h2>
-<p>There are plenty of videos and resources which you can search online for.
-- You may want to follow the following <a href="https://www.tensorflow.org/agents/tutorials/1_t_DQNnutorial#environment">tutorial</a> which shows how to deal with tensorflow on cart pole but the input is not the frames.
-- You may then follow this <a href="https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html#hyperparameters-and-utilities">tutorial</a> which uses deep learning on the frames of a cart pole problem.</p>
 <ul>
-<li>You may find it useful to watch this <a href="https://www.youtube.com/watch?v=a5XbO5Qgy5w">video</a> for a Keras tutorial with RL, or this <a href="https://www.youtube.com/watch?v=NP8pXZdU-5U">video</a> for a pytorch tutorial with RL. </li>
-<li>
-<p>You may want to have a look at some <a href="https://neptune.ai/blog/best-reinforcement-learning-tutorials-examples-projects-and-courses">tutorials</a>.</p>
-</li>
-<li>
-<p>You may find see this series of talks about the <a href="https://www.bbc.co.uk/sounds/play/m001216j">future of AI</a> by Stuart Russell interesting.</p>
-</li>
+<li>You may find see this series of talks about the <a href="https://www.bbc.co.uk/sounds/play/m001216j">future of AI</a> by Stuart Russell interesting.</li>
 <li>
 <p>If you are intersted in self-driving cars, then:</p>
 <ul>
@@ -1995,9 +1796,6 @@ Refer to keras <a href="https://www.tensorflow.org/tutorials/generative/autoenco
 
 
 
-
-  
-  
 
 
 

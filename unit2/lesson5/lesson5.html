@@ -78,7 +78,7 @@
             
             
     <div id="versionIndicator"><b>Version:</b> 04.06.21.a</div>
-    <img id="customlogo" src="../../../img/logo.svg" alt="University of Leeds logo.">
+    <img id="customlogo" src="../../img/logo.svg" alt="University of Leeds logo.">
 
           </div>
           
@@ -1323,12 +1323,17 @@
 <p>The notebook uses a library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries are written from scratch using standard Python libraries (numpy, matplotlib etc.).
 Please note that you will need permission from the author to use the code for research, commercially or otherwise.</p>
 <h1 id="lesson-5-dynamic-programming-model-based-approach">Lesson 5- Dynamic Programming: Model-Based Approach</h1>
-<p><strong>Learning outcomes</strong>
-1. understand what we mean by the dynamics of the environment
-2. understand how the environment's dynamics are used in the Bellman equation
-3. use the dynamics to estimate the value function and the action-value function via dynamic programming 
-4. understand the policy improvement theorem
-5. understand the policy-iteration and value-iteration algorithms as the backbone of many RL algorithms</p>
+<p><strong>Unit 2: Learning Outcomes</strong><br />
+By the end of this unit, you will be able to:  </p>
+<ol>
+<li><strong>Compute</strong> the value function for a given policy in tabular settings.  </li>
+<li><strong>Implement</strong> control methods that infer an agent’s policy from an action-value function.  </li>
+<li><strong>Explain</strong> the concept of Generalized Policy Iteration (GPI) and how it underpins many RL methods.  </li>
+<li><strong>Compare</strong> full-backup action-value-based control methods with direct policy estimation control methods.  </li>
+<li><strong>Evaluate</strong> how Monte Carlo (MC) methods provide unbiased but high-variance estimates through interaction with the environment.  </li>
+<li><strong>Analyze</strong> how REINFORCE achieves unbiased but high-variance policy gradient estimation through interaction with the environment.  </li>
+</ol>
+<hr />
 <p>In the first lesson, you looked at a basic RL problem, the k-arm bandit, which involves only actions and no states (non-associative problem). In general, in RL, we are faced with different situations, and we need to take different actions in each situation in order to achieve a certain goal. This general type of environment with states and actions imposes a different flavour to the solution we can design. From now on, we will tackle associative problems. For associative problems, there are two approaches:</p>
 <ol>
 <li>Model-based approach</li>

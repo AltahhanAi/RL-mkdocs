@@ -7,7 +7,7 @@
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
       
-        <meta name="author" content="Abdulrahman Altahhan, 2025.">
+        <meta name="author" content="Dr Abdulrahman Altahhan">
       
       
       
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#lesson-3-markov-decision-processes-and-value-functions" class="md-skip">
+        <a href="#lesson-3-markov-decision-processes-dynamics-and-bellman-equaitons" class="md-skip">
           Skip to content
         </a>
       
@@ -78,7 +78,7 @@
             
             
     <div id="versionIndicator"><b>Version:</b> 04.06.21.a</div>
-    <img id="customlogo" src="../../../img/logo.svg" alt="University of Leeds logo.">
+    <img id="customlogo" src="../../img/logo.svg" alt="University of Leeds logo.">
 
           </div>
           
@@ -501,22 +501,169 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#markov-decision-processes-mdp" class="md-nav__link">
+  <a href="#1-markov-decision-process-mdp" class="md-nav__link">
     <span class="md-ellipsis">
-      Markov Decision Processes (MDP)
+      1. Markov Decision Process (MDP)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Markov Decision Process (MDP)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#markov-property" class="md-nav__link">
+    <span class="md-ellipsis">
+      Markov Property
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#the-return-g_t-of-a-time-step-t" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#stationarity" class="md-nav__link">
     <span class="md-ellipsis">
-      The Return \(G_t\) of a time step \(t\)
+      Stationarity
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="The Return \(G_t\) of a time step \(t\)">
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deterministic-vs-stochastic-dynamics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deterministic vs. Stochastic Dynamics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reward-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reward Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#irreducibility-and-aperiodicity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Irreducibility and Aperiodicity
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-policy-and-its-stationarity" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Policy and its Stationarity
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Policy and its Stationarity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stationary-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stationary Policy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-stationary-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-Stationary Policy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-transition-and-reward-dynamics" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Transition and Reward Dynamics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Transition and Reward Dynamics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transition-dynamics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transition Dynamics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Transition Dynamics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-properties-of-transition-dynamics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Properties of Transition Dynamics:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reward-dynamics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reward Dynamics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reward Dynamics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reward-function-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reward Function Properties:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-return-g_t-of-a-time-step-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Return \(G_t\) of a time step \(t\)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The Return \(G_t\) of a time step \(t\)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -543,38 +690,86 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-expected-return-function-v" class="md-nav__link">
+  <a href="#2-the-expected-return-function-v" class="md-nav__link">
     <span class="md-ellipsis">
-      The Expected Return Function V
+      2. The Expected Return Function V
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#bellman-equation-for-v-and-q" class="md-nav__link">
+  <a href="#2-the-bellman-equations" class="md-nav__link">
     <span class="md-ellipsis">
-      Bellman Equation for V and Q
+      2. The Bellman Equations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The Bellman Equations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-bellman-equation-for-the-value-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Bellman Equation for the Value Function
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#bellman-optimality-equations-for-v-and-q" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#22-bellman-equation-for-the-q-function" class="md-nav__link">
     <span class="md-ellipsis">
-      Bellman Optimality Equations for V and Q
+      2.2 Bellman Equation for the Q-Function
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#grid-world-environments" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#23-bellman-optimality-equations" class="md-nav__link">
     <span class="md-ellipsis">
-      Grid World Environments
+      2.3 Bellman Optimality Equations
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="2.3 Bellman Optimality Equations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bellman-optimality-equation-for-the-value-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bellman Optimality Equation for the Value Function:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bellman-optimality-equation-for-the-q-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bellman Optimality Equation for the Q-Function:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -582,15 +777,6 @@
   <a href="#your-turn" class="md-nav__link">
     <span class="md-ellipsis">
       Your turn
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#conclusion" class="md-nav__link">
-    <span class="md-ellipsis">
-      Conclusion
     </span>
   </a>
   
@@ -1209,22 +1395,169 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#markov-decision-processes-mdp" class="md-nav__link">
+  <a href="#1-markov-decision-process-mdp" class="md-nav__link">
     <span class="md-ellipsis">
-      Markov Decision Processes (MDP)
+      1. Markov Decision Process (MDP)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Markov Decision Process (MDP)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#markov-property" class="md-nav__link">
+    <span class="md-ellipsis">
+      Markov Property
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#the-return-g_t-of-a-time-step-t" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#stationarity" class="md-nav__link">
     <span class="md-ellipsis">
-      The Return \(G_t\) of a time step \(t\)
+      Stationarity
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="The Return \(G_t\) of a time step \(t\)">
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deterministic-vs-stochastic-dynamics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deterministic vs. Stochastic Dynamics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reward-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reward Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#irreducibility-and-aperiodicity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Irreducibility and Aperiodicity
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-policy-and-its-stationarity" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Policy and its Stationarity
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Policy and its Stationarity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stationary-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stationary Policy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-stationary-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-Stationary Policy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-transition-and-reward-dynamics" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Transition and Reward Dynamics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Transition and Reward Dynamics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#transition-dynamics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transition Dynamics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Transition Dynamics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-properties-of-transition-dynamics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Properties of Transition Dynamics:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reward-dynamics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reward Dynamics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reward Dynamics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#reward-function-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reward Function Properties:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-return-g_t-of-a-time-step-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. The Return \(G_t\) of a time step \(t\)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The Return \(G_t\) of a time step \(t\)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1251,38 +1584,86 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-expected-return-function-v" class="md-nav__link">
+  <a href="#2-the-expected-return-function-v" class="md-nav__link">
     <span class="md-ellipsis">
-      The Expected Return Function V
+      2. The Expected Return Function V
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#bellman-equation-for-v-and-q" class="md-nav__link">
+  <a href="#2-the-bellman-equations" class="md-nav__link">
     <span class="md-ellipsis">
-      Bellman Equation for V and Q
+      2. The Bellman Equations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The Bellman Equations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-bellman-equation-for-the-value-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Bellman Equation for the Value Function
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#bellman-optimality-equations-for-v-and-q" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#22-bellman-equation-for-the-q-function" class="md-nav__link">
     <span class="md-ellipsis">
-      Bellman Optimality Equations for V and Q
+      2.2 Bellman Equation for the Q-Function
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#grid-world-environments" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#23-bellman-optimality-equations" class="md-nav__link">
     <span class="md-ellipsis">
-      Grid World Environments
+      2.3 Bellman Optimality Equations
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="2.3 Bellman Optimality Equations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bellman-optimality-equation-for-the-value-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bellman Optimality Equation for the Value Function:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bellman-optimality-equation-for-the-q-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bellman Optimality Equation for the Q-Function:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Summary
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1290,15 +1671,6 @@
   <a href="#your-turn" class="md-nav__link">
     <span class="md-ellipsis">
       Your turn
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#conclusion" class="md-nav__link">
-    <span class="md-ellipsis">
-      Conclusion
     </span>
   </a>
   
@@ -1329,28 +1701,122 @@
   };
 </script>
 
-<h1 id="lesson-3-markov-decision-processes-and-value-functions">Lesson 3- Markov Decision Processes and value functions</h1>
-<p>In this lesson we cover various grid world environments that are tackled as examples in the accompanying text book available online <a href="http://incompleteideas.net/book/RLbook2020.pdf">here</a>. Please note that we explain the ideas of this topic from a practical perspective and not from a theoretical perspective which is already covered in the textbook.</p>
+<h1 id="lesson-3-markov-decision-processes-dynamics-and-bellman-equaitons">Lesson 3- Markov Decision Processes, Dynamics and Bellman Equaitons</h1>
 <p><strong>Learning outcomes</strong></p>
 <ol>
 <li>understand MDP and its elements</li>
 <li>understand the return for a time step <span class="arithmatex">\(t\)</span></li>
 <li>understand the expected return of a state <span class="arithmatex">\(s\)</span></li>
 <li>understand the Bellman optimality equations</li>
-<li>become familiar with the different types of grid world problems that we will tackle in later units</li>
-<li>become familiar with the way we assign a reward to an environment</li>
-<li>be able to execute actions in a grid world and observe the result</li>
-<li>be able to to visualise a policy and its action-value function</li>
+<li>become familiar with the different types of grid world problems</li>
 </ol>
-<p><strong>Reading</strong>:
-The accompanying reading of this lesson is <strong>chapter 3</strong> from our text book by Sutton and Barto available online <a href="http://incompleteideas.net/book/RLbook2020.pdf">here</a>. </p>
-<p>To help you, Abdulrahman recorded a set of videos that covers important concepts of RL.</p>
-<h2 id="markov-decision-processes-mdp">Markov Decision Processes (MDP)</h2>
+<!-- 6. become familiar with the way we assign a reward to an environment
+1. be able to execute actions in a grid world and observe the result
+2. be able to to visualise a policy and its action-value function -->
+
+<h2 id="1-markov-decision-process-mdp">1. Markov Decision Process (MDP)</h2>
+<p>A <strong>Markov Decision Process (MDP)</strong> provides a mathematical framework to model decision-making problems where an agent interacts with an environment. It is characterized by a tuple <span class="arithmatex">\( (S, A, P, R, \gamma) \)</span> where:</p>
+<ul>
+<li><span class="arithmatex">\( S \)</span> is the set of states in the environment.</li>
+<li><span class="arithmatex">\( A \)</span> is the set of actions available to the agent.</li>
+<li><span class="arithmatex">\( P(s' | s, a) \)</span> is the <strong>transition function</strong>, representing the probability of transitioning from state <span class="arithmatex">\( s \)</span> to state <span class="arithmatex">\( s' \)</span> after taking action <span class="arithmatex">\( a \)</span>.</li>
+<li><span class="arithmatex">\( R(s, a, s') \)</span> is the <strong>reward function</strong>, representing the immediate reward received when transitioning from state <span class="arithmatex">\( s \)</span> to state <span class="arithmatex">\( s' \)</span> after taking action <span class="arithmatex">\( a \)</span>.</li>
+<li><span class="arithmatex">\( \gamma \)</span> is the <strong>discount factor</strong>, a value between 0 and 1 that determines the importance of future rewards relative to immediate rewards.</li>
+</ul>
+<p>The MDP framework is central to reinforcement learning (RL), as it allows the agent to plan and optimize its actions over time to maximize the expected return.</p>
+<h3 id="markov-property">Markov Property</h3>
+<p>The <strong>Markov Property</strong> asserts that the future state depends only on the current state and action, not on any previous states or actions. This is a core assumption in MDPs and ensures that the system has <strong>no memory</strong> of past actions or states.</p>
+<p>Formally:</p>
+<div class="arithmatex">\[
+P(s_{t+1} | s_t, a_t, \dots, s_0, a_0) = P(s_{t+1} | s_t, a_t)
+\]</div>
+<h3 id="stationarity">Stationarity</h3>
+<p>In many MDPs, the transition and reward functions are <strong>stationary</strong>, meaning that they do not change over time. This ensures that the transition probabilities and rewards are the same at every time step.</p>
+<p>Formally:</p>
+<div class="arithmatex">\[
+P(s' | s, a) = P(s' | s, a) \quad \forall t
+\]</div>
+<h3 id="deterministic-vs-stochastic-dynamics">Deterministic vs. Stochastic Dynamics</h3>
+<ul>
+<li><strong>Deterministic Dynamics</strong>: If the transition function <span class="arithmatex">\( P(s' | s, a) \)</span> always produces the same next state, the system is deterministic.</li>
+<li><strong>Stochastic Dynamics</strong>: If <span class="arithmatex">\( P(s' | s, a) \)</span> is probabilistic, the system is stochastic.</li>
+</ul>
+<h3 id="reward-structure">Reward Structure</h3>
+<p>The <strong>reward function</strong> <span class="arithmatex">\( R(s, a, s') \)</span> can either be <strong>deterministic</strong> (fixed reward) or <strong>stochastic</strong> (random reward). The structure of the rewards influences the agent's behavior and learning.</p>
+<h3 id="irreducibility-and-aperiodicity">Irreducibility and Aperiodicity</h3>
+<p>For algorithms like <strong>Value Iteration</strong>, it is important that the MDP is <strong>irreducible</strong> (all states are reachable from any other state) and <strong>aperiodic</strong> (there are no cycles of fixed lengths that prevent convergence).</p>
+<hr />
+<h2 id="2-policy-and-its-stationarity">2. Policy and its Stationarity</h2>
+<p>A <strong>policy</strong> in reinforcement learning is a strategy or function that defines the agent's actions at each state in an environment. Mathematically, a policy is often represented as <span class="arithmatex">\( \pi(a|s) \)</span>, where <span class="arithmatex">\( s \)</span> is a state and <span class="arithmatex">\( a \)</span> is an action. The policy <span class="arithmatex">\( \pi(a|s) \)</span> gives the probability of taking action <span class="arithmatex">\( a \)</span> when in state <span class="arithmatex">\( s \)</span>. </p>
+<h3 id="stationary-policy">Stationary Policy</h3>
+<p>A <strong>stationary policy</strong> is one where the action probabilities depend only on the current state and remain constant over time. Formally, a stationary policy satisfies:
+[
+\pi_t(a|s) = \pi(a|s) \quad \text{for all time steps} \, t
+]
+This means the policy does not change as the environment evolves. This is common in many reinforcement learning settings where the dynamics of the problem do not change over time.</p>
+<h3 id="non-stationary-policy">Non-Stationary Policy</h3>
+<p>In contrast, a <strong>non-stationary policy</strong> is one where the action probabilities can change with time:
+[
+\pi_t(a|s) \neq \pi_{t'}(a|s) \quad \text{for some} \, t \neq t'
+]
+This occurs when the policy is adapted or modified based on external factors, such as learning or changes in the environment. A non-stationary policy is useful in situations where the environment or the agent's understanding of it evolves over time.</p>
+<h2 id="2-transition-and-reward-dynamics">2. Transition and Reward Dynamics</h2>
+<h3 id="transition-dynamics">Transition Dynamics</h3>
+<p>The <strong>transition dynamics</strong> describe how the environment behaves when the agent takes an action in a given state. The transition function <span class="arithmatex">\( P(s' | s, a) \)</span> specifies the probability of transitioning from state <span class="arithmatex">\( s \)</span> to state <span class="arithmatex">\( s' \)</span> when the agent takes action <span class="arithmatex">\( a \)</span>.</p>
+<p>Formally, the transition function is expressed as:</p>
+<div class="arithmatex">\[
+P(s' | s, a) = \mathbb{P}(s_{t+1} = s' | s_t = s, a_t = a)
+\]</div>
+<p>Where:
+- <span class="arithmatex">\( s_t \)</span> is the state at time step <span class="arithmatex">\( t \)</span>,
+- <span class="arithmatex">\( a_t \)</span> is the action taken at time step <span class="arithmatex">\( t \)</span>,
+- <span class="arithmatex">\( s_{t+1} \)</span> is the next state after taking action <span class="arithmatex">\( a_t \)</span> from <span class="arithmatex">\( s_t \)</span>.</p>
+<h4 id="key-properties-of-transition-dynamics">Key Properties of Transition Dynamics:</h4>
+<ul>
+<li><strong>Stochastic Nature</strong>: Transition dynamics are typically <strong>stochastic</strong>, meaning that taking the same action in the same state may result in different next states with some probability.</li>
+<li><strong>Markov Property</strong>: The system satisfies the <strong>Markov Property</strong>, meaning the next state depends only on the current state and action, not on the history of previous states or actions.</li>
+</ul>
+<p>Example:
+In a grid world, if the agent is at state <span class="arithmatex">\( s = (2, 2) \)</span> and takes action <span class="arithmatex">\( a = \text{move left} \)</span>, the transition probability might be deterministic:</p>
+<div class="arithmatex">\[
+P(s' | (2, 2), \text{move left}) = 
+\begin{cases} 
+1 &amp; \text{if } s' = (1, 2) \\
+0 &amp; \text{otherwise}
+\end{cases}
+\]</div>
+<p>This means that the agent always moves from <span class="arithmatex">\( (2, 2) \)</span> to <span class="arithmatex">\( (1, 2) \)</span> when taking the action "move left".</p>
 <iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=f93d3c1e-261f-42bd-93cd-92f67e120d99&embed=%7B%22ust%22%3Atrue%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="Markov Decision Processes (MDP)" enablejsapi=1></iframe>
 
 <iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=79d3a9ea-5401-4f3c-bcf2-5907255ef8da&embed=%7B%22ust%22%3Atrue%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200"frameborder="0" scrolling="no" allowfullscreen title="2. Dynamics.mkv"></iframe>
 
-<h2 id="the-return-g_t-of-a-time-step-t">The Return <span class="arithmatex">\(G_t\)</span> of a time step <span class="arithmatex">\(t\)</span></h2>
+<h3 id="reward-dynamics">Reward Dynamics</h3>
+<p>The <strong>reward dynamics</strong> define the reward that the agent receives when it takes an action in a given state and transitions to a new state. The reward function <span class="arithmatex">\( R(s, a, s') \)</span> specifies the immediate reward when transitioning from state <span class="arithmatex">\( s \)</span> to state <span class="arithmatex">\( s' \)</span> after taking action <span class="arithmatex">\( a \)</span>.</p>
+<p>Formally, the reward function is expressed as:</p>
+<div class="arithmatex">\[
+R(s, a, s') = \mathbb{E}[r_{t+1} | s_t = s, a_t = a, s_{t+1} = s']
+\]</div>
+<p>Where:
+- <span class="arithmatex">\( r_{t+1} \)</span> is the reward received at time step <span class="arithmatex">\( t+1 \)</span>,
+- <span class="arithmatex">\( s_t \)</span> and <span class="arithmatex">\( a_t \)</span> represent the state and action at time <span class="arithmatex">\( t \)</span>,
+- <span class="arithmatex">\( s_{t+1} \)</span> is the resulting state at time <span class="arithmatex">\( t+1 \)</span>.</p>
+<h4 id="reward-function-properties">Reward Function Properties:</h4>
+<ul>
+<li><strong>Immediate Reward</strong>: <span class="arithmatex">\( R(s, a, s') \)</span> gives the immediate reward for transitioning from state <span class="arithmatex">\( s \)</span> to state <span class="arithmatex">\( s' \)</span> after action <span class="arithmatex">\( a \)</span>.</li>
+<li><strong>Stochastic Reward</strong>: Rewards can be <strong>stochastic</strong>, meaning the same action in the same state can yield different rewards.</li>
+</ul>
+<p>Example:
+If the agent takes action <span class="arithmatex">\( a = \text{move right} \)</span> from state <span class="arithmatex">\( s = (1, 1) \)</span>, the reward function might be:</p>
+<div class="arithmatex">\[
+R((1, 1), \text{move right}, (2, 1)) = 10
+\]</div>
+<p>Indicating that moving to the goal state <span class="arithmatex">\( (2, 1) \)</span> yields a reward of 10.</p>
+<p>Conversely, if the agent moves to a dangerous state:</p>
+<div class="arithmatex">\[
+R((1, 1), \text{move left}, (0, 1)) = -5
+\]</div>
+<p>The agent receives a penalty of -5.</p>
+<h2 id="2-the-return-g_t-of-a-time-step-t">2. The Return <span class="arithmatex">\(G_t\)</span> of a time step <span class="arithmatex">\(t\)</span></h2>
 <p>We start by realising the </p>
 <div class="arithmatex">\[
 \begin{align*}
@@ -1364,7 +1830,7 @@ The accompanying reading of this lesson is <strong>chapter 3</strong> from our t
     G_t = R_{t+1} + \gamma G_{t+1}
 \end{equation}
 \]</div>
-<p><strong>The above equation is the most important equation that we will build all of our incremental updates in RL on it.</strong></p>
+<p><strong>The above equation is the most important equation in RL that the Bellman Equations are built on it. In turn, we build all of our incremental updates in RL on Bellman optimality equation</strong></p>
 <p>In the video below we talk more about this important concept.</p>
 <iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=e5a9acea-f258-4952-8e05-46f5ffb0c576&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="3. Returns 1"></iframe>
 
@@ -1397,21 +1863,6 @@ To calculate <span class="arithmatex">\(G_t\)</span> we will go backwards, i.e. 
 <p>The inequality <span class="arithmatex">\(\frac{R_{t+1}}{1 - \gamma} &gt;  G_{t+1}\)</span> (which also can be written as <span class="arithmatex">\(\frac{R_{t}}{1 - \gamma} &gt;  G_{t}\)</span>) must be satisfied whenever <span class="arithmatex">\(G_t\)</span> is monotonically decreasing, i.e. it is a necessary condition. We can show that this inequality is also a sufficient condition to prove that <span class="arithmatex">\(G_t\)</span> is monotonically decreasing by following the same logic backwards. Similar things can be proven for the non-strictly monotonically decreasing case i.e. when <span class="arithmatex">\(G_t\ge G_{t+1} \ge 0\)</span> <span class="arithmatex">\(\forall t\)</span>.</p>
 <p>Now when <span class="arithmatex">\(R_{t+1}=1\)</span> and <span class="arithmatex">\(\gamma=.9\)</span>, then by substituting these values in the inequality, we get that
 <span class="arithmatex">\(\frac{1}{1 - .9} &gt;  G_{t+1} \implies\)</span> <span class="arithmatex">\(10 &gt; G_{t+1}\)</span> </p>
-<p>We provided you with a simple code to in the worksheet below to demosntrate how the G changes with time steps.</p>
-<p><div class="highlight"><pre><span></span><code><span class="n">G</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">R</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">γ</span> <span class="o">=</span> <span class="mf">0.9</span>
-<span class="n">T</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">t</span><span class="o">&gt;</span> <span class="mi">70</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;G_&#39;</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="s1">&#39;=&#39;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
-    <span class="n">G</span> <span class="o">=</span> <span class="n">R</span> <span class="o">+</span> <span class="n">γ</span><span class="o">*</span><span class="n">G</span> 
-</code></pre></div>
-    G_ 100 = 0
-    G_ 99 = 1.0
-    G_ 98 = 1.9
-    G_ 97 = 2.71
-    G_ 96 = 3.439
-    ...</p>
 <h3 id="g_t-monotonicity-for-sparse-mdp-rewards"><span class="arithmatex">\(G_t\)</span> Monotonicity for Sparse MDP Rewards</h3>
 <p>For sparse positive end-of-episode rewards, the above strict inequality is not satisfied since <span class="arithmatex">\(R_t=0\)</span> <span class="arithmatex">\(\forall t&lt;T\)</span> and <span class="arithmatex">\(R_T&gt;0\)</span>.
 1. In this case, we can show that <span class="arithmatex">\(G_t \le G_{t+1}\)</span> i.e. <span class="arithmatex">\(G_t\)</span> it is a monotonically increasing function.
@@ -1437,20 +1888,7 @@ To calculate <span class="arithmatex">\(G_t\)</span> we will go backwards, i.e. 
 <p>The above suggests that for sparse end-of-episode rewards, decisions near the terminal state(s) have far more important effects on the learning process than earlier decisions. While for non-sparse positive rewards MDPs, earlier states have higher returns and hence more importance than near terminal states. </p>
 <p>If we want our agent to place more importance on earlier states, and near-starting state decisions, then we will need to utilise non-sparse (positive or negative) rewards. Positive rewards encourage repeating certain actions that maintain the stream of positive rewards for the agent. An example will be the pole balancing problem. Negative rewards, encourage the agent to speed up towards ending the episode so that it can minimise the number of negative rewards received.</p>
 <p>When we want our agent to place more importance for the decisions near the terminal states, then a sparse reward is more convenient. Sparse rewards are also more suitable for offline learning as they simplify the learning and analysis of the agent's behaviour. Non-sparse rewards suit online learning on the other hand, because they give a quick indication of the agent behaviour suitability and hence speed up the early population of the value function. </p>
-<p><div class="highlight"><pre><span></span><code><span class="n">G</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">γ</span> <span class="o">=</span> <span class="mf">0.9</span> <span class="c1"># change to 1 to see the effect</span>
-<span class="n">T</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span> <span class="c1"># note that if we use a forward loop, our calculations will be all wrong although the code runs</span>
-    <span class="k">if</span> <span class="n">t</span><span class="o">&gt;</span><span class="mi">70</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;G_&#39;</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="s1">&#39;=&#39;</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">γ</span><span class="o">**</span><span class="p">(</span><span class="n">T</span><span class="o">-</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="n">t</span><span class="o">&lt;</span><span class="n">T</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">R</span><span class="o">=</span><span class="mi">1</span> <span class="k">if</span> <span class="n">t</span><span class="o">==</span><span class="n">T</span> <span class="k">else</span> <span class="mi">0</span>
-    <span class="n">G</span> <span class="o">=</span> <span class="n">R</span> <span class="o">+</span> <span class="n">γ</span><span class="o">*</span><span class="n">G</span>
-</code></pre></div>
-    G_ 100 = 0 0
-    G_ 99 = 1.0 1.0
-    G_ 98 = 0.9 0.9
-    G_ 97 = 0.81 0.81
-    ...</p>
-<h2 id="the-expected-return-function-v">The Expected Return Function V</h2>
+<h2 id="2-the-expected-return-function-v">2. The Expected Return Function V</h2>
 <p>Once we move form an actul return that comes froma an actual experience at time step <span class="arithmatex">\(t\)</span> to try to estimate this return, we move to an expectaiton <em>function</em>. This function, traditionally called the value function v, is an important function. But now isntead of tying the value of the return to a particular experience at a step t which would be less useful in generalising the lessons an agent can learn from interacting with the environment, it makes more sense to ty this up to a certain state <span class="arithmatex">\(s\)</span>. This will allow the agent to learn a useful expectation of the return(discounted sum of rewards) for a particualr state when the agent follows a policy <span class="arithmatex">\(\pi\)</span>. I.e. we are now saying that a we will get an expected value of the return for a particular state under a policy <span class="arithmatex">\(\pi\)</span>. So we moved from subscripting by a step <span class="arithmatex">\(t\)</span> into passing a state <span class="arithmatex">\(s\)</span> to the function and subscripting by a policy.</p>
 <div class="arithmatex">\[
 \begin{equation}
@@ -1459,13 +1897,45 @@ To calculate <span class="arithmatex">\(G_t\)</span> we will go backwards, i.e. 
 \]</div>
 <p>Equation <span class="arithmatex">\(\eqref{eq:v}\)</span> gives the definition of v function.</p>
 <p>In the following video we tackle this idea in more details.</p>
-<p><iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=7b8178ed-68d1-4335-8ab7-3d81f214f362&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="940" height="200"frameborder="0" scrolling="no" allowfullscreen title="4. Returns Expectation and Sampling.mkv"></iframe></p>
-<h2 id="bellman-equation-for-v-and-q">Bellman Equation for V and Q</h2>
+<p><iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=7b8178ed-68d1-4335-8ab7-3d81f214f362&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="475" height="200"frameborder="0" scrolling="no" allowfullscreen title="4. Returns Expectation and Sampling.mkv"></iframe></p>
+<h2 id="2-the-bellman-equations">2. The Bellman Equations</h2>
+<p>The <strong>Bellman equations</strong> provide recursive relationships between the value of a state (or state-action pair) and the values of neighboring states. These equations are fundamental in solving MDPs and are the basis for many reinforcement learning algorithms.</p>
+<h3 id="21-bellman-equation-for-the-value-function">2.1 Bellman Equation for the Value Function</h3>
+<p>The <strong>value function</strong> <span class="arithmatex">\( V_{\pi}(s) \)</span> represents the expected return starting from state <span class="arithmatex">\( s \)</span> and following policy <span class="arithmatex">\( \pi \)</span>. The Bellman equation for <span class="arithmatex">\( V_{\pi}(s) \)</span> is:</p>
+<div class="arithmatex">\[
+V_{\pi}(s) = \mathbb{E}_{\pi}\left[ R(s, a, s') + \gamma \sum_{s'} P(s' | s, a) V_{\pi}(s') \right]
+\]</div>
+<p>Where:
+- <span class="arithmatex">\( V_{\pi}(s) \)</span> is the value of state <span class="arithmatex">\( s \)</span> under policy <span class="arithmatex">\( \pi \)</span>,
+- <span class="arithmatex">\( R(s, a, s') \)</span> is the immediate reward for transitioning from <span class="arithmatex">\( s \)</span> to <span class="arithmatex">\( s' \)</span> after action <span class="arithmatex">\( a \)</span>,
+- <span class="arithmatex">\( \gamma \)</span> is the discount factor, and
+- <span class="arithmatex">\( P(s' | s, a) \)</span> is the transition probability.</p>
+<h3 id="22-bellman-equation-for-the-q-function">2.2 Bellman Equation for the Q-Function</h3>
+<p>The <strong>Q-function</strong> <span class="arithmatex">\( Q_{\pi}(s, a) \)</span> represents the expected return after taking action <span class="arithmatex">\( a \)</span> in state <span class="arithmatex">\( s \)</span> and then following policy <span class="arithmatex">\( \pi \)</span>. The Bellman equation for <span class="arithmatex">\( Q_{\pi}(s, a) \)</span> is:</p>
+<div class="arithmatex">\[
+Q_{\pi}(s, a) = \mathbb{E}\left[ R(s, a, s') + \gamma \sum_{s'} P(s' | s, a) V_{\pi}(s') \right]
+\]</div>
+<p>Where:
+- <span class="arithmatex">\( Q_{\pi}(s, a) \)</span> is the action-value function,
+- The terms <span class="arithmatex">\( R(s, a, s') \)</span>, <span class="arithmatex">\( \gamma \)</span>, and <span class="arithmatex">\( P(s' | s, a) \)</span> are the same as in the value function equation.</p>
 <iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=6d6d9455-7174-447a-8bcb-eceaa51a4af5&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="5. Bellman v.mkv"></iframe>
 
 <iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=3a18cbb0-6960-42c1-bcf4-8e0893c09c89&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200"frameborder="0" scrolling="no" allowfullscreen title="6. Bellman q simple.mkv"></iframe>
 
-<h2 id="bellman-optimality-equations-for-v-and-q">Bellman Optimality Equations for V and Q</h2>
+<h3 id="23-bellman-optimality-equations">2.3 Bellman Optimality Equations</h3>
+<p>The <strong>Bellman optimality equations</strong> describe the relationship between the optimal value function <span class="arithmatex">\( V^*(s) \)</span> or the optimal Q-function <span class="arithmatex">\( Q^*(s, a) \)</span> and the transition and reward dynamics. These equations are used to compute the optimal policy that maximizes the expected return.</p>
+<h4 id="bellman-optimality-equation-for-the-value-function">Bellman Optimality Equation for the Value Function:</h4>
+<div class="arithmatex">\[
+V^*(s) = \max_a \mathbb{E}\left[ R(s, a, s') + \gamma \sum_{s'} P(s' | s, a) V^*(s') \right]
+\]</div>
+<h4 id="bellman-optimality-equation-for-the-q-function">Bellman Optimality Equation for the Q-Function:</h4>
+<div class="arithmatex">\[
+Q^*(s, a) = \mathbb{E}\left[ R(s, a, s') + \gamma \sum_{s'} P(s' | s, a) \max_{a'} Q^*(s', a') \right]
+\]</div>
+<p>Where:
+- <span class="arithmatex">\( V^*(s) \)</span> is the optimal value function,
+- <span class="arithmatex">\( Q^*(s, a) \)</span> is the optimal Q-function,
+- The <strong>max</strong> operator ensures that the agent chooses the action <span class="arithmatex">\( a \)</span> that maximizes the expected return.</p>
 <iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=b73eab99-7af2-4b9e-8909-19492615d273&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="7. Bellman Optimality 1.mkv"></iframe>
 
 <iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=8d89893b-6e99-4380-a31e-93e2974cd04a&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="7. Bellman Optimality 2.mkv"></iframe>
@@ -1474,30 +1944,21 @@ To calculate <span class="arithmatex">\(G_t\)</span> we will go backwards, i.e. 
 <p><em>Exercise 1</em>: If you realise there is a missing symbol in the [video: Bellman Equation for v] last equations, do you know what it is and where it has originally come from?</p>
 <p><em>Exercise 2</em>: Can you derive Bellman Optimality Equation for <span class="arithmatex">\(q(s,a)\)</span> from first principles?</p>
 <p><a href="https://leeds365-my.sharepoint.com/:v:/g/personal/scsaalt_leeds_ac_uk/EVBv-P5S4_VKqFt_E0vikIUBdpV1BZX2V-IDM3ROXDDV4A?e=YQQchV">video:  Bellman Optimality for q from first principles</a></p>
-<h2 id="grid-world-environments">Grid World Environments</h2>
-<p>Ok, so now we are ready to tackle the practicals, please go ahead and download the worksheet and run and experiement with the provided code to build some grid world environments and visualise them and make a simple robot agent takes some steps/actions within these environments!.</p>
-<p>You will need to download a python library (Grid.py) that we bespokley developed to help you run RL algorithms on toy problems and be abel to easily visualise them as needed, the code is optimised to run efficiently and you will be able to use these environmnets to test different RL algorithms extensively. Please place the library in the same directory of the worksheet. In general it would be a good idea to place all worksheets and libraries provided in one directory. This will make importing and runing code easier and more streamlined.</p>
-<p>In a grid world, we have a set of cells that the agent can move between them inside a box. The agent can move left, right, up and down. We can also allow the agent to move diagonally, but this is uncommon. </p>
-<p>We needed to be as efficient as possible, and hence we have chosen to represent each state by its count, where we count from the bottom left corner up to the right top corner, and we start with 0 up to nS-1 where nS is the number of states. This will allow us to streamline the process of accessing and storing a state and will be of at most efficiency. We also deal with actions similarly, i.e. each action of the nA actions is given an index 0..nA-1. For the usual grid, this means 0,1,2,3 for actions left, right, up and down. We represent a 2-d grid by a 1-d array, and so care must be taken on how the agent moves between cells. </p>
-<p>Moving left or right seems easy because we can add or subtract from the <em>current</em> state. But when the agent is on the edge of the box, we cannot allow for an action that takes it out of the box. So if the agent is on the far right, we cannot allow it to go further to the right. To account for this issue, we have written a valid() function to validate an action. Moving up and down is similar, but we need to add and subtract a full row, which is how many columns we have in our grid. the valid() function checks for the current state and what would be the next state, and it knows that an agent will overstep the boundary as follows: if s%cols!=0, this means that the agent was not on the left edge and executing a right action (s+a)%cols==0 will take it to the left edge. This means it was on the right edge and wanted to move off this right edge. Other checks are similar. We have also accounted for moving diagonally so the agent will not overstep the boundaries.</p>
-<p>We have also accounted for different reward schemes that we might want to use later in other lessons. These are formulated as an array of 4 elements [intermediate, goal1, goal2, cliff] the first reward represents the reward the agent obtains if it is on any intermediate cell. Intermediate cells are non-terminal cells. Goals or terminal states are those that a task would be completed if the agent steps into them. By setting the goals array, we can decide which cells are terminal/goals. As we can see, there are two goals, this will allow us to deal with all the classical problems we will tackle in our RL treatments, but we could have set up more. So, our reward array's second and third elements are for the goals. The last entry is for a cliff. A cliff cell is a special type of non-terminal cell where the agent will emulate falling off a cliff and usually is given a high negative reward and then will be hijacked and put in its start position when it steps into these types of cells. These types of cells are non-terminal in the sense that the agent did not achieve the task when it went to them, but they provoke a reset of the agent position with a large negative reward.</p>
-<p>The most important function in our class is the step(a) function. An agent will take a specific action in the environment via this function. Via this function, we return the reward from our environment and a flag (done) indicating whether the task is accomplished. This makes our environment compatible with the classic setup of an OpenAI Gym Atari games, which we deal with towards the end of our RL treatment.</p>
+<h3 id="summary">Summary</h3>
+<p>The <strong>Markov Decision Process (MDP)</strong> framework models decision-making problems where an agent interacts with an environment. It includes <strong>transition dynamics</strong> <span class="arithmatex">\( P(s' | s, a) \)</span> and <strong>reward dynamics</strong> <span class="arithmatex">\( R(s, a, s') \)</span>, which describe the behavior of the environment. The <strong>Bellman equations</strong> provide recursive relationships for computing the value of states or actions, while the <strong>Bellman optimality equations</strong> help find the optimal policy. Properties like the <strong>Markov Property</strong>, <strong>stationarity</strong>, and the stochastic nature of the dynamics are key factors in MDPs. Understanding these dynamics and equations is central to reinforcement learning algorithms designed to find optimal decision-making strategies.</p>
+<p><strong>Further Reading</strong>:
+For further info refer to chapter 3 of the Sutton and Barto <a href="http://incompleteideas.net/book/RLbook2020.pdf">book</a>. </p>
 <h2 id="your-turn">Your turn</h2>
 <p>Go ahead and play around with some grid world environment by executing and experiementing with the code in the following worksheet.</p>
 <!-- <a href="Grid.py" download> Grid world library</a> -->
 
 <p><a href="../../workseets/worksheet3.ipynb">worksheet3</a></p>
-<h2 id="conclusion">Conclusion</h2>
-<p>In this lesson, we covered the basics of RL functions and concepts that we will utilise in other lessons. We also provided you with a environment that you can directly utilise to build simple grid world environments. Please note that you are not required to study the Gris.py file or understand how the grid is programmatically built, but you need to understand how it operates.!</p>
 
 
 
 
 
 
-
-  
-  
 
 
 
