@@ -351,7 +351,15 @@ class MRP(MRP):
         
 
 # --------------------------------------- Multi-step 🐾 MRP-------------------------------------------
+
 '''
+
+    We develop our MRP class to accommodate waiting for n-1 steps before obtaining the $G_{t:t+n}$. 
+    This is necessary to be able to implement algorithms that incorporate n-steps rewards instead 
+    of the latest rewards. In each step, we must also create a G function to obtain the $G_{t:t+n}$.
+    Finally, we would need to alter our stopping criteria to wait for extra n-1 steps at the end 
+    to ensure we update the latest n-1 state values since we are always lagging n-1 steps during 
+    the episode.
     all other *prediction algorithms* must inherit this class
 '''
 class MRP(MRP):

@@ -1522,9 +1522,9 @@ The answer is yes, and the method is called Actor-critic, which does that exactl
 <p>In this lesson, we have further developed our understanding of important and prominent RL online algorithms that are widely used, all based on the value iteration idea. I.e., we keep improving our policy and refining our value-function iteratively in each step until convergence. All of our algorithms are based on the Temporal Difference method. TD uses bootstrapping in its update; instead of using a true return of a state, it uses the current reward + its own estimation of the return for the next state. It is quite surprising to see how well TD works in practice. TD has been proven to converge to a good solution under some basic conditions regarding the learning rate. In practice, however, we assign a fixed small learning rate that works just fine. It is desirable that the learning rate is not decayed when the environment’s dynamics are expected to change.
 We have further used TD update in a few control algorithms. Most notable are the Sarsa and Q-learning. The first is an on-policy, while the latter is an off-policy control algorithm. We have compared all algorithms on different problems, studied their strengths and weaknesses, and how they are expected to behave on a certain problem.</p>
 <p><strong>Further Reading</strong>:
-For further reading you can consult chapter 6 from the Sutton and Barto <a href="http://incompleteideas.net/book/RLbook2020.pdf">book</a>.</p>
+For further reading you refer chapter 6 from the Sutton and Barto <a href="http://incompleteideas.net/book/RLbook2020.pdf">book</a>.</p>
 <h2 id="your-turn">Your turn</h2>
-<p>Now it is time to experiemnt further and interact with code in <a href="../../workseets/worksheet8.ipynb">worksheet8</a>.</p>
+<p>Now it is time to experiment further and interact with code in <a href="../../workseets/worksheet8.ipynb">worksheet8</a>.</p>
 
 
 
