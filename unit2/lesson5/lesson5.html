@@ -1240,13 +1240,13 @@ For These problems we will design Value Iteration methods which utilise the idea
 <p><span class="arithmatex">\(
 \begin{array}{ll}
 \textbf{Algorithm: }  \text{Policy Evaluation} \\
-\textbf{Input: }  \text{MDP } (S, A, P, R, \gamma), \text{ Policy } \pi, \text{ Threshold } \theta \\
+\textbf{Input: }  \text{MDP } (S, A, R, p, \gamma), \text{ Policy } \pi, \text{ Threshold } \theta \\
 \textbf{Initialize: }  V(s) \leftarrow 0, \forall s \in S \\
 \textbf{Repeat:}  \\
 \quad \Delta \leftarrow 0 \\
 \quad \textbf{For all } s \in S:  \\
 \quad \quad v \leftarrow V(s) \\
-\quad \quad V(s) \leftarrow \sum_{a \in A} \pi(a | s) \sum_{s' \in S} P(s' | s, a) [R(s, a, s') + \gamma V(s')] \\
+\quad \quad V(s) \leftarrow \sum_{a \in A} \pi(a | s) \sum_{s', r} p(s',r | s, a) [r + \gamma V(s')] \\
 \quad \quad \Delta \leftarrow \max(\Delta, |v - V(s)|) \\
 \textbf{Until:}  \Delta &lt; \theta \\
 \textbf{Return:}  V^{\pi}(s), \forall s \in S
@@ -1285,7 +1285,7 @@ Belwo we show the pseduocode for thsi algorithm.</p>
 \quad \text{Policy Evaluation (using above algorithm)} \\
 \quad \text{Policy Improvement:} \\
 \quad \quad \textbf{For all } s \in S: \\
-\quad \quad \quad \pi'(s) \leftarrow \arg\max_a \sum_{s'} P(s' | s, a) [R(s, a, s') + \gamma V(s')] \\
+\quad \quad \quad \pi'(s) \leftarrow \arg\max_a \sum_{s', r} p(s',r | s, a) [r + \gamma V(s')] \\
 \quad \quad \quad \textbf{If } \pi'(s) \neq \pi(s) \text{ then policy is not stable} \\
 \textbf{Until:} \pi \text{ is stable} \\
 \textbf{Return:} \pi^*, V^{\pi^*}
@@ -1312,13 +1312,13 @@ Below we show this algorithm. </p>
 <p><span class="arithmatex">\(
 \begin{array}{ll}
 \textbf{Algorithm: }  \text{Value Iteration} \\
-\textbf{Input: } \text{MDP } (S, A, P, R, \gamma), \text{ Threshold } \theta \\
+\textbf{Input: } \text{MDP } (S, A, R, p, \gamma), \text{ Threshold } \theta \\
 \textbf{Initialize: } V(s) \leftarrow 0, \forall s \in S \\
 \textbf{Repeat:}  \\
 \quad \Delta \leftarrow 0 \\
 \quad \textbf{For all } s \in S:  \\
 \quad \quad v \leftarrow V(s) \\
-\quad \quad V(s) \leftarrow \max_a \sum_{s'} P(s' | s, a) [R(s, a, s') + \gamma V(s')] \\
+\quad \quad V(s) \leftarrow \max_a \sum_{s', r} p(s',r | s, a) [r + \gamma V(s')] \\
 \quad \quad \Delta \leftarrow \max(\Delta, |v - V(s)|) \\
 \textbf{Until:}  \Delta &lt; \theta \\
 \textbf{Return:}  V^{*}(s), \forall s \in S
