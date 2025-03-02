@@ -1,7 +1,7 @@
 
 '''
-   Author: Abdulrahman Altahhan,  2025.
-   version: 3.1
+   Author: Abdulrahman Altahhan, 2025.
+   version: 3.2
 
     This library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries 
     are written from scratch using standard Python libraries (numpy, matplotlib etc.).
