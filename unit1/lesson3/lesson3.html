@@ -1837,23 +1837,28 @@ G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \dots + \gamma^{T-t-1} R_T
 
 <p>For algorithms like <strong>Value Iteration</strong>, it is important that the MDP is <strong>irreducible</strong> (all states are reachable from any other state) and <strong>aperiodic</strong> (there are no cycles of fixed lengths that prevent convergence).</p>
 <h2 id="the-bellman-equations">The Bellman Equations</h2>
-<p>The <strong>Bellman equations</strong> provide recursive relationships between the value of a state (or state-action pair) and the values of neighboring states. These equations are fundamental in solving MDPs and are the basis for many reinforcement learning algorithms.</p>
-<!-- ### Bellman Equation for the Value Function -->
-
+<p>The Bellman equations provide recursive relationships between the value of a state (or state-action pair) and the values of neighboring states. These equations are fundamental in solving MDPs and are the basis for many reinforcement learning algorithms.</p>
 <p>The <strong>value function</strong> <span class="arithmatex">\( V_{\pi}(s) \)</span> represents the expected return starting from state <span class="arithmatex">\( s \)</span> and following policy <span class="arithmatex">\( \pi \)</span>. The Bellman equation for <span class="arithmatex">\( V_{\pi}(s) \)</span> is:</p>
 <div class="arithmatex">\[
-V_{\pi}(s) = \mathbb{E}_{\pi}\left[ r(s, a, s') + \gamma \sum_{s'} p(s' | s, a) V_{\pi}(s') \right]
+V^\pi(s) = \mathbb{E}_\pi \left[ R_{t+1} + \gamma V^\pi(S_{t+1}) \mid S_t = s \right]
 \]</div>
+<p>By unfolding the expectation operator with the help of the dynamics and the policy <span class="arithmatex">\(\pi\)</span> we have:</p>
+<div class="arithmatex">\[
+V^\pi(s) = \sum_{a} \pi(a \mid s) \sum_{s', r} p(s', r \mid s, a) \left[ r + \gamma V^\pi(s') \right]
+\]</div>
+<p>This equation expresses the expected value of a state under a policy <span class="arithmatex">\(\pi\)</span> by summing over all actions <span class="arithmatex">\(a\)</span>, next states <span class="arithmatex">\(s'\)</span> and rewards <span class="arithmatex">\(r\)</span>, weighted by their respective probabilities.</p>
 <p>Where:
 - <span class="arithmatex">\( V_{\pi}(s) \)</span> is the value of state <span class="arithmatex">\( s \)</span> under policy <span class="arithmatex">\( \pi \)</span>,
 - <span class="arithmatex">\( r(s, a, s') \)</span> is the immediate reward for transitioning from <span class="arithmatex">\( s \)</span> to <span class="arithmatex">\( s' \)</span> after action <span class="arithmatex">\( a \)</span>,
 - <span class="arithmatex">\( \gamma \)</span> is the discount factor, and
 - <span class="arithmatex">\( p(s' | s, a) \)</span> is the transition probability.</p>
-<!-- ### Bellman Equation for the Q-Function -->
-
 <p>The <strong>Q-function</strong> <span class="arithmatex">\( Q_{\pi}(s, a) \)</span> represents the expected return after taking action <span class="arithmatex">\( a \)</span> in state <span class="arithmatex">\( s \)</span> and then following policy <span class="arithmatex">\( \pi \)</span>. The Bellman equation for <span class="arithmatex">\( Q_{\pi}(s, a) \)</span> is:</p>
 <div class="arithmatex">\[
-Q_{\pi}(s, a) = \mathbb{E}\left[ r(s, a, s') + \gamma \sum_{s'} p(s' | s, a) V_{\pi}(s') \right]
+Q^\pi(s, a) = \mathbb{E}_\pi \left[ R_{t+1} + \gamma Q^\pi(S_{t+1}, A_{t+1}) \mid S_t = s, A_t = a \right]
+\]</div>
+<p>By incorporating the expectation over the policy <span class="arithmatex">\(\pi\)</span>for future actions, we get:</p>
+<div class="arithmatex">\[
+Q^\pi(s, a) = \sum_{s', r} p(s', r \mid s, a) \left[ r + \gamma \sum_{a'} \pi(a' \mid s') Q^\pi(s', a') \right]
 \]</div>
 <p>Where:
 - <span class="arithmatex">\( Q_{\pi}(s, a) \)</span> is the action-value function,
@@ -1865,15 +1870,21 @@ Q_{\pi}(s, a) = \mathbb{E}\left[ r(s, a, s') + \gamma \sum_{s'} p(s' | s, a) V_{
 <h3 id="bellman-optimality-equations">Bellman Optimality Equations</h3>
 <p>The <strong>Bellman optimality equations</strong> describe the relationship between the optimal value function <span class="arithmatex">\( V^*(s) \)</span> or the optimal Q-function <span class="arithmatex">\( Q^*(s, a) \)</span> and the transition and reward dynamics. These equations are used to compute the optimal policy that maximizes the expected return.</p>
 <div class="arithmatex">\[
-    V^*(s) = \max_a \mathbb{E}\left[ r(s, a, s') + \gamma \sum_{s'} p(s' | s, a) V^*(s') \right]
+V_*(s) = \max_{a} \mathbb{E} \left[ R_{t+1} + \gamma V_*(S_{t+1}) \mid S_t = s, A_t = a \right]
 \]</div>
 <div class="arithmatex">\[
-    Q^*(s, a) = \mathbb{E}\left[ r(s, a, s') + \gamma \sum_{s'} p(s' | s, a) \max_{a'} Q^*(s', a') \right]
+Q_*(s, a) = \mathbb{E} \left[ R_{t+1} + \gamma \max_{a'} Q_*(S_{t+1}, a') \mid S_t = s, A_t = a \right]
 \]</div>
-<p>Where:
-- <span class="arithmatex">\( V^*(s) \)</span> is the optimal value function,
-- <span class="arithmatex">\( Q^*(s, a) \)</span> is the optimal Q-function,
-- The <strong>max</strong> operator ensures that the agent chooses the action <span class="arithmatex">\( a \)</span> that maximizes the expected return.</p>
+<p>By substituting for the expectation operator, we have:</p>
+<div class="arithmatex">\[
+V_*(s) = \max_{a} \sum_{s', r} p(s', r \mid s, a) \left[ r + \gamma V_*(s') \right]
+\]</div>
+<div class="arithmatex">\[
+Q_*(s, a) = \sum_{s', r} p(s', r \mid s, a) \left[ r + \gamma \max_{a'} Q_*(s', a') \right]
+\]</div>
+<ul>
+<li>The <strong>max</strong> operator ensures that the agent chooses the action <span class="arithmatex">\( a \)</span> that maximizes the expected return.</li>
+</ul>
 <iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=b73eab99-7af2-4b9e-8909-19492615d273&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="7. Bellman Optimality 1.mkv"></iframe>
 
 <iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=8d89893b-6e99-4380-a31e-93e2974cd04a&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="7. Bellman Optimality 2.mkv"></iframe>
@@ -1886,7 +1897,7 @@ Q_{\pi}(s, a) = \mathbb{E}\left[ r(s, a, s') + \gamma \sum_{s'} p(s' | s, a) V_{
 
 <h2 id="grid-world-environments">Grid World Environments</h2>
 <p>Ok, so now we are ready to tackle the practicals, please go ahead and download the worksheet and run and experiement with the provided code to build some grid world environments and visualise them and make a simple robot agent takes some steps/actions within these environments!.</p>
-<p>You will need to download a python library (Grid.py) that we bespokley developed to help you run RL algorithms on toy problems and be abel to easily visualise them as needed, the code is optimised to run efficiently and you will be able to use these environmnets to test different RL algorithms extensively. Please place the library in the same directory of the worksheet. In general it would be a good idea to place all worksheets and libraries provided in one directory. This will make importing and runing code easier and more streamlined.</p>
+<p>You will need to download a python library (grid.py) that we bespokley developed to help you run RL algorithms on toy problems and be abel to easily visualise them as needed, the code is optimised to run efficiently and you will be able to use these environmnets to test different RL algorithms extensively. Please place the library in the same directory of the worksheet. In general it would be a good idea to place all worksheets and libraries provided in one directory. This will make importing and runing code easier and more streamlined.</p>
 <h3 id="summary">Summary</h3>
 <p>The Markov Decision Process (MDP) framework models decision-making problems where an agent interacts with an environment. It includes dynamics <span class="arithmatex">\( p(s', r | s, a) \)</span>, which define the probability of transitioning to state <span class="arithmatex">\( s' \)</span> and receiving reward <span class="arithmatex">\( r \)</span> given that the agent is in state <span class="arithmatex">\( s \)</span> and takes action <span class="arithmatex">\( a \)</span>. The Bellman equations provide recursive relationships for computing the value of states or actions, while the Bellman optimality equations help find the optimal policy. Key properties of MDPs include the Markov Property, stationarity, and the stochastic nature of the dynamics. Understanding these dynamics and equations is fundamental to reinforcement learning algorithms designed to find optimal decision-making strategies.  </p>
 <p><strong>Further Reading</strong>:

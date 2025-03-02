@@ -1257,11 +1257,11 @@ Note that <span class="arithmatex">\(\gamma\)</span> must be <span class="arithm
 <!-- This condition can be relaxed when we move to sampling instead of dynamic programming in the next consequent lessons. -->
 
 <h2 id="policy-improvement-theorem">Policy Improvement Theorem</h2>
-<p>The <strong>Policy Improvement Theorem</strong> states that if for all states:
-[
-Q_{\pi}(s, a^<em>) &gt; V_{\pi}(s)
-]
-where <span class="arithmatex">\( a^* = \arg\max_a Q_{\pi}(s, a) \)</span>, then choosing <span class="arithmatex">\( a^* \)</span> instead of the action dictated by <span class="arithmatex">\( \pi \)</span> results in a strictly better policy. This theorem justifies **Policy Iteration*</em>.</p>
+<p>The <strong>Policy Improvement Theorem</strong> states that if for all states:</p>
+<div class="arithmatex">\[
+Q_{\pi}(s, a^*) &gt; V_{\pi}(s)
+\]</div>
+<p>where <span class="arithmatex">\( a^* = \arg\max_a Q_{\pi}(s, a) \)</span>, then choosing <span class="arithmatex">\( a^* \)</span> instead of the action dictated by <span class="arithmatex">\( \pi \)</span> results in a strictly better policy. This theorem justifies <strong>Policy Iteration</strong>.</p>
 <p>Based on this important theorem, we can then devise an algorithm that improve our policy. A natural way to do this to first evaluate the current policy then improve it, then evaluate the improved policy and then improve it, and so on until the policy stabilise which means we reached an optimal policy that cannot be improved any more. This idea of <em>iteratively</em> improving the policy constitute the base for two algorithms that we cover, Policy Iteration and Value Iteration.</p>
 <h2 id="policy-iteration">Policy Iteration</h2>
 <p>Now that we know how to evaluate a policy, it is time to improve it. Policy iteration is a fundamental algorithm. It explicitly and iteratively tries first to reach a highly accurate estimate of the value function of the current policy, then it tries to improve the policy by maximising the probability of greedy actions as per the current value function. Evaluating the current policy fully and then improving it via policy iteration can be inefficient, but it shows the fundamental ideas behind reinforcement learning. </p>
@@ -1269,9 +1269,9 @@ where <span class="arithmatex">\( a^* = \arg\max_a Q_{\pi}(s, a) \)</span>, then
 <ol>
 <li><strong>Policy Evaluation:</strong> Compute <span class="arithmatex">\( V^{\pi} \)</span> using the policy evaluation algorithm.</li>
 <li><strong>Policy Improvement:</strong> Improve the policy by acting greedily with respect to <span class="arithmatex">\( V^{\pi} \)</span>:
-   [
+   <span class="arithmatex">\(
    \pi'(s) = \arg\max_a \sum_{s'} P(s' | s, a) [R(s, a, s') + \gamma V(s')]
-   ]</li>
+   \)</span></li>
 <li>Repeat until <span class="arithmatex">\( \pi \)</span> converges to <span class="arithmatex">\( \pi^* \)</span>.</li>
 </ol>
 <p>So as you can see the policy improvement step is based on <em>Bellman Optimality equation</em>.
