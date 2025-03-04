@@ -1112,7 +1112,6 @@ By the end of this unit, you will be able to:  </p>
 <li>understand how to use the ideas of TD to extend it to a control method such as Sarsa and Q-learning</li>
 </ol>
 <p>In this lesson, we cover the Temporal Difference learning method. TD is one of the fundamental ideas in RL. It uses bootstrapping to improve its predictions. The idea behind bootstrapping is to use (own estimation) to improve (own estimation) with an indication from the ground truth in the form of a reward. This sound surprising since we are not using a direct ground truth to revert to when we are improving the prediction. However, it turns out that there are theoretical guarantees that the method will converge to a solution that is usually <em>close to optimal</em>. The one constant stream of ground truth the agent keeps receiving is the rewards in each state. One of the major strengths of TD is that it can be used online without having to wait till the end of the episode as we did in the Monte Carlo methods. This also makes it extremely efficient and allows it to converge faster <em>in practice *than MC. TD uses ideas similar to what we did in GPI: slightly improving the prediction and *not</em> waiting until everything is clear (at the end of an episode). This idea is similar to what we did in stochastic mini-batch updates in ML. We will call it eagerness to learn. I.e., to grab whatever information is available and whenever it becomes available but at the same time keep accumulating a stock of this information to help us improve and sharpen our prediction. We will then move into designing control algorithms that depend on TD, we will tackle old and new algorithms, including Sarsa, Expected Sarsa, Q-learning and double Q-learning, and we will test them extensively using the infrastructure that we developed in the previous lesson. Finally, we conclude by studying a policy gradient algorithm for control, namely actor-critic, that depends on TD and REINFORCE.</p>
-<p>As usual, we will take a practical/pragmatic approach to cover the material and leave the theory to the book, which is well covered. Note that there are far more rigorous books that take special care for the mathematics guarantees behind the ideas of RL, which are not covered in our textbook <a href="http://incompleteideas.net/book/RLbook2020.pdf">Introduction to Reinforcement Learning</a> but can be found in operation research books such as <a href="http://web.mit.edu/jnt/www/ndp.html">Neuro-Dynamic Programming</a>.</p>
 <p><strong>Plan</strong>
 As usual, in general there are two types of RL problems that we will attempt to design methods to deal with 
 1. Prediction problem
@@ -1123,14 +1122,89 @@ For These problems we will design Value Iteration methods which utilise the idea
 </ol>
 <p>Ok, so we start by implementing the TD algorithm. Due to the way we structured our code and classes, it is relatively simple and straightforward to define any online and offline methods. TD is an online method that will be called in <em>each step during an episode</em>. We, therefore, can turn off the storage because we do not need it, but leaving it will not hurt the grid problems we are tackling. It will consume some memory and a few extra milliseconds of processing. For more difficult problems, we need to utilise the memory to train anyway, as we shall see in the Application unit.</p>
 <p>We also would need to pass a learning step as we did for the MC algorithm. A learning step dictates how much error percentage will be considered when we update the value function. Sometimes we could go all the way α=1 when the algorithm is tabular, and the problem is simple. For most of the problems and algorithms we tackle, however, this is not desirable, and we set α=.1 or less to ensure the algorithm performs well on the common states and is acceptable on less common states. MC, however, is particularly sensitive towards this α, and we often would need to set it to smaller values such as .01.</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TD</span><span class="p">(</span><span class="n">MRP</span><span class="p">):</span>
-    <span class="c1"># def stop_exp(self):</span>
-
+<h2 id="temporal-difference-td-learning-prediction">Temporal-Difference (TD) Learning (prediction)</h2>
+<p>Eralier in a previous lesson, we saw how constant-<span class="arithmatex">\(\alpha\)</span> MC prediction method, have an update rule of the form:</p>
+<div class="arithmatex">\[
+    V(S_t) \leftarrow V(S_t) + \alpha \left( G(S_t) - V(S_t) \right)
+\]</div>
+<p><em>The main idea of several well-known RL algorithms is to replace <span class="arithmatex">\(G_t\)</span> with an estimation.</em> Temporal-Difference (TD) learning is a key reinforcement learning method that updates value estimates based on <em>bootstrapping</em>, meaning it uses its own current estimates to update future predictions. The TD methods updates the state-value function <span class="arithmatex">\(V(s)\)</span> using one-step lookahead, i.e it replaces <span class="arithmatex">\(G_t\)</span> by <span class="arithmatex">\(R_{t+1} + \gamma V(S_{t+1})\)</span> in the constant-<span class="arithmatex">\(\alpha\)</span> MC update rule: </p>
+<div class="arithmatex">\[
+    V(S_t) \leftarrow V(S_t) + \alpha \left( R_{t+1} + \gamma V(S_{t+1}) - V(S_t) \right)
+\]</div>
+<p>Where:</p>
+<ul>
+<li><span class="arithmatex">\( \alpha \)</span> is the step-size (learning rate),</li>
+<li><span class="arithmatex">\( r_{t+1} \)</span> is the reward received after taking action in <span class="arithmatex">\( s_t \)</span>,</li>
+<li><span class="arithmatex">\( \gamma \)</span> is the discount factor,</li>
+<li><span class="arithmatex">\( V(s_{t+1}) \)</span> is the estimate of the next state's value.</li>
+</ul>
+<p>Unlike Monte Carlo (MC) methods, which require complete episodes (including constant <span class="arithmatex">\(\alpha\)</span> MC), TD does not require a complete episode, like constant <span class="arithmatex">\(\alpha\)</span> MC, TD methods update values <em>incrementally</em> after each time step, making them more efficient for continuous or long-horizon problems. The replacement of <span class="arithmatex">\(G_t\)</span> sample with an estimate leads to infusing bias into TD, but the use of bootstrapping leads to a lower variance. TD tends to be faster than MC and more efficient, so the trad-off of the bias-variance is well worth it. Add to that its ability to truely incrmentally update the estimate as <em>rewards</em> are collected.</p>
+<p>Below we show the pseudocode for the TD algorithm.</p>
+<p><span class="arithmatex">\(
+\begin{array}{ll}
+\textbf{Algorithm: } \text{TD(0) Prediction} \\
+\textbf{Input: } \text{Policy } \pi, \text{ step-size } \alpha, \text{ discount factor } \gamma \\
+\textbf{Initialize: }  V(s) \leftarrow 0, \forall s \in S \\
+\textbf{Loop for each episode:} \\
+\quad \text{Initialize } s \\
+\quad \textbf{Loop for each step } t \textbf{ until episode ends:} \\
+\quad \quad \text{Take action } a \sim \pi(s), \text{ observe } r, s' \\
+\quad \quad V(s) \leftarrow V(s) + \alpha \left( r + \gamma V(s') - V(s) \right) \\
+\quad \quad s \leftarrow s' \\
+\textbf{Return: } V(s), \forall s \in S \\
+\end{array}
+\)</span></p>
+<hr />
+<h2 id="td-vs-monte-carlo-mc">TD vs. Monte Carlo (MC)</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Temporal-Difference (TD)</th>
+<th>Monte Carlo (MC)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Update</strong></td>
+<td>After each time step</td>
+<td>After full episode</td>
+</tr>
+<tr>
+<td><strong>Exploration Requirement</strong></td>
+<td>Can learn from incomplete episodes</td>
+<td>Requires complete episodes</td>
+</tr>
+<tr>
+<td><strong>Variance</strong></td>
+<td>Lower variance due to bootstrapping</td>
+<td>Higher variance since full returns are used</td>
+</tr>
+<tr>
+<td><strong>Bias</strong></td>
+<td>More biased as it relies on current estimates</td>
+<td>Less biased since it uses true returns</td>
+</tr>
+<tr>
+<td><strong>Sample Efficiency</strong></td>
+<td>More efficient, updates per time step</td>
+<td>Less efficient, updates once per episode</td>
+</tr>
+<tr>
+<td><strong>Suitability</strong></td>
+<td>Better for continuous/long tasks</td>
+<td>Works well for episodic tasks</td>
+</tr>
+</tbody>
+</table>
+<p>TD methods blend <strong>bootstrapping (like Dynamic Programming)</strong> and <strong>sampling (like MC)</strong>, making them a flexible and powerful approach for reinforcement learning.</p>
+<p>Below we provide you with the Python code to implement this algorithm.</p>
+<p><div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TD</span><span class="p">(</span><span class="n">MRP</span><span class="p">):</span>
     <span class="c1"># ----------------------------- 🌖 online learning ----------------------    </span>
     <span class="k">def</span><span class="w"> </span><span class="nf">online</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">rn</span><span class="p">,</span><span class="n">sn</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="n">rn</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">sn</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">s</span><span class="p">])</span>
 </code></pre></div>
-<p>Note how we multiplied the value <span class="arithmatex">\(V[s_{t+1}]\)</span> by (1- done). This is to ensure that when the episode is finished (ex., the agent is at goal or has achieved the task), we want only the final reward <span class="arithmatex">\(r_{t+1}\)</span> to participate in the update and not <span class="arithmatex">\(V[s_{t+1}]\)</span>. This multiplication will appear in all of the updates we use. This saves us from having to treat the goal states in a special way on the environment level (ex. we could have set the value <span class="arithmatex">\(V[s_{t+1}]\)</span>=0 by checking if <span class="arithmatex">\(s_{t+1}==goal\)</span> or by checking done in the environment or by treating done inside the s_() function when we use function approximation in later lessons). We felt that this would disguise this information, and it is always better to be explicit when possible.</p>
+That it, this is all what you need to implement TD!. Note how close the implementation is to the update rule. Note also how we multiplied the value <span class="arithmatex">\(V[s_{t+1}]\)</span> by (1- done). This is to ensure that when the episode is finished (ex., the agent is at goal or has achieved the task), we want only the final reward <span class="arithmatex">\(r_{t+1}\)</span> to participate in the update and not <span class="arithmatex">\(V[s_{t+1}]\)</span>. This multiplication will appear in all of the updates we use. This saves us from having to treat the goal states in a special way on the environment level (ex. we could have set the value <span class="arithmatex">\(V[s_{t+1}]\)</span>=0 by checking if <span class="arithmatex">\(s_{t+1}==goal\)</span> or by checking done in the environment or by treating done inside the s_() function when we use function approximation in later lessons). We felt that this would disguise this information, and it is always better to be explicit when possible.</p>
 <p>Note also that we didn't use <em>a</em> and <em>an</em> in the online() function because we are making predictions in TD (no control yet). In addition, we do not store the experience for this one-step online algorithm while we had to for MC, which is again one of the advantages of online methods.</p>
 <p>Let us test our brand new TD algorithm on the random walk prediction problem. Note that randwalk is the default environment for MRP anyway and hence no need to pass it.</p>
 <p><div class="highlight"><pre><span></span><code><span class="n">TDwalk</span> <span class="o">=</span> <span class="n">TD</span><span class="p">(</span><span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span>
@@ -1141,14 +1215,28 @@ For These problems we will design Value Iteration methods which utilise the idea
 Note how TD performed far better and converged faster in fewer episodes than MC</p>
 <h3 id="offline-td">Offline TD</h3>
 <p>In this section, we develop an offline TD algorithm. This is not a common algorithm as it usually defies the reason for using TD. That is, we usually use TD because it is an online algorithm. Nevertheless, studying this algorithm allows us to appreciate the strengths and weaknesses of TD and to compare its performance with other offline algorithms, such as MC.</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TDf</span><span class="p">(</span><span class="n">MRP</span><span class="p">):</span>
-
+<div class="arithmatex">\[
+\begin{array}{ll}
+\textbf{Algorithm: }  \text{Offline Temporal-Difference Policy Evaluation} \\
+\textbf{Input: } \text{Episodes generated under policy } \pi \\
+\textbf{Initialize: } V(S) \leftarrow 0, \forall S \in \mathcal{S}, \alpha &gt; 0 \\
+\textbf{Repeat until convergence: } &amp; \\
+\quad \text{For each episode: } &amp; \\
+\quad \quad \textbf{For each step } t \textbf{ from } 0 \textbf{ to } T-1: &amp; \\
+\quad \quad \quad \delta_t \leftarrow R_{t+1} + \gamma V(S_{t+1}) - V(S_t) &amp; \\
+\quad \quad \quad \text{Store } (S_t, \delta_t) \text{ for batch update} &amp; \\
+\quad \text{End episode loop} &amp; \\
+\quad \textbf{For each state } S_t \textbf{ in batch:} &amp; \\
+\quad \quad V(S_t) \leftarrow V(S_t) + \alpha \sum \delta_t \text{ (update using accumulated } \delta_t \text{)} &amp; \\
+\textbf{Return: } V(S), \forall S \in \mathcal{S} \\
+\end{array}
+\]</div>
+<p>Below we provide you with the Python implementation of the offline TD.</p>
+<p><div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TDf</span><span class="p">(</span><span class="n">MRP</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="kc">True</span>
-
     <span class="c1"># ----------------------------- 🌘 offline TD learning ----------------------------   </span>
     <span class="k">def</span><span class="w"> </span><span class="nf">offline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1">#for t in range(self.t, -1, -1):</span>
         <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
             <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
             <span class="n">sn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
@@ -1157,6 +1245,7 @@ Note how TD performed far better and converged faster in fewer episodes than MC<
 
             <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="n">rn</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">sn</span><span class="p">]</span><span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">s</span><span class="p">])</span>
 </code></pre></div>
+Note that we can do it the changes backwards, you can try both and see the difference.</p>
 <p><div class="highlight"><pre><span></span><code><span class="n">TDwalk</span> <span class="o">=</span> <span class="n">TDf</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="mf">.05</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;TD learning&#39;</span><span class="p">)</span>
 </code></pre></div>
 <img alt="png" src="output_20_0.png" /></p>
@@ -1187,18 +1276,15 @@ We could have also made the algorithm go backwards, similar to MC. Each has its 
 <h2 id="optimality-of-td">Optimality of TD</h2>
 <p>In this section, we study the optimality of TD. We develop two algorithms, Batch TD and Batch MC. Both of these algorithms operate in a <strong>supervised learning fashion</strong>. We collect a set of episodes and then deal with them as mini-batches, and then we run a set of epochs that repeatedly present the so-far experience until the algorithm converges. We use TD and MC updates inside the algorithm to see which value each converges to. By doing so, we have levelled up the strength of both algorithms (both are offline and wait until the end of each episode to accommodate all past experiences after each episode), and we laid their performance on pure convergence terms.</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MRP_batch</span><span class="p">(</span><span class="n">MRP</span><span class="p">):</span>
-
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># store the full experience</span>
-
     <span class="c1"># we will redfine the allocate to store the full experience instead of only latest episode</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">allocate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">max_t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">episodes</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">max_t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">episodes</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span> <span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">nS</span><span class="o">+</span><span class="mi">10</span><span class="p">)</span>  
         <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">max_t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">episodes</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>  <span class="c1"># actions and states are indices        </span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">done</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">max_t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">episodes</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">done</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">max_t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">episodes</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span> 
     <span class="k">def</span><span class="w"> </span><span class="nf">store_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">a</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">rn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">sn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">an</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">done</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="c1"># store one trajectory(sarsa) in the rigth episode buffer</span>
         <span class="k">if</span> <span class="n">s</span>  <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ep</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
@@ -1207,7 +1293,6 @@ We could have also made the algorithm go backwards, similar to MC. Each has its 
         <span class="k">if</span> <span class="n">sn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ep</span><span class="p">]</span> <span class="o">=</span> <span class="n">sn</span>
         <span class="k">if</span> <span class="n">an</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ep</span><span class="p">]</span> <span class="o">=</span> <span class="n">an</span>
         <span class="k">if</span> <span class="n">done</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ep</span><span class="p">]</span> <span class="o">=</span> <span class="n">done</span>
-
     <span class="c1"># returns the agent&#39;s trace from latest episode buffer</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">trace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ep</span><span class="p">]</span>
@@ -1216,8 +1301,7 @@ We could have also made the algorithm go backwards, similar to MC. Each has its 
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TD_batch</span><span class="p">(</span><span class="n">MRP_batch</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.001</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
-
-    <span class="c1"># -----------------------------------🌘 offline learning------------------------------------- </span>
+    <span class="c1"># ------------------------🌘 offline learning----------------------- </span>
     <span class="k">def</span><span class="w"> </span><span class="nf">offline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># epochs</span>
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -1522,7 +1606,7 @@ The answer is yes, and the method is called Actor-critic, which does that exactl
 <p>In this lesson, we have further developed our understanding of important and prominent RL online algorithms that are widely used, all based on the value iteration idea. I.e., we keep improving our policy and refining our value-function iteratively in each step until convergence. All of our algorithms are based on the Temporal Difference method. TD uses bootstrapping in its update; instead of using a true return of a state, it uses the current reward + its own estimation of the return for the next state. It is quite surprising to see how well TD works in practice. TD has been proven to converge to a good solution under some basic conditions regarding the learning rate. In practice, however, we assign a fixed small learning rate that works just fine. It is desirable that the learning rate is not decayed when the environment’s dynamics are expected to change.
 We have further used TD update in a few control algorithms. Most notable are the Sarsa and Q-learning. The first is an on-policy, while the latter is an off-policy control algorithm. We have compared all algorithms on different problems, studied their strengths and weaknesses, and how they are expected to behave on a certain problem.</p>
 <p><strong>Further Reading</strong>:
-For further reading you refer chapter 6 from the Sutton and Barto <a href="http://incompleteideas.net/book/RLbook2020.pdf">book</a>.</p>
+For further reading you refer chapter 6 from the Sutton and Barto <a href="http://incompleteideas.net/book/RLbook2020.pdf">book</a>. There are more rigorous books that take special care for the mathematics guarantees behind the ideas of RL, such as <a href="http://web.mit.edu/jnt/www/ndp.html">Neuro-Dynamic Programming</a>.</p>
 <h2 id="your-turn">Your turn</h2>
 <p>Now it is time to experiment further and interact with code in <a href="../../workseets/worksheet8.ipynb">worksheet8</a>.</p>
 

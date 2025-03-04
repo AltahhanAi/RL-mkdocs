@@ -717,7 +717,7 @@
           <li class="md-nav__item">
   <a href="#epsilon-greedy-policy" class="md-nav__link">
     <span class="md-ellipsis">
-      Epsilon-Greedy Policy
+      \(\epsilon\)-Greedy Policy
     </span>
   </a>
   
@@ -798,9 +798,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#incremental-constant-mc-every-visit-mc-prediction" class="md-nav__link">
+  <a href="#every-visit-mc-prediction" class="md-nav__link">
     <span class="md-ellipsis">
-      Incremental constant-α MC: Every-visit MC Prediction
+      Every-visit MC Prediction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Every-visit MC Prediction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#first-visit-vs-every-visit-mc" class="md-nav__link">
+    <span class="md-ellipsis">
+      First-Visit vs. Every-Visit MC
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constant-mc-incremental-every-visit-mc-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constant-α MC: Incremental every-visit MC Prediction
     </span>
   </a>
   
@@ -1491,7 +1515,7 @@
           <li class="md-nav__item">
   <a href="#epsilon-greedy-policy" class="md-nav__link">
     <span class="md-ellipsis">
-      Epsilon-Greedy Policy
+      \(\epsilon\)-Greedy Policy
     </span>
   </a>
   
@@ -1572,9 +1596,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#incremental-constant-mc-every-visit-mc-prediction" class="md-nav__link">
+  <a href="#every-visit-mc-prediction" class="md-nav__link">
     <span class="md-ellipsis">
-      Incremental constant-α MC: Every-visit MC Prediction
+      Every-visit MC Prediction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Every-visit MC Prediction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#first-visit-vs-every-visit-mc" class="md-nav__link">
+    <span class="md-ellipsis">
+      First-Visit vs. Every-Visit MC
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#constant-mc-incremental-every-visit-mc-prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constant-α MC: Incremental every-visit MC Prediction
     </span>
   </a>
   
@@ -1757,22 +1805,22 @@ V(s) \approx \frac{1}{N} \sum_{i=1}^{N} G_i(s)
 <p>Note also that the agent can visit the same state more than once inside the same episode. One question that arises from the above averaging is: which visit should be counted? </p>
 <p>We can take the sum starting from the first visit, or every visit, each yields a different algorithm. The first-visit algorithm is more suitable for tabular methods, while the every-visit algorithm is more suitable when using function approximation methods (such as neural networks).</p>
 <p>One could argue that since we want to estimate the value of a state based on the full horizon of rewards obtained until the end of an episode, we should include only the <em>first visit of the state</em> in the average. This is the basis of the First-visit Monte Carlo (MC) policy evaluation method. First-visit MC estimates the value of a state by averaging the returns from the first time that state is encountered in each episode. Below we show the pseudocode for this algorithm.</p>
-<p><span class="arithmatex">\(
+<div class="arithmatex">\[
 \begin{array}{ll}
 \textbf{Algorithm: }  \text{First-Visit Monte Carlo Policy Evaluation} \\
 \textbf{Input: } \text{Episodes generated under policy } \pi \\
-\textbf{Initialize: }  V(s) \leftarrow 0, N(s) \leftarrow 0, \forall s \in S \\
+\textbf{Initialize: }  V(S) \leftarrow 0, N(S) \leftarrow 0, \forall S \in \mathcal{S} \\
 \textbf{For each episode: } &amp; \\
-\quad \text{Generate an episode: } (s_1, a_1, r_2, s_2, \dots, s_T) &amp; \\
+\quad \text{Generate an episode: } (S_0, A_0, R_1, S_1, \dots, S_T) &amp; \\
 \quad G \leftarrow 0 &amp; \\
-\quad \textbf{For each step t from T to 1:} &amp; \\
-\quad \quad G \leftarrow \gamma G + r_{t+1} &amp; \\
-\quad \quad \text{If } s_t \text{ appears first in the episode:} &amp; \\
-\quad \quad \quad N(s_t) \leftarrow N(s_t) + 1 &amp; \\
-\quad \quad \quad V(s_t) \leftarrow V(s_t) + \frac{1}{N(s_t)}(G - V(s_t)) &amp; \\
-\textbf{Return: } V(s), \forall s \in S \\
+\quad \textbf{For each step } t \textbf{ from } T-1 \textbf{ to } 0: &amp; \\
+\quad \quad G \leftarrow \gamma G + R_{t+1} &amp; \\
+\quad \quad \text{If } S_t \text{ appears first in the episode:} &amp; \\
+\quad \quad \quad N(S_t) \leftarrow N(S_t) + 1 &amp; \\
+\quad \quad \quad V(S_t) \leftarrow V(S_t) + \frac{1}{N(S_t)}(G - V(S_t)) &amp; \\
+\textbf{Return: } V(S), \forall S \in \mathcal{S} \\
 \end{array}
-\)</span></p>
+\]</div>
 <h3 id="random-walk-problem">Random Walk Problem</h3>
 <p>The Random Walk problem is a simple <strong>Markov Reward Process (MRP)</strong> used to illustrate value estimation methods. It consists of a finite, linear chain of states, where an agent moves randomly left or right until reaching one of the two terminal states.</p>
 <h4 id="problem-setup">Problem Setup</h4>
@@ -1796,10 +1844,10 @@ V(s) \approx \frac{1}{N} \sum_{i=1}^{N} G_i(s)
 <img alt="png" src="output_40_0.png" /></p>
 <p>We use **demoV to implicitly pass plotE=True, plotV=True, animate=True, whenever we want to demo a prediction algorithm.</p>
 <h2 id="policies">Policies</h2>
-<p>Before we move into control, we need to breifly re-cover types of policies.</p>
-<h3 id="epsilon-greedy-policy">Epsilon-Greedy Policy</h3>
-<p>The epsilon-greedy policy is a popular action selection strategy that balances exploration and exploitation. The policy chooses the action with the highest estimated value most of the time, but with probability <span class="arithmatex">\(\epsilon\)</span>, it selects an action randomly to encourage exploration.</p>
-<p>Mathematically, the epsilon-greedy policy can be defined as:</p>
+<p>Before we move into control, we need to breifly discuss types of policies that balance exporation and exploitation.</p>
+<h3 id="epsilon-greedy-policy"><span class="arithmatex">\(\epsilon\)</span>-Greedy Policy</h3>
+<p>The <span class="arithmatex">\(\epsilon\)</span>-greedy policy is a popular action selection strategy that balances exploration and exploitation. The policy chooses the action with the highest estimated value most of the time, but with probability <span class="arithmatex">\(\epsilon\)</span>, it selects an action randomly to encourage exploration.</p>
+<p>Mathematically, the <span class="arithmatex">\(\epsilon\)</span>-greedy policy can be defined as:</p>
 <div class="arithmatex">\[
 \pi(a|s) = 
 \begin{cases} 
@@ -1824,23 +1872,23 @@ V(s) \approx \frac{1}{N} \sum_{i=1}^{N} G_i(s)
 <p>In this way, the softmax policy ensures that actions with higher values are more likely to be chosen, but there is always a chance to explore other actions.</p>
 <h2 id="first-visit-mc-control">First-visit MC control</h2>
 <p>Now let us extend our first-visit MC prediction to control by updating the Q action-value function instead of the state-value function V.</p>
-<p><span class="arithmatex">\(
+<div class="arithmatex">\[
 \begin{array}{ll}
 \textbf{Algorithm: }  \text{First-Visit Monte Carlo Control (Exploring Starts)} \\
 \textbf{Input: } \text{Episodes generated under an exploring-starts policy} \\
-\textbf{Initialize: }  Q(s, a) \leftarrow 0, N(s, a) \leftarrow 0, \forall s \in S, a \in A(s), \pi(s) \leftarrow \text{arbitrary policy}, \forall s \in S \\
+\textbf{Initialize: }  Q(S, A) \leftarrow 0, N(S, A) \leftarrow 0, \forall S \in \mathcal{S}, A \in \mathcal{A}(S), \pi(S) \leftarrow \text{arbitrary policy}, \forall S \in \mathcal{S} \\
 \textbf{For each episode: } &amp; \\
-\quad \text{Generate an episode: } (s_1, a_1, r_2, s_2, a_2, \dots, s_T) &amp; \\
+\quad \text{Generate an episode: } (S_0, A_0, R_1, S_1, A_1, \dots, S_T) &amp; \\
 \quad G \leftarrow 0 &amp; \\
-\quad \textbf{For each step t from T to 1:} &amp; \\
-\quad \quad G \leftarrow \gamma G + r_{t+1} &amp; \\
-\quad \quad \text{If } (s_t, a_t) \text{ appears first in the episode:} &amp; \\
-\quad \quad \quad N(s_t, a_t) \leftarrow N(s_t, a_t) + 1 &amp; \\
-\quad \quad \quad Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \frac{1}{N(s_t, a_t)}(G - Q(s_t, a_t)) &amp; \\
-\quad \quad \text{Update policy: } \pi(s) \leftarrow \arg\max_a Q(s, a) &amp; \\
-\textbf{Return: } Q(s, a), \pi(s), \forall s \in S, a \in A(s) \\
+\quad \textbf{For each step } t \textbf{ from } T-1 \textbf{ to } 0: &amp; \\
+\quad \quad G \leftarrow \gamma G + R_{t+1} &amp; \\
+\quad \quad \text{If } (S_t, A_t) \text{ appears first in the episode:} &amp; \\
+\quad \quad \quad N(S_t, A_t) \leftarrow N(S_t, A_t) + 1 &amp; \\
+\quad \quad \quad Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \frac{1}{N(S_t, A_t)}(G - Q(S_t, A_t)) &amp; \\
+\quad \quad \text{Update policy: } \pi(S_t) \leftarrow \arg\max_A Q(S_t, A) &amp; \\
+\textbf{Return: } Q(S, A), \pi(S), \forall S \in \mathcal{S}, A \in \mathcal{A}(S) \\
 \end{array}
-\)</span></p>
+\]</div>
 <h3 id="applying-mc-on-a-control-problem">Applying MC on a control problem</h3>
 <p>Similar to what we did for prediction, we get help from a dictionary that stores a set of useful configurations that we use often. In the case of control, the most useful is plotting the number of steps the agent took to reach a terminal state in each episode or the sum of rewards the agent collected in each episode. Each one of these plots can be useful for certain tasks. Bear in mind that if the reward is given only for reaching the goal location or terminal state, the sum of the rewards plot would be a constant line that does not convey useful information. Below we show each.</p>
 <p>Unfortunately, applying the MC control algorithm with the default reward function will not yield a useful policy. This is because the explore-start condition is not satisfied (refer to section 5.4 of our book). In addition, averaging solutions may not perform well because they do not track a changing policy well for non-stationary problems (most of the control problems are non-stationary). To see this, uncomment the lines in the cell below and run it. (Note that we have set up the priorities of the actions in a way that will show this issue (right comes before left and down before up). demoQ is a dicitonary that passes visualisaiton values to the MDP control algorithm.</p>
@@ -1888,33 +1936,85 @@ It is always the case that when we use a <em>delayed reward</em> (which is the d
 <div class="highlight"><pre><span></span><code><span class="n">mcc</span> <span class="o">=</span> <span class="n">MC1stControl</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">grid</span><span class="p">(</span><span class="n">reward</span><span class="o">=</span><span class="s1">&#39;reward_1&#39;</span><span class="p">),</span> <span class="n">γ</span><span class="o">=</span><span class="mf">.97</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">ε</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">dε</span><span class="o">=</span><span class="mf">.999</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="o">**</span><span class="n">demoTR</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
 </code></pre></div>
 <p><img alt="png" src="output_78_0.png" /></p>
-<h2 id="incremental-constant-mc-every-visit-mc-prediction">Incremental constant-α MC: Every-visit MC Prediction</h2>
-<p>In Incremental constant-α MC (Every-visit Monte Carlo), the value of a state is updated based on the average of returns observed from all visits to that state, not just the first visit. This method updates the state-value function incrementally using a constant step-size parameter <span class="arithmatex">\( \alpha \)</span> for each visit, allowing the agent to continuously refine its estimates as it observes more returns. The update rule is:</p>
+<h2 id="every-visit-mc-prediction">Every-visit MC Prediction</h2>
+<p>In every-visit Monte Carlo, the value of a state is updated based on the average of returns observed from <em>all</em> visits to that state, not just the first visit. For a state <span class="arithmatex">\( s \)</span>, let <span class="arithmatex">\( G_j(s) \)</span> be the return from the <span class="arithmatex">\( j \)</span>-th occurrence of <span class="arithmatex">\( s \)</span> in some episode. The every-visit MC estimate of <span class="arithmatex">\( V^\pi(s) \)</span> is given by: </p>
 <div class="arithmatex">\[
-V(s) \leftarrow V(s) + \alpha \left( G_t - V(s) \right)
+V^\pi(s) \approx \frac{1}{N_s} \sum_{j=1}^{N_s} G_j(s)
 \]</div>
+<p>where:<br />
+- <span class="arithmatex">\( N_s \)</span> is the total number of times state <span class="arithmatex">\( s \)</span> was visited across all episodes.<br />
+- <span class="arithmatex">\( G_j(s) \)</span> is the return obtained from the <span class="arithmatex">\( j \)</span>-th visit to <span class="arithmatex">\( s \)</span>, computed as the sum of rewards from that visit to the end of the episode.  </p>
+<h3 id="first-visit-vs-every-visit-mc">First-Visit vs. Every-Visit MC</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>First-Visit MC</strong></th>
+<th><strong>Every-Visit MC</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Update Rule</strong></td>
+<td>Uses the return from the first visit to a state in each episode</td>
+<td>Uses returns from <strong>all</strong> visits to a state in each episode</td>
+</tr>
+<tr>
+<td><strong>Bias/Variance</strong></td>
+<td>Lower bias but higher variance</td>
+<td>Higher bias but lower variance</td>
+</tr>
+<tr>
+<td><strong>Suitability</strong></td>
+<td>Works well when visits to a state within an episode are correlated</td>
+<td>Suitable when visits are independent and representative of overall state behavior</td>
+</tr>
+</tbody>
+</table>
+<!-- ### When to Use Which? -->
+<!-- - First-Visit MC is generally preferred when state occurrences within an episode are highly correlated, as it prevents bias due to repeated visits with varying returns.
+- Every-Visit MC is computationally simpler and can work well if state visits are independent and uncorrelated.   -->
+
+<h2 id="constant-mc-incremental-every-visit-mc-prediction">Constant-α MC: Incremental every-visit MC Prediction</h2>
+<p>We move now into developing the every-visit MC prediction algorithm further, by allowing it to be incremental. Incrementality is a key aspect in RL, since it allows an algorithm to interact and learn from the environment at the same time in each step, without having to wait until the end of the experience. However, for MC since we have to obtain the returns Gt, we will wait until the end of the episode to obtain the full experience rewards, but then we will <em>apply</em> the updates incrementally, instead of accumulating the full set in one go by averaging. </p>
+<p>The first step towards realising this target is to use look into how the averaging can be adjusted gradually (incrementally). Let us assume that the we observed the state <span class="arithmatex">\(s\)</span> at time step <span class="arithmatex">\(t\)</span> with a return <span class="arithmatex">\(G_t\)</span> and the number of times <span class="arithmatex">\(s\)</span> has been visited is <span class="arithmatex">\(N_s\)</span>. We want now to obtain a new estimate <span class="arithmatex">\(V^\pi_{k+1}(s)\)</span> based on our previous estimate <span class="arithmatex">\(V^\pi_{k}(s)\)</span>. The number of ties <span class="arithmatex">\(s\)</span> was observed when we had the estimate <span class="arithmatex">\(V^\pi_{k}(s)\)</span> is <span class="arithmatex">\(N_s-1\)</span>. From the estimate definition we have that: </p>
+<div class="arithmatex">\[
+    \begin{align*}
+        V^\pi_{k+1}(s) =&amp; \frac{1}{N_s} \left(\sum_{j=1}^{N_s-1} G_j(s) + G_t(s)\right) \\
+                        =&amp; \frac{1}{N_s} \left((1-N_s)V^\pi_{k}(s) + G_t(s)\right) \\
+                        =&amp; V^\pi_{k} (s) + \frac{1}{N_s} \left(G_t -  V^\pi_{k}(s) \right)
+    \end{align*}
+\]</div>
+<p>This idea is similar to what we have discussed in the simple bandit algorihtm.
+One issue we have we the averaging is that when <span class="arithmatex">\(N_s\)</span> becomes large the effect of the newly obtained <span class="arithmatex">\(G_t\)</span> diminishes with time since <span class="arithmatex">\(\frac{1}{N_s}\)</span> tends to 0 with time. One way to overcome this issue is by replacing <span class="arithmatex">\(\frac{1}{N_s}\)</span> with a constant <span class="arithmatex">\(\alpha\)</span> that is fixed.
+This is much better for when the policy is not stationary (during learning an obtimal policy).</p>
+<p>In other words, when we obtian the <span class="arithmatex">\(G_t\)</span> for each time step <span class="arithmatex">\(t\)</span>, we can adjust the estimation of <span class="arithmatex">\(s\)</span> as follow:</p>
+<div class="arithmatex">\[
+V(S_t) \leftarrow V(S_t) + \alpha \left( G_t - V(S_t) \right)
+\]</div>
+<p>This method updates the state-value function incrementally using a constant step-size parameter <span class="arithmatex">\( \alpha \)</span> for each visit, allowing the agent to continuously refine its estimates as it observes more returns.</p>
 <p>Where:</p>
 <ul>
-<li><span class="arithmatex">\( V(s) \)</span> is the value of state <span class="arithmatex">\( s \)</span>,</li>
-<li><span class="arithmatex">\( G_t \)</span> is the return (sum of discounted rewards) from state <span class="arithmatex">\( s \)</span> onwards,</li>
-<li><span class="arithmatex">\( \alpha \)</span> is the constant step-size parameter.</li>
+<li><span class="arithmatex">\( V(s) \)</span> is the value of state <span class="arithmatex">\(s\)</span></li>
+<li><span class="arithmatex">\( G_t \)</span> is the return (sum of discounted rewards) from state <span class="arithmatex">\( s \)</span> onwards</li>
+<li><span class="arithmatex">\( \alpha \)</span> is the constant step-size parameter</li>
 </ul>
 <p>This method is useful in scenarios where multiple visits to the same state provide valuable updates, and it works well for episodic tasks. Below we show the full algorithm in pseudocode.</p>
-<p><span class="arithmatex">\(
+<div class="arithmatex">\[
 \begin{array}{ll}
 \textbf{Algorithm: }  \text{Incremental Constant-}\alpha \text{ Monte Carlo Prediction} \\
 \textbf{Input: } \text{Episodes generated under policy } \pi \\
-\textbf{Initialize: }  V(s) \leftarrow 0, \forall s \in S, 0 &lt; \alpha \leq 1 \\
+\textbf{Initialize: }  V(s) \leftarrow 0, \forall s \in \mathcal{S}, 0 &lt; \alpha \leq 1 \\
 \textbf{For each episode: } &amp; \\
-\quad \text{Generate an episode: } (s_1, r_2, s_2, \dots, s_T) &amp; \\
+\quad \text{Generate an episode: } (S_0, R_1, S_1, \dots, S_T) &amp; \\
 \quad G \leftarrow 0 &amp; \\
-\quad \textbf{For each step t from T to 1:} &amp; \\
-\quad \quad G \leftarrow \gamma G + r_{t+1} &amp; \\
+\quad \textbf{For each step } t \textbf{ from } T-1 \textbf{ to } 0: &amp; \\
+\quad \quad G \leftarrow \gamma G + R_{t+1} &amp; \\
 \quad \quad \text{Update state-value estimate:} &amp; \\
-\quad \quad \quad V(s_t) \leftarrow V(s_t) + \alpha (G - V(s_t)) &amp; \\
-\textbf{Return: } V(s), \forall s \in S \\
+\quad \quad \quad V(S_t) \leftarrow V(S_t) + \alpha (G - V(S_t)) &amp; \\
+\textbf{Return: } V(s), \forall s \in \mathcal{S} \\
 \end{array}
-\)</span></p>
+\]</div>
 <!-- ### Monte Carlo Control with \(\epsilon\)-Greedy Exploration
 
 To optimize policies, we extend MC to **control**, using the **Generalized Policy Iteration (GPI)** framework. The key idea is:
@@ -1942,6 +2042,7 @@ To optimize policies, we extend MC to **control**, using the **Generalized Polic
 \textbf{Return:} & Q(s, a), \pi(s) \forall s, a \\
 \end{array}
 \] -->
+
 <h2 id="mrp-mdp-and-pg-classes">MRP, MDP and PG classes</h2>
 <p>We will evaluate the effectiveness of prediction methods by applying them to a random walk problem. This setup isolates the prediction aspect of an algorithm, focusing purely on estimating the state-value function without involving decision-making. By doing so, we can assess whether a given update rule or algorithm works effectively in the prediction setting.</p>
 <p>Once we understand the prediction process, we can extend these methods to control by modifying the update rule to incorporate action-value estimates (Q-values). This transition is typically done within the MDP framework and is a key step in value-based reinforcement learning methods.</p>
@@ -1966,9 +2067,9 @@ To optimize policies, we extend MC to **control**, using the **Generalized Polic
 </code></pre></div>
 <img alt="png" src="output_101_0.png" /></p>
 <h2 id="incremental-mcc-every-visit-mc-control">Incremental MCC: Every-visit MC Control</h2>
-<p><strong>Incremental MCC (Monte Carlo Control)</strong> for <strong>Every-visit MC</strong> Control is an approach used for estimating optimal policies through interaction with the environment. It incrementally updates both the state-action value function <span class="arithmatex">\( Q(s, a) \)</span> and the policy using every visit to a state-action pair. The method involves updating the action-value function based on the observed returns, and it uses a constant step-size parameter <span class="arithmatex">\( \alpha \)</span> to control the magnitude of updates:</p>
+<p><strong>Incremental MCC (Monte Carlo Control)</strong> for <strong>Every-visit MC</strong> Control is an approach used for estimating optimal policies through interaction with the environment. It incrementally updates both the state-action value function <span class="arithmatex">\( Q\)</span> and the policy using every visit to a state-action pair. The method involves updating the action-value function based on the observed returns, and it uses a constant step-size parameter <span class="arithmatex">\( \alpha \)</span> to control the magnitude of updates:</p>
 <div class="arithmatex">\[
-Q(s, a) \leftarrow Q(s, a) + \alpha \left( G_t - Q(s, a) \right)
+Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left( G_t - Q(S_t, A_t) \right)
 \]</div>
 <p>Where:</p>
 <ul>
@@ -1977,22 +2078,22 @@ Q(s, a) \leftarrow Q(s, a) + \alpha \left( G_t - Q(s, a) \right)
 <li><span class="arithmatex">\( \alpha \)</span> is the constant step-size parameter.</li>
 </ul>
 <p>This method is applied iteratively to improve the policy, choosing actions greedily with respect to the estimated <span class="arithmatex">\( Q \)</span>-values. Below we show the pseudocode for thsi algorithm.</p>
-<p><span class="arithmatex">\(
+<div class="arithmatex">\[
 \begin{array}{ll}
 \textbf{Algorithm: }  \text{Incremental Constant-}\alpha \text{ Monte Carlo Control} \\
-\textbf{Input: } \text{Episodes generated under an } \varepsilon\text{-greedy policy} \pi \\
-\textbf{Initialize: }  Q(s, a) \leftarrow 0, \forall s \in S, a \in A(s), 0 &lt; \alpha \leq 1 \\
+\textbf{Input: } \text{Episodes generated under an } \varepsilon\text{-greedy policy } \pi \\
+\textbf{Initialize: }  Q(S, A) \leftarrow 0, \forall S \in \mathcal{S}, A \in \mathcal{A}(S), 0 &lt; \alpha \leq 1 \\
 \textbf{For each episode: } &amp; \\
-\quad \text{Generate an episode: } (s_1, a_1, r_2, s_2, a_2, \dots, s_T) &amp; \\
+\quad \text{Generate an episode: } (S_0, A_0, R_1, S_1, A_1, \dots, S_T) &amp; \\
 \quad G \leftarrow 0 &amp; \\
-\quad \textbf{For each step t from T to 1:} &amp; \\
-\quad \quad G \leftarrow \gamma G + r_{t+1} &amp; \\
+\quad \textbf{For each step } t \textbf{ from } T-1 \textbf{ to } 0: &amp; \\
+\quad \quad G \leftarrow \gamma G + R_{t+1} &amp; \\
 \quad \quad \text{Update action-value estimate:} &amp; \\
-\quad \quad \quad Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha (G - Q(s_t, a_t)) &amp; \\
-\quad \quad \text{Update policy: } \pi(s) \leftarrow \arg\max_a Q(s, a) &amp; \\
-\textbf{Return: } Q(s, a), \pi(s), \forall s \in S, a \in A(s) \\
+\quad \quad \quad Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha (G - Q(S_t, A_t)) &amp; \\
+\quad \quad \text{Update policy: } \pi(S_t) \leftarrow \arg\max_A Q(S_t, A) \text{ (with } \varepsilon\text{-greedy exploration)} &amp; \\
+\textbf{Return: } Q(S, A), \pi(S), \forall S \in \mathcal{S}, A \in \mathcal{A}(S) \\
 \end{array}
-\)</span></p>
+\]</div>
 <h3 id="incremental-constant-mc-with-python">Incremental constant-α MC with Python</h3>
 <p>Below we show a direct <em>interpretaiton</em> of the above pseudocode into a python code. We use a parent class MDP parent class for this control model-free method.</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MCC</span><span class="p">(</span><span class="n">MDP</span><span class="p">()):</span>
