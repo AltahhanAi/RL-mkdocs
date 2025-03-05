@@ -47,6 +47,8 @@
     
       <link rel="stylesheet" href="../../css/extra.css">
     
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1506,9 +1508,9 @@
 
 
 
-<h1 id="lesson-2-understanding-q-via-k-armed-bandit">Lesson 2- Understanding Q via K-armed Bandit</h1>
-<p><img alt="image-3.png" src="image-3.png" /></p>
-<p><img alt="image-2.png" src="image-2.png" /></p>
+<div><h1 id="lesson-2-understanding-q-via-k-armed-bandit">Lesson 2- Understanding Q via K-armed Bandit</h1>
+<p><img alt="image-3.png" src="image-3.png"></p>
+<p><img alt="image-2.png" src="image-2.png"></p>
 <p>In this lesson, you will learn about the k-armed bandit problem and its applications in reinforcement learning (RL). This problem is useful for understanding the basics of RL, particularly how an algorithm can <em>learn</em> an action-value function, commonly denoted as Q in RL.</p>
 <h2 id="learning-outcomes">Learning Outcomes</h2>
 <p>By the end of this lesson, you will:</p>
@@ -1552,9 +1554,9 @@
 <li>How many optimal policies do we have for this bandit?</li>
 <li>Can you find a way to represent this?</li>
 </ol>
-<hr />
+<hr>
 <p>The figure below gives an insight about some of the above questions. Each line represents a bandit Q1 and Q2.</p>
-<p><img alt="png" src="output_18_0.png" /></p>
+<p><img alt="png" src="output_18_0.png"></p>
 <p>As can be seen, the two bandit functions intersect with each other at a probability of 0.5, meaning they are equivalent at this probability. For other probabilities, Bandit 1 is superior for <span class="arithmatex">\( pr &gt; 0.5 \)</span> (and hence the optimal policy will be to select this bandit always), while Bandit 2 is superior for <span class="arithmatex">\( pr &lt; 0.5 \)</span> (and hence the optimal policy will be to select this bandit always). However, bear in mind that we do not know the underlying probability beforehand, and we would need to try out both bandits to estimate their corresponding value functions in order to come up with a suitable policy.</p>
 <p>Now, let's move on to covering the different concepts of the multi-armed bandit in more detail.</p>
 <p>We proceed by developing simple functions for:
@@ -1584,21 +1586,21 @@
         <span class="n">avgR</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span><span class="o">*</span><span class="n">avgR</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="n">r</span><span class="p">[</span><span class="n">a</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 
 
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">avgR</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;average reward ε=</span><span class="si">%.2f</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">ε</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">avgR</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'average reward ε=</span><span class="si">%.2f</span><span class="s1">'</span><span class="o">%</span><span class="n">ε</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">Q</span><span class="o">/</span><span class="n">C</span>
 </code></pre></div>
 <p>Let us see how the Q_bandit_fixed will learn to choose the best action that yields the maximum returns.</p>
-<p><div class="highlight"><pre><span></span><code><span class="n">Q_bandit_fixed</span><span class="p">(</span><span class="n">bandit</span><span class="o">=</span><span class="p">[</span><span class="mf">.1</span><span class="p">,</span> <span class="mf">.2</span><span class="p">,</span> <span class="mf">.7</span><span class="p">])</span>
+<p></p><div class="highlight"><pre><span></span><code><span class="n">Q_bandit_fixed</span><span class="p">(</span><span class="n">bandit</span><span class="o">=</span><span class="p">[</span><span class="mf">.1</span><span class="p">,</span> <span class="mf">.2</span><span class="p">,</span> <span class="mf">.7</span><span class="p">])</span>
 </code></pre></div>
-    array([0.09772727, 0.19874214, 0.699125  ])</p>
-<p><img alt="png" src="output_37_1.png" /></p>
+    array([0.09772727, 0.19874214, 0.699125  ])
+<p><img alt="png" src="output_37_1.png"></p>
 <p>As we can see it has improved to more than 0.6.</p>
 <p>Let us see how the completely greedy policy would do on average:</p>
-<p><div class="highlight"><pre><span></span><code><span class="n">Q_bandit_fixed</span><span class="p">(</span><span class="n">bandit</span><span class="o">=</span><span class="p">[</span><span class="mf">.1</span><span class="p">,</span> <span class="mf">.2</span><span class="p">,</span> <span class="mf">.7</span><span class="p">],</span> <span class="n">ε</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<p></p><div class="highlight"><pre><span></span><code><span class="n">Q_bandit_fixed</span><span class="p">(</span><span class="n">bandit</span><span class="o">=</span><span class="p">[</span><span class="mf">.1</span><span class="p">,</span> <span class="mf">.2</span><span class="p">,</span> <span class="mf">.7</span><span class="p">],</span> <span class="n">ε</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </code></pre></div>
-    array([0.0999001, 0.       , 0.       ])</p>
-<p><img alt="png" src="output_40_1.png" /></p>
+    array([0.0999001, 0.       , 0.       ])
+<p><img alt="png" src="output_40_1.png"></p>
 <p>As we can see it could not improve beyond 0.1</p>
 <p>The main restriction in Q_bandit_fixed( ) function is that we assume that the reward function is fixed (hence the name Q_bandit_fixed). I.e., each action will receive a specific reward that does not change. This made the above solution a bit excessive since we could have just summed the rewards and then took their max. Nevertheless, this is useful as a scaffolding for our next step.</p>
 <p>In the next section we develop a more general armed-bandit function that allows for the reward to vary according to some <em>unknown</em> distribution. The Q_banditAvg function will learn the distribution and find the best action that will allow it to obtain a maximal reward on average, similar to what we have done here.</p>
@@ -1616,7 +1618,7 @@ q* (qˣ in the code) represents the actual action-values for the armeds which ar
 
 <span class="n">generate_a_bandit_data</span><span class="p">(</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">T</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="output_48_0.png" /></p>
+<p><img alt="png" src="output_48_0.png"></p>
 <h3 id="learning-the-bandit-q-action-values">Learning the bandit Q action-values</h3>
 <p>Now we turn our attention to learning the Q function for an unknown reward distribution. Each action has its own Gaussian distribution around a mean but we could use other distributions. The set of means are themselves drawn from a normal distribution of mean 0 and variance of 1.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># learn the Q value for bandit and use it to select the action that will win the most reward</span>
@@ -1655,21 +1657,21 @@ q* (qˣ in the code) represents the actual action-values for the armeds which ar
 <div class="highlight"><pre><span></span><code><span class="n">R</span><span class="p">,</span> <span class="n">oA</span> <span class="o">=</span> <span class="n">Q_banditAvg</span><span class="p">(</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="p">,</span> <span class="n">ε</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">R</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Steps&#39;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Average rewrads&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">oA</span><span class="p">,</span><span class="s1">&#39;.&#39;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Steps&#39;</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;%Optimal action&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">R</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Steps'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Average rewrads'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">oA</span><span class="p">,</span><span class="s1">'.'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Steps'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'%Optimal action'</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="output_53_1.png" /></p>
+<p><img alt="png" src="output_53_1.png"></p>
 <p>Note how the % of optimal actions for one trial (run) takes either 1 or 0. This figure to the left seems not be conveying useful information. However when we average this percentage over several runs we will see a clear learning pattern. This is quite common theme in RL. We often would want to average a set of runs/experiments due to the stochasticity of the process that we deal with.</p>
 <h3 id="multiple-runs-aka-trials">Multiple runs (aka trials)</h3>
 <p>We need to average multiple runs to obtain a reliable unbiased results that reflect the expected performance of the learning algorithm. We do that via running the same function or algorithm multiple times, which is what the Q_bandits_runs function does. We do not show the code, we only show </p>
 <p>Note that we obtain different set of 10-bandit distributions and conduct an experimental run on them. Because all of them are normally standard distribution their sums of rewards (values) converges to the same quantity around 1.5.</p>
 <h3 id="action-selection-policy-comparison">Action Selection (Policy) Comparison:</h3>
 <p>Now we are ready to compare between policies with different exploration rates ε. Note that ε kw(keyword argument) has been passed on to the Q_bandit() function from the Q_bandits_runs() function.</p>
-<div class="highlight"><pre><span></span><code><span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ε=.1&#39;</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditAvg</span><span class="p">)</span>
-<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.01</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ε=.01&#39;</span><span class="p">,</span> <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditAvg</span><span class="p">)</span>
-<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.0</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ε=.0&#39;</span> <span class="p">,</span> <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditAvg</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">'ε=.1'</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditAvg</span><span class="p">)</span>
+<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.01</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'ε=.01'</span><span class="p">,</span> <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditAvg</span><span class="p">)</span>
+<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.0</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">'ε=.0'</span> <span class="p">,</span> <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditAvg</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="output_69_1.png" /></p>
+<p><img alt="png" src="output_69_1.png"></p>
 <p>As we can see the ε=.1 exploration rate seems to give us a sweet spot. Try ε=.2 and see the effect.
 This empirically indicates that indeed we need to allow the agent to explore in order to come up with a viable optimal or close to optimal policy.</p>
 <h2 id="incremental-implementation">Incremental Implementation</h2>
@@ -1692,11 +1694,11 @@ Q_{t+1} = Q_t + \frac{1}{t}\left(R_t - Q_t\right)
 <p>Note that incremental updates plays a very important role in RL and we will be constantly seeking them due to their efficiency in online application.</p>
 <p>Below we show the results of running a code that was designed to capture the ideas of incremental implementation via a function called Q_banditN. <em>We do not show the code of Q_banditN here</em></p>
 <div class="highlight"><pre><span></span><code><span class="c1">#Q_bandits_runs(ε=.2)</span>
-<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ε =.1&#39;</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditN</span><span class="p">)</span>
-<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.01</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ε =.01&#39;</span><span class="p">,</span> <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditN</span><span class="p">)</span>
-<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.0</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ε =.0&#39;</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditN</span><span class="p">)</span>
+<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">'ε =.1'</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditN</span><span class="p">)</span>
+<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.01</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'ε =.01'</span><span class="p">,</span> <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditN</span><span class="p">)</span>
+<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.0</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">'ε =.0'</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditN</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="output_77_1.png" /></p>
+<p><img alt="png" src="output_77_1.png"></p>
 <h2 id="non-stationary-problems">Non-stationary Problems</h2>
 <p>The limitation of the above implementation is that it requires actions counts and when the underlying reward distribution changes (non-stationary reward distribution) it does not respond well to take these changes into account. A better approach when we are faced with such problems is to use a fixed size step &lt;1 instead of dividing by the actions count. This way, because the step size is small the estimate gets updated when the underlying reward distribution changes. Of course this means that the estimates will keep changing even when the underlying distribution is not changing, however in practice this is not a problem when the step size is small enough. This effectively gives more weights to recent updates which gives a good changes-responsiveness property for this and similar methods that use a fixed size learning step <span class="arithmatex">\(\alpha\)</span>.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># returns one of the max Q actions; there is an element of stochasticity in this policy</span>
@@ -1731,30 +1733,30 @@ Q_{t+1} = Q_t + \frac{1}{t}\left(R_t - Q_t\right)
 <p>Note that the majority of RL problem are actually non-stationary. This is because, as we shall see later, when we gradually move towards an optimal policy by changing the Q action-values, the underlying reward distribution changes in response to taking actions that are optimal according to the current estimation. This is also the case here but in a subtle way.</p>
 <h3 id="compare-different-learning-rates">Compare different learning rates</h3>
 <p>Let us compare different <em>learning rates</em> α to see how our Q_bandits() function reacts to them. </p>
-<div class="highlight"><pre><span></span><code><span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">&#39;α=.1&#39;</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">)</span>
-<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="mf">.01</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;α=.01&#39;</span><span class="p">,</span> <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">)</span>
-<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">&#39;α=.5&#39;</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">)</span>
-<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="mf">.0</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">&#39;α=.0&#39;</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">'α=.1'</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">)</span>
+<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="mf">.01</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'α=.01'</span><span class="p">,</span> <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">)</span>
+<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">'α=.5'</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">)</span>
+<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="mf">.0</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">'α=.0'</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="output_93_1.png" /></p>
+<p><img alt="png" src="output_93_1.png"></p>
 <h3 id="policies-exploration-vs-exploitation">Policies: Exploration vs. Exploitation</h3>
 <p>Getting the right balance between exploration and exploitation is a constant dilemma in RL.
 One simple strategy as we saw earlier is to explore constantly occasionally ε% of the time! which we called ε-greedy. Another strategy is to insure that when we have multiple actions that are greedy we chose ebtween them equally and not bias one over the other. This is what we do in the greedyStoch policy below.</p>
 <p>Let us now compare different exploration rates for this learning function. As before we show the results only not the code.</p>
-<p><div class="highlight"><pre><span></span><code><span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ε=.1&#39;</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
-<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.01</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ε=.01&#39;</span><span class="p">,</span> <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
-<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.0</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ε=.0&#39;</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+<p></p><div class="highlight"><pre><span></span><code><span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">'ε=.1'</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.01</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'ε=.01'</span><span class="p">,</span> <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.0</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">'ε=.0'</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 </code></pre></div>
-<img alt="png" src="output_83_1.png" /></p>
+<img alt="png" src="output_83_1.png">
 <h3 id="optimistic-initial-values-as-an-exploration-strategy">Optimistic Initial Values as an Exploration Strategy</h3>
 <p>It turns out that we can infuse exploration in the RL solution by optimistically initialising the Q values.
 This encourages the agent to explore due to its disappointment when its initial Q values are not matching the reward values that are coming from the ground (interacting with the environment). This intrinsic exploration motive to explore more actions at the start, vanishes with time when the Q values become more realistic. </p>
 <p>This is a good and effective strategy for exploration. But of course it has its limitations, for example it does not necessarily work for if there a constant or renewed need for exploration. This could happen either when the task or the environment are changing. Below, we show the effect of optimistically initiating the Q values on the 10-armed bandit testbed. We can clearly see that without exploration i.e. when ε=0 and Q=5 initial values outperformed the exploratory policy ε=.1 with Q=0 initial values.</p>
 <p>Ok, we will apply the same principle to stochastically return one of the max Q actions which is coded in greedyStoch() policy. This type of policy will prove useful later when we deal with control.</p>
-<div class="highlight"><pre><span></span><code><span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ε=.1  Realistic Q=0&#39;</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">,</span> <span class="n">policy</span><span class="o">=</span><span class="n">εgreedyStoch</span><span class="p">)</span>
-<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mi">0</span> <span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;ε=0   Optimistic Q=5&#39;</span><span class="p">,</span> <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">,</span> <span class="n">policy</span><span class="o">=</span><span class="n">εgreedyStoch</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'ε=.1  Realistic Q=0'</span><span class="p">,</span>  <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">,</span> <span class="n">policy</span><span class="o">=</span><span class="n">εgreedyStoch</span><span class="p">)</span>
+<span class="n">Q_bandits_runs</span><span class="p">(</span><span class="n">ε</span><span class="o">=</span><span class="mi">0</span> <span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'ε=0   Optimistic Q=5'</span><span class="p">,</span> <span class="n">Q_bandit</span><span class="o">=</span><span class="n">Q_banditα</span><span class="p">,</span> <span class="n">policy</span><span class="o">=</span><span class="n">εgreedyStoch</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="output_98_1.png" /></p>
+<p><img alt="png" src="output_98_1.png"></p>
 <p>As we can see above the optimistic initialization has actually beaten the constant exploration rate and it constitutes a very useful trick for us to encourage the agent to explore while still acting greedily. Of course we can combine both strategies and we will leave this for you as a task. We will use this trick in our coverage of RL in later lessons.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>In this lesson you have learned about the importance of the action value function Q and stationary and non-stationary reward distribution and how we can devise a general algorithms to address them and we concluded by showing an incremental learning algorithm to tackle the k-armed bandit problem. You have seen different exploration strategy and we extensively compared between exploration rates and learning rates for our different algorithms.</p>
@@ -1766,7 +1768,7 @@ This encourages the agent to explore due to its disappointment when its initial 
 <p><a href="../../workseets/worksheet2.ipynb">Worksheet2</a> implement the above concepts and more. Please experiment with the code and run it to get familiar with the essential concepts presented in the lessons.</p>
 <!-- 1. Define a softmax policy as per its definition in eq. 2.11, then compare the Q_bandits_runs on ε-greedy and softmax policies.
 1. Combine the optimistic initialisation and exploration rates and see how the bandit_Q function react to them.
- -->
+ --></div>
 
 
 
@@ -1831,6 +1833,8 @@ This encourages the agent to explore due to its disappointment when its initial 
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement-and-player.min.js"></script>
       
     
   </body>

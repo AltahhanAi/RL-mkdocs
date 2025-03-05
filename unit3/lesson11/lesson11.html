@@ -47,6 +47,8 @@
     
       <link rel="stylesheet" href="../../css/extra.css">
     
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1674,7 +1676,7 @@
 
 
 
-<h1 id="lesson-10-mobile-robot-localization-and-slam">Lesson 10: Mobile Robot Localization and SLAM</h1>
+<div><h1 id="lesson-10-mobile-robot-localization-and-slam">Lesson 10: Mobile Robot Localization and SLAM</h1>
 <p><strong>Lesson learning outcomes:</strong></p>
 <p>By completing this lesson, you will be better able to:</p>
 <ul>
@@ -1685,7 +1687,7 @@
 <p><strong>In this lesson, you learn about the localization and some of the issues and problems associated with a mobile robot localising its position within an environment. We also discuss how a localization and mapping work in parallel.</strong></p>
 <h2 id="localization">Localization</h2>
 <p>A mobile robot navigating in an environment needs to know its position within that environment. We call this <strong>robot localization</strong> and often refer to the robot's environment as the "map" when discussing robot localization. The localization task is not always straightforward for a robot because there are many sources of noise that confuse the robot about its location.</p>
-<p><img alt="rob_U2L2Fig2_06.jpg" src="rob_U2L2Fig2_06.jpg" /></p>
+<p><img alt="rob_U2L2Fig2_06.jpg" src="rob_U2L2Fig2_06.jpg"></p>
 <p><strong>Localization</strong> tries to answer the question of how a mobile robot can know where it is in any given environment. Consider the mobile waiter robot in Figure 3.1 that needs to navigate around a restaurant environment. The waiter robot has the task of taking orders from customers and delivering their food from the kitchen when it is ready. To complete this task it needs to move around the tables, or obstacles, in this environment. For the robot to successfully move to a particular table or to the kitchen, it needs to know its current location (the <strong>start</strong> of moving) and its desired location (<strong>goal</strong> of moving).</p>
 <p>As the robot waiter navigates around the restaurant, it needs to know where it is, or <strong>localize</strong> itself. We can make solving the question of localization easier by assuming that when the restaurant owner first turns on the robot, they tell it where it is. This means that the waiter robot knows perfectly where it is at the beginning, because the restaurant owner set its start position. In the real world, there are factors that make it difficult to be certain of a robot's start position, but to introduce localization, we will assume that the restaurant owner is able to do that accurately in our restaurant example.</p>
 <h2 id="dead-reckoning-or-odometry">Dead reckoning or odometry</h2>
@@ -1722,7 +1724,7 @@
 <p>The video is approximately 8-minutes long.
 <a href="https://minerva.leeds.ac.uk/bbcswebdav/xid-25170701_4" target="_blank">Download transcript (PDF).</a></p>
 <p><strong>"Summary of localization uncertainty from the video"</strong></p>
-<p><img alt="rob_U1L2_Fig2_02.png" src="rob_U1L2_Fig2_02.png" /></p>
+<p><img alt="rob_U1L2_Fig2_02.png" src="rob_U1L2_Fig2_02.png"></p>
 <p>In the video, you saw that both effector noise and sensor noise result in localization uncertainty for a robot. We noted that:</p>
 <ul>
 <li>
@@ -1737,21 +1739,21 @@
 </ul>
 <p>Having considered sensor noise, you saw that there is another source of uncertainty, for example when a robot moves parallel to the surface of an object. We call this uncertainty <strong>sensor aliasing</strong>, when different robot poses result in the same sensor values.</p>
 <p>We observed a robot in the environment shown in Figure 3.3 below, and saw that when it reads that it is 100cm from the wall, it is actually somewhere in the grey region due to the combined uncertainty due to sensor noise and sensor aliasing.</p>
-<p><img alt="rob_U1L2_Fig2_03.png" src="rob_U1L2_Fig2_03.png" /></p>
+<p><img alt="rob_U1L2_Fig2_03.png" src="rob_U1L2_Fig2_03.png"></p>
 <h2 id="localization-algorithms">Localization algorithms</h2>
 <p>Localization algorithms enable a robot to estimate its pose, or localize, in a given map as accurately as possible in the face of all these uncertainties.</p>
 <p>Over the next three Lessons we will study how to use sensors and apply this to a simulated TurtleBot in the Activities that accompany some of the Lessons. We will integrate the information coming from the sensors with the information coming from the wheels to localize a robot in a given environment.  We are focusing on this because it is the most general solution to this problem of localization for your robot. It will use sensors and actuators and as it moves, you will integrate all this information.</p>
 <p>Here are other ways to make it easy for a robot to localize if you are able to structure the environment artificially.</p>
 <h3 id="example-1-robot-system-in-a-factory">Example 1: Robot system in a factory</h3>
-<p><img alt="rob_U1L2_Fig2_04.png" src="rob_U1L2_Fig2_04.png" /></p>
+<p><img alt="rob_U1L2_Fig2_04.png" src="rob_U1L2_Fig2_04.png"></p>
 <p>In this example, where only robots inhabit a factory space, you can place markers in the environment. In Figure 3.4 is a typical distribution warehouse. You can see small white squares (similar to the Unique marker shown in Figure 3.5) at equal distances between each other on the floor surface of the factory. The robots have cameras that look down onto the floor. When a camera sees the marker, it can wirelessly ask the computer system where that marker is in the warehouse. Each marker has a unique position in the warehouse, so this system allows the robot to know exactly where it is within this engineered environment.</p>
-<p><img alt="rob_U1L2_Fig2_05.png" src="rob_U1L2_Fig2_05.png" /></p>
-<p><strong>Figure 3.5</strong> Unique marker with known absolute 2D position in the map. These markers are sometimes called «AR marker» due to their popular use in Augmented Reality.</p></p>
+<p><img alt="rob_U1L2_Fig2_05.png" src="rob_U1L2_Fig2_05.png"></p>
+<p><strong>Figure 3.5</strong> Unique marker with known absolute 2D position in the map. These markers are sometimes called «AR marker» due to their popular use in Augmented Reality.</p>
 <h3 id="beacon-based-localization-with-augmented-reality-markers">Beacon-based localization with augmented reality markers</h3>
 <p>Flying robots can also use similar markers on the ground to the unique marker shown in Figure 3.5. These markers are sometimes called «AR marker» due to their popular use in Augmented Reality. Each marker is different has the location information encoded into it. For flying robots using this method of beacon-based localization, the robot has a camera that it uses to localize itself using these markers in the environment.</p>
 <h3 id="motion-capture-systems">Motion capture systems</h3>
-<p><img alt="rob_U1L2_Fig2_06.png" src="rob_U1L2_Fig2_06.png" /></p>
-<p><img alt="rob_U1L2_Fig2_07.png" src="rob_U1L2_Fig2_07.png" /></p>
+<p><img alt="rob_U1L2_Fig2_06.png" src="rob_U1L2_Fig2_06.png"></p>
+<p><img alt="rob_U1L2_Fig2_07.png" src="rob_U1L2_Fig2_07.png"></p>
 <p>You can also arrange it the other way with a marker on the robot and cameras in the environment in a <strong>motion capture system</strong>. With cameras around the edge of an environment (circle shape in Figure 3.6 and pyramid shapes in Figure 3.7), you can place markers on the robots moving in this environment. This method facilitates having many robots in an environment such as Figure 3.6, because cameras in the environment can detect each robot's unique marker. You can estimate the location of each robot via its unique marker because you can accurately set the position of each camera in the environment.</p>
 <p>See how in Figure 3.7 we can also use this technology in augmented reality. With sensors placed on a person moving in the environment, you can build structures of a person’s motion, giving this method the name motion capture systems.</p>
 <p>Cameras for a motion capture system usually have the following properties:</p>
@@ -1769,7 +1771,7 @@
 <p>The first approach to localization is probabilistic approach. </p>
 <h3 id="probabilistic-approach-to-localization">Probabilistic approach to localization</h3>
 <p>The best way to address the localization problem is by viewing these issues mathematically as a probabilistic inference problem. In other words, we represent the robot’s pose in the environment as a probability distribution, instead of a single value. We then update this probability distribution according to how the robot moves and what the robot sensors perceive.</p>
-<p><img alt="rob_U1L3_Fig3_01.png" src="rob_U1L3_Fig3_01.png" /></p>
+<p><img alt="rob_U1L3_Fig3_01.png" src="rob_U1L3_Fig3_01.png"></p>
 <p>When you place a robot in an environment and switch it on, it will not know where it is. It needs some method or algorithms determine its location using the methods we discussed in the last lesson, i.e.:</p>
 <ul>
 <li>odometry or dead reckoning</li>
@@ -1784,7 +1786,7 @@
 <p>The key idea in probabilistic robotics is to represent uncertainty using probability theory: instead of giving a single best estimate of the current robot configuration, probabilistic robotics represents the robot configuration as a probability distribution over all possible robot poses.</p>
 <p>This probability distribution is called <strong>belief</strong>. It is represented by <span class="arithmatex">\(bel\)</span>.</p>
 <p>The probability distribution graph you saw in the video in Lesson step 5.1, and in Figure 5.2 below are a representation of this <strong>belief</strong> probability.</p>
-<p><img alt="rob_U1L3_Fig3_02.png" src="rob_U1L3_Fig3_02.png" /></p>
+<p><img alt="rob_U1L3_Fig3_02.png" src="rob_U1L3_Fig3_02.png"></p>
 <h3 id="example-probability-distributions">Example probability distributions</h3>
 <p>Here we introduce you to four examples of probability distributions:</p>
 <ul>
@@ -1795,7 +1797,7 @@
 </ul>
 <p>In the following examples, we consider a robot that is constrained to move along a straight rail i.e. the problem is one-dimensional.</p>
 <p>The robot configuration is the position <span class="arithmatex">\(x\)</span> along the rail shown in Figure 5.3.</p>
-<p><img alt="rob_U1L3_Fig3_03.png" src="rob_U1L3_Fig3_03.png" /></p>
+<p><img alt="rob_U1L3_Fig3_03.png" src="rob_U1L3_Fig3_03.png"></p>
 <h3 id="example-1-uniform-distribution">Example 1: uniform distribution</h3>
 <p>We use this when the robot does not know where it is. It means that the information about the robot configuration is null. With uniform distribution, given a certain domain, the probability of every point is the same. Figure 5.4 below represents our one-dimensional environment of size <span class="arithmatex">\(n\)</span>.</p>
 <p>In this environment, with a uniform distribution, the height of the probability graph is</p>
@@ -1803,16 +1805,16 @@
 \frac{1}{N}
 \]</div>
 <p>Because the sum of the area of the graph must add up to one.</p>
-<p><img alt="rob_U1L3_Fig3_04.png" src="rob_U1L3_Fig3_04.png" /></p>
+<p><img alt="rob_U1L3_Fig3_04.png" src="rob_U1L3_Fig3_04.png"></p>
 <p>Remember that in order to be a probability distribution a function <span class="arithmatex">\(p(x)\)</span> <strong>must always</strong> satisfy the following constraint, i.e. equal one:</p>
 <div class="arithmatex">\[
 \int_{-\infty}^{+\infty} p(x) d x=1
 \]</div>
 <h3 id="example-2-multimodal-distribution">Example 2: Multimodal distribution</h3>
 <p>With multimodal distribution, there are certain points where we think the robot will be. In Figure 5.5 below, the robot is in the region around location <span class="arithmatex">\(a\)</span> or <span class="arithmatex">\(b\)</span>.</p>
-<p><img alt="rob_U1L3_Fig3_05.png" src="rob_U1L3_Fig3_05.png" /></p>
+<p><img alt="rob_U1L3_Fig3_05.png" src="rob_U1L3_Fig3_05.png"></p>
 <h3 id="example-3-dirac-distribution">Example 3: Dirac distribution</h3>
-<p><img alt="rob_U1L3_Fig3_06.png" src="rob_U1L3_Fig3_06.png" /></p>
+<p><img alt="rob_U1L3_Fig3_06.png" src="rob_U1L3_Fig3_06.png"></p>
 <p>Our next example is Dirac distribution. If our robot ever knew its location perfectly then we could put a probability of 1 to that position <span class="arithmatex">\(a\)</span>, where the robot currently is. i.e. the robot has a probability of 1.0 (i.e. 100%) to be at position <span class="arithmatex">\(a\)</span>.</p>
 <p>As shown in Figure 3.13, this would correspond to Dirac distribution. Note, this is represented as an upwards arrow in Figure 5.6 because it just goes infinitely high. The width of the arrow is an infinitely small point, with an infinitely high distribution at that point.</p>
 <p>The Dirac function <span class="arithmatex">\(\delta(x)\)</span> is defined as:</p>
@@ -1831,7 +1833,7 @@ p(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{-\frac{(x-\mu)^{2}}{2 \sigma^{2}}}
 \]</div>
 <p>We usually have a mean <span class="arithmatex">\(μ\)</span>. This is shown in Figure 5.7 as the point along the <span class="arithmatex">\(x\)</span> axis with the peak of the bell curve. We have the standard deviation represented by sigma <span class="arithmatex">\(σ\)</span>. The variance, square root of <span class="arithmatex">\(σ\)</span>, is how wide the distribution is, shown by the horizontal arrow in Figure 5.7.</p>
 <p>The Gaussian distribution is also called normal distribution and is usually abbreviated with <span class="arithmatex">\(N(μ ,σ)\)</span>.</p>
-<p><img alt="rob_U1L3_Fig3_07.png" src="rob_U1L3_Fig3_07.png" /></p>
+<p><img alt="rob_U1L3_Fig3_07.png" src="rob_U1L3_Fig3_07.png"></p>
 <p>The Gaussian distribution is also called <strong>normal distribution</strong> and this explains why we use a capital <span class="arithmatex">\(N\)</span> and abbreviate it to <span class="arithmatex">\(N(μ ,σ)\)</span>.</p>
 <h4 id="example">Example</h4>
 <p>For example, if you have <span class="arithmatex">\(N(2 ,5)\)</span>.</p>
@@ -1852,11 +1854,11 @@ p(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{-\frac{(x-\mu)^{2}}{2 \sigma^{2}}}
 <p>Here, we summarize the algorithms for the two key steps in robot localization from the video, because you will need to remember these for the rest of Unit 1.</p>
 <p>In robot localization, we distinguish two update steps:</p>
 <p><strong>1. Action</strong> (or prediction) update: the robot moves and estimates its position through its <strong>proprioceptive</strong> sensors.</p>
-<p><img alt="rob_U1L3_Fig3_08.png" src="rob_U1L3_Fig3_08.png" /></p>
+<p><img alt="rob_U1L3_Fig3_08.png" src="rob_U1L3_Fig3_08.png"></p>
 <p>During this step, <strong>the robot uncertainty grows</strong>.</p>
 <p><strong>2. Perception</strong> (or measurement) update: the robot makes an observation using its <strong>exteroceptive</strong> sensors and corrects its position by combining its belief before the observation with the probability of making   exactly that observation.</p>
 <p>During this step, <strong>the robot uncertainty shrinks</strong>.</p>
-<p><img alt="rob_U1L3_Fig3_09.png" src="rob_U1L3_Fig3_09.png" /></p>
+<p><img alt="rob_U1L3_Fig3_09.png" src="rob_U1L3_Fig3_09.png"></p>
 <p>Solving the probabilistic localization problem consists in solving separately the Action and Perception updates.</p>
 <p>How do we solve the Action and Perception updates?</p>
 <p><strong>Action</strong> update uses the Theorem of Total probability</p>
@@ -1965,9 +1967,9 @@ p(x \mid y)=\frac{p(y \mid x) p(x)}{p(y)}
 <h3 id="autonomous-car-technology">Autonomous car technology</h3>
 <p>These SLAM algorithms are at the heart of today’s autonomous car technologies.</p>
 <p>You can read more about driverless cars in these press releases (all open in a new browser tab):</p>
-<p><a href=" https://www.bbc.com/future/article/20211126-how-driverless-cars-will-change-our-world" target="_blank">BBC: How driverless cars will change our world</a>.</p>
+<p><a href="https://www.bbc.com/future/article/20211126-how-driverless-cars-will-change-our-world" target="_blank">BBC: How driverless cars will change our world</a>.</p>
 <p><a href="https://www.theguardian.com/technology/2016/sep/14/uber-self-driving-cars-pittsburgh-ford-fusion#:~:text=Uber%20riders%20in%20Pittsburgh%20can%20now%20get%20a%20glimpse%20of,participate%20in%20a%20test%20program." target="_blank">The Guardian: Uber riders in Pittsburgh can hail self-driving Ford Fusions in test program</a>.</p>
-<p><a href=" https://www.bbc.co.uk/news/technology-37418119" target="_blank">BBC: US releases highway code for robots</a>.</p>
+<p><a href="https://www.bbc.co.uk/news/technology-37418119" target="_blank">BBC: US releases highway code for robots</a>.</p>
 <h2 id="further-reading">Further Reading</h2>
 <p>For a detailed understanding of classical robotics localization algorithms and how to approach this problem further, see these two books</p>
 <ul>
@@ -1994,7 +1996,7 @@ p(x \mid y)=\frac{p(y \mid x) p(x)}{p(y)}
 <li>discuss the benefits and challenges of methods for creating a map of an environment for a robot</li>
 <li>outline the key benefits of Simultaneous localization and mapping, or SLAM</li>
 <li>recall applications for the SLAM algorithm, including its use in autonomous car technology</li>
-</ul>
+</ul></div>
 
 
 
@@ -2059,6 +2061,8 @@ p(x \mid y)=\frac{p(y \mid x) p(x)}{p(y)}
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement-and-player.min.js"></script>
       
     
   </body>

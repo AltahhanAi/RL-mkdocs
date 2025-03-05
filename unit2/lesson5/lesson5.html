@@ -47,6 +47,8 @@
     
       <link rel="stylesheet" href="../../css/extra.css">
     
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1164,7 +1166,7 @@
 
 
 
-<script>
+<html><head><script>
   window.MathJax = {
     tex: {
       tags: "ams",  // Enables equation numbering
@@ -1173,8 +1175,8 @@
   };
 </script>
 
-<h1 id="lesson-5-dynamic-programming-model-based-approach">Lesson 5- Dynamic Programming: Model-Based Approach</h1>
-<p><strong>Unit 2: Learning Outcomes</strong><br />
+</head><body><h1 id="lesson-5-dynamic-programming-model-based-approach">Lesson 5- Dynamic Programming: Model-Based Approach</h1>
+<p><strong>Unit 2: Learning Outcomes</strong><br>
 By the end of this unit, you will be able to:  </p>
 <ol>
 <li><strong>Compute</strong> the value function for a given policy in tabular settings.  </li>
@@ -1184,7 +1186,7 @@ By the end of this unit, you will be able to:  </p>
 <li><strong>Evaluate</strong> how Monte Carlo (MC) methods provide unbiased but high-variance estimates through interaction with the environment.  </li>
 <li><strong>Analyze</strong> how REINFORCE achieves unbiased but high-variance policy gradient estimation through interaction with the environment.  </li>
 </ol>
-<hr />
+<hr>
 <p>In the first lesson, you looked at a basic RL problem, the k-arm bandit, which involves only actions and no states (non-associative problem). In general, in RL, we are faced with different situations, and we need to take different actions in each situation in order to achieve a certain goal. This general type of environment with states and actions imposes a different flavour to the solution we can design. From now on, we will tackle associative problems. For associative problems, there are two approaches:</p>
 <ol>
 <li>Model-based approach</li>
@@ -1226,14 +1228,14 @@ For These problems we will design Value Iteration methods which utilise the idea
 <p>These sources of stochasticity dictate using suitable techniques to obtain the dynamics and to evaluate or improve stochastic and deterministic policy. You will see an implementation of this in the associated worksheet.</p>
 <h1 id="dynamic-programming-methods">Dynamic Programming Methods</h1>
 <p>Ok so we are ready now to move to Dynamic programming algorithms to solve the RL problem of finding a best estimate of a value function and or finding an optimal policy. Dynamic Programming (DP) refers to a collection of algorithms used for solving Markov Decision Processes (MDPs). DP methods rely on the principle of optimality and require a known model of the environment (transition probabilities and rewards). The main algorithms used in DP are <strong>Policy Evaluation</strong>, <strong>Policy Iteration</strong>, and <strong>Value Iteration</strong>.</p>
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=55e740c0-8e7f-4735-b5cd-3a8911e9fc16&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create"  width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="8. Dynamic Programming 1.mkv"></iframe>
+<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=55e740c0-8e7f-4735-b5cd-3a8911e9fc16&amp;embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="8. Dynamic Programming 1.mkv"></iframe>
 
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=da8f61f0-2c2d-4ec2-9ac1-ef73d31de388&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create"  width="470" height="200"frameborder="0" scrolling="no" allowfullscreen title="8. Dynamic Programming 2.mkv"></iframe>
+<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=da8f61f0-2c2d-4ec2-9ac1-ef73d31de388&amp;embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="8. Dynamic Programming 2.mkv"></iframe>
 
 <h2 id="policy-evaluation">Policy Evaluation</h2>
 <p>The first step to improving any policy is to evaluate how good or bad the policy is for the given task. This fundamental question can be addressed by tying up the task with a reward function that basically rewards the agent for achieving the task or a subtask that leads to the final goal. The agent's aim then becomes to collect as many rewards as possible (or to incur as few losses as possible), which should help the agent achieve the given task. One example is when a robot is moving in an environment, and we want it to reach a specific location, then we can reward/punish the robot for each step that is taking it close to the goal or away from it. But this awareness of the goal location is usually difficult to attain in real environments. Hence it is replaced by rewarding the agent when it reaches the goal or punishing the agent for each step taken without reaching the goal location.</p>
 <p>We can devise an evaluation strategy based on the discounted sum of rewards the agent is <em>expected</em> to collect while executing the task. The strategy depends on the dynamics of the environment. You may want to read section 4.1 and come back here to continue reading the code for the policy evaluation algorithm to get an insight into how it works.</p>
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=7523c957-a9cb-4e87-b55c-1c449702ba9c&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create"  width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="9. policy evaluation.mkv"></iframe>
+<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=7523c957-a9cb-4e87-b55c-1c449702ba9c&amp;embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="9. policy evaluation.mkv"></iframe>
 
 <p>In summary, policy evaluation computes the <strong>state-value function</strong> <span class="arithmatex">\( V^{\pi} \)</span> for a given policy <span class="arithmatex">\( \pi \)</span>. It determines how good it is to follow a specific policy in an MDP. Below we show the pseudocode for this algorithm. <em>Bellman equation is the basis of the update used in policy evaluation algorithm.</em></p>
 <h3 id="policy-evaluation-algorithm">Policy Evaluation Algorithm:</h3>
@@ -1295,7 +1297,7 @@ Belwo we show the pseduocode for thsi algorithm.</p>
 <p>Let us try it on a slightly complex environment such as the maze.</p>
 <div class="highlight"><pre><span></span><code><span class="n">π</span> <span class="o">=</span> <span class="n">Policy_iteration</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div>
-<p><img alt="png" src="output_105_0.png" /></p>
+<p><img alt="png" src="output_105_0.png"></p>
 <div class="highlight"><pre><span></span><code>policy evaluation stopped @ iteration 2:
 policy improvement stopped @ iteration 16:
 </code></pre></div>
@@ -1355,11 +1357,11 @@ Below we show this algorithm. </p>
 <p>Below we show the results of applying the value iteration method on a windy grid world. This is almost identical to the previous simple grid world without any obstacles, the only difference is that there is a wind blowing upwards, which shifts the agent 2 or 1 cell depending on its location. </p>
 <div class="highlight"><pre><span></span><code><span class="n">Q</span> <span class="o">=</span> <span class="n">value_iteration</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">windy</span><span class="p">(),</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<p><img alt="png" src="output_130_0.png" /></p>
+<p><img alt="png" src="output_130_0.png"></p>
 <p>Let us now apply the policy-iteration on the maze env.</p>
-<p><div class="highlight"><pre><span></span><code><span class="n">policy</span> <span class="o">=</span> <span class="n">value_iteration</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<p></p><div class="highlight"><pre><span></span><code><span class="n">policy</span> <span class="o">=</span> <span class="n">value_iteration</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
-<img alt="png" src="output_132_0.png" /></p>
+<img alt="png" src="output_132_0.png">
 <div class="highlight"><pre><span></span><code>loop stopped @ iteration: 14 , Δ =  0
 </code></pre></div>
 <h2 id="conclusion">Conclusion</h2>
@@ -1379,7 +1381,7 @@ In the next lesson, we will take a different approach and move to cover sampling
 <p><strong>Further Reading</strong>:
 For further reading you can refer to chapter 4 from the Sutton and Barto <a href="http://incompleteideas.net/book/RLbook2020.pdf">book</a>.</p>
 <h2 id="your-turn">Your turn</h2>
-<p>Now it is time to experiemnt further and interact with code in <a href="../../workseets/worksheet5.ipynb">worksheet5</a>.</p>
+<p>Now it is time to experiemnt further and interact with code in <a href="../../workseets/worksheet5.ipynb">worksheet5</a>.</p></body></html>
 
 
 
@@ -1444,6 +1446,8 @@ For further reading you can refer to chapter 4 from the Sutton and Barto <a href
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement-and-player.min.js"></script>
       
     
   </body>

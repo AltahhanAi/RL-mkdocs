@@ -45,6 +45,8 @@
     
       <link rel="stylesheet" href="css/extra.css">
     
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1277,9 +1279,7 @@
 
 
 
-<!-- By: Abdulrahman Altahhan, Feb 2025 -->
-
-<h1 id="welcome-to-reinforcement-learning-and-robotics">Welcome to Reinforcement Learning and Robotics!</h1>
+<div><h1 id="welcome-to-reinforcement-learning-and-robotics">Welcome to Reinforcement Learning and Robotics!</h1>
 <p>Welcome to the Reinforcement Learning and Robotics module, where you learn the fundamentals of reinforcement learning(RL) with various simulaitons including robotics. The module focuses on RL as a general robust framework that allows us to deal with autonomous agent learning. </p>
 <p>In each unit, you will learn essential RL ideas and algorithms and see how these can be implemented in simplified environments. Each lesson involves some reading material, along with some videos explaining these lessons. This will then be followed by running and experimenting with the Jupyter notebooks we provide, which implement the main ideas you have read and show you the RL algorithms you studied in action. It is essential that you read the material and engage with these notebooks in the way you see fit. This includes studying and running the provided code to gain insight into the covered algorithms, observing the algorithm convergence behaviour, experimenting with the hyperparameter and their effect on the agent's behaviour, and taking a turn to implement some concepts that were left out for you. </p>
 <p>There are also some lessons that familiarise you with robotics as an application domain, which covers some simple concepts in robotics without delving deep into classical robotics, which is outside the scope of this module. Our units conclude with a simple, practical tutorial on utilising a simulated robot. You will use the provided code to control a simulated mobile robot called TurtleBot. The lessons are meant to gradually build your ability to deal with atonomous agents in a simplified environment. The final project will focus on comparing different RL solutions to solve a simulated robot navigation problem. We will provide you access to an Azure Ubuntu virtual machine already set up with ROS2 to run the sheets. You do not need to set up your own VM.</p>
@@ -1287,7 +1287,7 @@
 <p>In this module, our focus primarily revolves around simulated agents, aligning with the nature of our programme. However, the underlying principles remain universal and applicable across diverse scenarios. The concept of guiding learning through rewards is deeply ingrained in biological organisms, from complex human brains to single-cell organisms like amoebas, all driven by the innate urge to maximise survival and proliferation.</p>
 <p>While RL offers tremendous efficacy when configured appropriately, it is susceptible to spectacular failure when its conditions are unmet. Its inherent stochasticity adds another layer of complexity, contributing to its volatile nature. Nonetheless, this volatility serves as a catalyst for researchers to delve deeper into understanding the governing rules of RL processes.</p>
 <p>Our module adopts a pragmatic approach, aiming to provide you with a solid theoretical grounding in RL without overly delving into intricate mathematical details. Simultaneously, we will attempt to equip you with practical skills and techniques to harness RL's benefits effectively. This balanced approach ensures that you grasp RL's essence while gaining valuable real-world application tools.</p>
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=2efc8e37-2e42-4b77-b694-b68994652e23&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="Wecome Video.mkv"></iframe>
+<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=2efc8e37-2e42-4b77-b694-b68994652e23&amp;embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="Wecome Video.mkv"></iframe>
 
 <h2 id="rl-in-context-advantages-and-challenges">RL in context: advantages and challenges</h2>
 <p>In our RL coverage, you will notice that we do not do classical robotics and we believe it is not the way to go except possibly for industrial robots. So, we do not need motion planning or accurate trajectory calculations/kinematics to allow the robot to execute a task, we simply let it interact with its environment and learn by itself how to solve the task and this is what reinforcement learning is about. In our coverage we also do not supervise or directly teach the robot, this type of interference is called imitation. </p>
@@ -1388,7 +1388,7 @@ Please note that we explain the ideas of RL from a practical perspective and not
 <!-- Worksheets can be cloned and launched in GitHub Codespaces (repo is: AltahhanAi/RL-worksheets)
 [![Open in GitHub Codespaces-](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?repository=AltahhanAi/RL-worksheets) -->
 
-<p>We have provided you with two <a download="RLlibrary.zip" href="/RLlibrary.zip">RL libraries</a> designed for this module. One has bespoke environments and one that has base RL classes that makes working with algorithms very easy and as close as it can be to just provide an update rule.</p>
+<p>We have provided you with two <a download="RLlibrary.zip" href="/docs/workseets/RLlibrary.zip">RL libraries</a> designed for this module. One has bespoke environments and one that has base RL classes that makes working with algorithms very easy and as close as it can be to just provide an update rule.</p>
 <p><strong>Important note: Please place all worksheets in one folder, and inside this folder you must have the downloaded libraries folders (env and rl) to allow the imports to work appropriately</strong>.</p>
 <h2 id="installing-other-libraries-that-will-be-needed-later">Installing other libraries that will be needed later</h2>
 <!-- general -->
@@ -1416,7 +1416,7 @@ Please note that we explain the ideas of RL from a practical perspective and not
 </ul>
 <h2 id="better-readability-and-audibility">Better Readability and Audibility</h2>
 <p>For better readability and experience, please use Jupyter Lab or Vcode(if you are using Azure VM) to navigate between the different notebooks easily. If you want to use Jupyter Notebooks and not Jupyter Lab, we recommend increasing the cells' width for a better experience. We provided a function that increase your notebook width which is envoked automatically when you import an environment (grid particularly). You may want to utilise also the table of contents button in Jupetr Lab.
-For better audibility of the provided videos please click on the <strong>'noise supression'</strong> button, you may want to speed up as per your need.</p>
+For better audibility of the provided videos please click on the <strong>'noise supression'</strong> button, you may want to speed up as per your need.</p></div>
 
 
 
@@ -1481,6 +1481,8 @@ For better audibility of the provided videos please click on the <strong>'noise 
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement-and-player.min.js"></script>
       
     
   </body>

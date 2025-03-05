@@ -47,6 +47,8 @@
     
       <link rel="stylesheet" href="../../css/extra.css">
     
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1230,16 +1232,16 @@
 
 
 
-<h1 id="ros-2-basics-and-fundamentals">ROS 2 Basics and Fundamentals</h1>
+<div><h1 id="ros-2-basics-and-fundamentals">ROS 2 Basics and Fundamentals</h1>
 <p>Please see the following video to get started with teh VM. </p>
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=f52d3061-e7ab-4c0f-9e5d-04dbd2e3bc95&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="1- Introduction to Azure VM.mkv"></iframe>
+<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=f52d3061-e7ab-4c0f-9e5d-04dbd2e3bc95&amp;embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="640" height="360" frameborder="0" scrolling="no" allowfullscreen title="1- Introduction to Azure VM.mkv"></iframe>
 
 <p>You should recieve an email inviting you to have access to an Azure VM. The VM has <a href="https://docs.ros.org/en/foxy/Installation.html">ROS 2 Foxy Fitzroy</a> already installed. ROS2 commands need to be run from the terminal not from a conda-activated terminal (due to compatibility), and they use the default system Python 3.8. The VM has the libraries required for ROS2 along with TurtleBot3 installed with the worlds required for assessment.</p>
 <p>We have tested the notebooks on Python 3.8, so they should work smoothly for higher versions.
 Note that ROS2 code must be run with the default VM Python3.8 kernel. For the best experience, use VScode</p>
 <p>The machine has decent cores and memory (according to Azure 4 cores | 8GB RAM | 128GB Standard SSD). The VM has Ubuntu 20 and Xfce (Xubuntu) interface due to its lightweight (to give you the best experience remotely- to come as close as a local machine feeling) and it is tailored to give the same feeling as the usual Ubuntu Genome. You can run hardinfo in the terminal to check the VM specs. I hope you will enjoy it. </p>
 <p>To access the VM, please use the usual remote desktop app available on your system. You will receive an email with access to your VM. The username is rl, and the password is rl@ros2. </p>
-<p>You will have sudo access. Please apply caution when dealing with the system and avoid installing packages so as not to break it, which can be time-consuming. You will have around a 40-hour time limit, so please be mindful not to leave the system running unless necessary so as not to run out of time. Usually, you would want time for running the exercises and save plenty of time (&frac12;) for your project training (this is where the VM will be most useful).</p>
+<p>You will have sudo access. Please apply caution when dealing with the system and avoid installing packages so as not to break it, which can be time-consuming. You will have around a 40-hour time limit, so please be mindful not to leave the system running unless necessary so as not to run out of time. Usually, you would want time for running the exercises and save plenty of time (½) for your project training (this is where the VM will be most useful).</p>
 <p>If the VM becomes corrupted for some reason, then you can reimage it by going to Azure Lab page and selecting the three dots, then reimage. That <em>will cause all the data you have on the machine to be lost</em>. You are advised to back up your data, you may want to use OneDrive or other backup methods.</p>
 <h2 id="introduction-to-ros-2">Introduction to ROS 2</h2>
 <p>Robot Operating System (ROS) 2 is an open-source framework for building robot applications. It provides a collection of tools, libraries, and conventions to help developers build robot software. ROS 2 is the next generation of ROS, with improvements in architecture, communication, and performance.</p>
@@ -1278,10 +1280,10 @@ Note that ROS2 code must be run with the default VM Python3.8 kernel. For the be
 <!-- For installation instructions, visit the official ROS 2 documentation: [ROS 2 Installation](https://docs.ros.org/en/foxy/Installation.html). -->
 
 <p>Usually you do not need to source the ROS 2 workspace by running the following command:</p>
-<p><div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>/opt/ros/foxy/setup.bash
+<p></p><div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>/opt/ros/foxy/setup.bash
 </code></pre></div>
-because we stored this in a file that will be run everytie you open the terminal. </p>
-<p><img alt="01-04.png" src="01-04.png" /></p>
+because we stored this in a file that will be run everytie you open the terminal. 
+<p><img alt="01-04.png" src="01-04.png"></p>
 <p><a href="https://ktiwari9.gitlab.io/ros101/JargonSection.html">picture credit</a></p>
 <h2 id="your-turn">Your turn</h2>
 <p>Now go ahead and try doing worksheet4 to experiement more with some of the ros concepts. <a href="worksheet4.html">ROS Worksheet 4: Robotics Operating System</a></p>
@@ -1298,7 +1300,7 @@ because we stored this in a file that will be run everytie you open the terminal
 <li>Topics: We used the /turtle1/cmd_vel topic to control the turtle.</li>
 </ul>
 <p>By following this tutorial, you have gained a basic understanding of how to interact with ROS 2 using packages, nodes, and topics. </p>
-<!-- You can now explore more advanced ROS 2 concepts, such as services and actions, and create more complex robot applications. -->
+<!-- You can now explore more advanced ROS 2 concepts, such as services and actions, and create more complex robot applications. --></div>
 
 
 
@@ -1363,6 +1365,8 @@ because we stored this in a file that will be run everytie you open the terminal
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement-and-player.min.js"></script>
       
     
   </body>

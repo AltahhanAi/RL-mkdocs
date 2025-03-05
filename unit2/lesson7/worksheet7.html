@@ -43,6 +43,8 @@
     
       <link rel="stylesheet" href="../../css/extra.css">
     
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1121,7 +1123,7 @@
 
 
 
-<h1 id="working-with-ros-2-packages-nodes-and-topics-a-tutorial-using-turtlesim">Working with ROS 2 Packages, Nodes, and Topics: A Tutorial Using Turtlesim</h1>
+<div><h1 id="working-with-ros-2-packages-nodes-and-topics-a-tutorial-using-turtlesim">Working with ROS 2 Packages, Nodes, and Topics: A Tutorial Using Turtlesim</h1>
 <p>This tutorial introduces the basics of working with ROS 2 by guiding you through creating a simple package, developing a Python node, and using topics to control a turtle in the Turtlesim simulation. You'll learn how to publish movement commands, build and run the package, and inspect topics to enhance your understanding of ROS 2 communication and node development.</p>
 <p><strong>Learning Outcomes</strong></p>
 <ol>
@@ -1154,15 +1156,15 @@
 
 <span class="k">class</span><span class="w"> </span><span class="nc">TurtleControl</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;turtle_control&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">publisher_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span><span class="n">Twist</span><span class="p">,</span> <span class="s1">&#39;/turtle1/cmd_vel&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">'turtle_control'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">publisher_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span><span class="n">Twist</span><span class="p">,</span> <span class="s1">'/turtle1/cmd_vel'</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_timer</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">publish_velocity</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">publish_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="n">Twist</span><span class="p">()</span>
         <span class="n">msg</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">2.0</span>  <span class="c1"># move forward</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">publisher_</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Publishing: &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Publishing: "</span><span class="si">%s</span><span class="s1">"'</span> <span class="o">%</span> <span class="n">msg</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">rclpy</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">)</span>
@@ -1172,7 +1174,7 @@
     <span class="n">turtle_control_node</span><span class="o">.</span><span class="n">destroy_node</span><span class="p">()</span>
     <span class="n">rclpy</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </code></pre></div>
 <p>TurtleControl is a node that publishes velocity commands to the /turtle1/cmd_vel topic.
@@ -1180,10 +1182,10 @@ It creates a publisher to send Twist messages to control the turtle.
 The publish_velocity function sends commands to move the turtle forward every 1 second.</p>
 <h2 id="step-3-build-and-run-the-package">Step 3: Build and Run the Package</h2>
 <p>Now, go back to your ROS 2 workspace and build the package:</p>
-<p><div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~/ros2_ws
+<p></p><div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~/ros2_ws
 colcon<span class="w"> </span>build<span class="w"> </span>--packages-select<span class="w"> </span>my_turtle_pkg
 </code></pre></div>
-In a new terminal, launch the Turtlesim simulation:</p>
+In a new terminal, launch the Turtlesim simulation:
 <div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>run<span class="w"> </span>turtlesim<span class="w"> </span>turtlesim_node
 </code></pre></div>
 <p>This will open a window with a turtle in a 2D world.</p>
@@ -1193,23 +1195,23 @@ In a new terminal, launch the Turtlesim simulation:</p>
 <p>You should see the turtle in the Turtlesim window moving forward.</p>
 <h2 id="step-4-use-ros2-topics-to-control-the-turtle">Step 4: Use ROS2 Topics to Control the Turtle</h2>
 <p>You can view the topic being used by your node by running the following command:</p>
-<p><div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>topic<span class="w"> </span>list
+<p></p><div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>topic<span class="w"> </span>list
 </code></pre></div>
-This will display all active topics. You should see /turtle1/cmd_vel listed.</p>
+This will display all active topics. You should see /turtle1/cmd_vel listed.
 <p>To see the messages being published to the topic, run:
-<div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/turtle1/cmd_vel
-</code></pre></div></p>
+</p><div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/turtle1/cmd_vel
+</code></pre></div>
 <p>You can modify the TurtleControl node to add more complex control, such as rotating the turtle. Modify the publish_velocity method:</p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">publish_velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="n">msg</span> <span class="o">=</span> <span class="n">Twist</span><span class="p">()</span>
     <span class="n">msg</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">2.0</span>  <span class="c1"># move forward</span>
     <span class="n">msg</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># rotate</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">publisher_</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Publishing: &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="n">msg</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'Publishing: "</span><span class="si">%s</span><span class="s1">"'</span> <span class="o">%</span> <span class="n">msg</span><span class="p">)</span>
 </code></pre></div>
 <p>To stop the turtle, simply press Ctrl+C in the terminal where the node is running.</p>
 <h2 id="summary">Summary</h2>
-<p>This tutorial introduces the core concepts of working with ROS 2 by guiding users through the creation of a simple ROS 2 package and node to control a turtle in the Turtlesim simulation. </p>
+<p>This tutorial introduces the core concepts of working with ROS 2 by guiding users through the creation of a simple ROS 2 package and node to control a turtle in the Turtlesim simulation. </p></div>
 
 
 
@@ -1274,6 +1276,8 @@ This will display all active topics. You should see /turtle1/cmd_vel listed.</p>
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement-and-player.min.js"></script>
       
     
   </body>

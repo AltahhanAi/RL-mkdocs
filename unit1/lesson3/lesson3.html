@@ -47,6 +47,8 @@
     
       <link rel="stylesheet" href="../../css/extra.css">
     
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1512,7 +1514,7 @@
 
 
 
-<script>
+<html><head><script>
   window.MathJax = {
     tex: {
       tags: "ams",  // Enables equation numbering
@@ -1521,7 +1523,7 @@
   };
 </script>
 
-<h1 id="lesson-3-markov-decision-processes-dynamics-and-bellman-equaitons">Lesson 3- Markov Decision Processes, Dynamics and Bellman Equaitons</h1>
+</head><body><h1 id="lesson-3-markov-decision-processes-dynamics-and-bellman-equaitons">Lesson 3- Markov Decision Processes, Dynamics and Bellman Equaitons</h1>
 <p><strong>Learning outcomes</strong></p>
 <ol>
 <li>understand MDP and its elements</li>
@@ -1534,7 +1536,7 @@
 1. be able to execute actions in a grid world and observe the result
 2. be able to to visualise a policy and its action-value function -->
 
-<p><img alt="agent-env-interaction.png" src="agent-env-interaction.png" /></p>
+<p><img alt="agent-env-interaction.png" src="agent-env-interaction.png"></p>
 <h2 id="markov-decision-process-mdp">Markov Decision Process (MDP)</h2>
 <p>A Markov Decision Process (MDP) provides a mathematical framework to model decision-making problems where an agent interacts with an environment. It is characterised by a tuple <span class="arithmatex">\( (\mathcal{S}, \mathcal{A} , \mathcal{R}, p, \gamma) \)</span> where:</p>
 <ul>
@@ -1615,9 +1617,9 @@ p(S_{t+1} | S_t, A_t, \dots, S_0, A_0) = p(S_{t+1} | S_t, A_t)
 <div class="arithmatex">\[
 p(s' | s, a) = p(s' | s, a) \quad \forall t
 \]</div>
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=f93d3c1e-261f-42bd-93cd-92f67e120d99&embed=%7B%22ust%22%3Atrue%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="Markov Decision Processes (MDP)" enablejsapi=1></iframe>
+<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=f93d3c1e-261f-42bd-93cd-92f67e120d99&amp;embed=%7B%22ust%22%3Atrue%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="Markov Decision Processes (MDP)" enablejsapi="1"></iframe>
 
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=79d3a9ea-5401-4f3c-bcf2-5907255ef8da&embed=%7B%22ust%22%3Atrue%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200"frameborder="0" scrolling="no" allowfullscreen title="2. Dynamics.mkv"></iframe>
+<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=79d3a9ea-5401-4f3c-bcf2-5907255ef8da&amp;embed=%7B%22ust%22%3Atrue%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="2. Dynamics.mkv"></iframe>
 
 <h2 id="the-policy-and-its-stationarity">The Policy and its Stationarity</h2>
 <p>A <strong>policy</strong> in reinforcement learning is a strategy or function that defines the agent's actions at each state in an environment. Mathematically, a policy is often represented as <span class="arithmatex">\( \pi(a|s) \)</span>, where <span class="arithmatex">\( s \)</span> is a state and <span class="arithmatex">\( a \)</span> is an action. The policy <span class="arithmatex">\( \pi(a|s) \)</span> gives the probability of taking action <span class="arithmatex">\( a \)</span> when in state <span class="arithmatex">\( s \)</span>. </p>
@@ -1669,9 +1671,9 @@ r(s, a) = \sum_{s'} \sum_r r \cdot p(s', r | s, a)
 \]</div>
 <p><strong>The above equation is the most important equation in RL that the Bellman Equations are built on it. In turn, we build all of our incremental updates in RL on Bellman optimality equation</strong></p>
 <p>In the video below we talk more about this important concept.</p>
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=e5a9acea-f258-4952-8e05-46f5ffb0c576&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="3. Returns 1"></iframe>
+<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=e5a9acea-f258-4952-8e05-46f5ffb0c576&amp;embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="3. Returns 1"></iframe>
 
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=8a1a8b63-58be-45ce-86b1-eedb4bc133c4&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="3. Returns 2"></iframe>
+<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=8a1a8b63-58be-45ce-86b1-eedb4bc133c4&amp;embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="3. Returns 2"></iframe>
 
 <!-- ### $G_t$ Monotonicity for MDP Rewards
 Let us see how the return develops for an MDP with a reward of 1 or -1 for each time step.
@@ -1798,20 +1800,20 @@ G_{t+1} &lt; \frac{R_{t+1}}{1 - \gamma}
 </li>
 </ul>
 <h4 id="proof-for-sparse-rewards-optional">Proof for Sparse Rewards (<em>optional</em>)</h4>
-<p>From the recursive definition:<br />
+<p>From the recursive definition:<br>
 <span class="arithmatex">\(
 G_t = R_{t+1} + \gamma G_{t+1}
-\)</span>. Since <span class="arithmatex">\( R_{t+1} = 0 \)</span> for <span class="arithmatex">\( t &lt; T \)</span>:<br />
+\)</span>. Since <span class="arithmatex">\( R_{t+1} = 0 \)</span> for <span class="arithmatex">\( t &lt; T \)</span>:<br>
 <span class="arithmatex">\(
 G_t = \gamma G_{t+1} \quad \forall t &lt; T
 \)</span>. </p>
 <p>Since <span class="arithmatex">\( \gamma \leq 1 \)</span>, then <span class="arithmatex">\( G_t \leq G_{t+1} \)</span>.  </p>
-<p>Using the full return formula:<br />
+<p>Using the full return formula:<br>
 <span class="arithmatex">\(
 G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \dots + \gamma^{T-t-1} R_T
 \)</span>. </p>
 <p>Since <span class="arithmatex">\( R_{t+1} = 0 \;\; \forall t &lt; T  \)</span> then <span class="arithmatex">\(G_t = \gamma^{T-t-1} R_T.\)</span>  </p>
-<hr />
+<hr>
 <h3 id="implications-for-rl-agents">Implications for RL Agents</h3>
 <p>This gives us guidance on the type of behaviour that we expect our agent to develop when we follow one of these reward regimes (sparse or non-sparse). </p>
 <p>The above suggests that for sparse end-of-episode rewards, decisions near the terminal state(s) have far more important effects on the learning process than earlier decisions. While for non-sparse positive rewards MDPs, earlier states have higher returns and hence more importance than near terminal states. </p>
@@ -1833,7 +1835,7 @@ G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \dots + \gamma^{T-t-1} R_T
 \]</div>
 <p>Equation <span class="arithmatex">\(\eqref{eq:v}\)</span> gives the definition of v function.</p>
 <p>In the following video we tackle this idea in more details.</p>
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=7b8178ed-68d1-4335-8ab7-3d81f214f362&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="475" height="200"frameborder="0" scrolling="no" allowfullscreen title="4. Returns Expectation and Sampling.mkv"></iframe>
+<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=7b8178ed-68d1-4335-8ab7-3d81f214f362&amp;embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="475" height="200" frameborder="0" scrolling="no" allowfullscreen title="4. Returns Expectation and Sampling.mkv"></iframe>
 
 <p>For algorithms like <strong>Value Iteration</strong>, it is important that the MDP is <strong>irreducible</strong> (all states are reachable from any other state) and <strong>aperiodic</strong> (there are no cycles of fixed lengths that prevent convergence).</p>
 <h2 id="the-bellman-equations">The Bellman Equations</h2>
@@ -1863,9 +1865,9 @@ Q^\pi(s, a) = \sum_{s', r} p(s', r \mid s, a) \left[ r + \gamma \sum_{a'} \pi(a'
 <p>Where:
 - <span class="arithmatex">\( Q_{\pi}(s, a) \)</span> is the action-value function,
 - The terms <span class="arithmatex">\( r(s, a, s') \)</span>, <span class="arithmatex">\( \gamma \)</span>, and <span class="arithmatex">\( p(s' | s, a) \)</span> are the same as in the value function equation.</p>
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=6d6d9455-7174-447a-8bcb-eceaa51a4af5&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="5. Bellman v.mkv"></iframe>
+<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=6d6d9455-7174-447a-8bcb-eceaa51a4af5&amp;embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="5. Bellman v.mkv"></iframe>
 
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=3a18cbb0-6960-42c1-bcf4-8e0893c09c89&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200"frameborder="0" scrolling="no" allowfullscreen title="6. Bellman q simple.mkv"></iframe>
+<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=3a18cbb0-6960-42c1-bcf4-8e0893c09c89&amp;embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="6. Bellman q simple.mkv"></iframe>
 
 <h3 id="bellman-optimality-equations">Bellman Optimality Equations</h3>
 <p>The <strong>Bellman optimality equations</strong> describe the relationship between the optimal value function <span class="arithmatex">\( V^*(s) \)</span> or the optimal Q-function <span class="arithmatex">\( Q^*(s, a) \)</span> and the transition and reward dynamics. These equations are used to compute the optimal policy that maximizes the expected return.</p>
@@ -1885,15 +1887,15 @@ Q_*(s, a) = \sum_{s', r} p(s', r \mid s, a) \left[ r + \gamma \max_{a'} Q_*(s', 
 <ul>
 <li>The <strong>max</strong> operator ensures that the agent chooses the action <span class="arithmatex">\( a \)</span> that maximizes the expected return.</li>
 </ul>
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=b73eab99-7af2-4b9e-8909-19492615d273&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="7. Bellman Optimality 1.mkv"></iframe>
+<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=b73eab99-7af2-4b9e-8909-19492615d273&amp;embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="7. Bellman Optimality 1.mkv"></iframe>
 
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=8d89893b-6e99-4380-a31e-93e2974cd04a&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="7. Bellman Optimality 2.mkv"></iframe>
+<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=8d89893b-6e99-4380-a31e-93e2974cd04a&amp;embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="7. Bellman Optimality 2.mkv"></iframe>
 
 <p>You can adjust the video settings in SharePoint (speed up to 1.2 and reduce the noise if necessary)</p>
 <p><em>Exercise 1</em>: If you realise there is a missing symbol in the [video: Bellman Equation for v] last equations, do you know what it is and where it has originally come from?</p>
 <p><em>Exercise 2</em>: Can you derive Bellman Optimality Equation for <span class="arithmatex">\(q(s,a)\)</span> from first principles?</p>
 <p>Bellman Optimality for q from first principles can be found in this <em>optional video</em>.</p>
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=fef86f50-e352-4af5-a85b-7f134be29085&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="7. MDP Bellman Equation for q from first prinsiple.mkv"></iframe>
+<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=fef86f50-e352-4af5-a85b-7f134be29085&amp;embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&amp;referrer=StreamWebApp&amp;referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="7. MDP Bellman Equation for q from first prinsiple.mkv"></iframe>
 
 <h2 id="grid-world-environments">Grid World Environments</h2>
 <p>Ok, so now we are ready to tackle the practicals, please go ahead and download the worksheet and run and experiement with the provided code to build some grid world environments and visualise them and make a simple robot agent takes some steps/actions within these environments!.</p>
@@ -1903,7 +1905,7 @@ Q_*(s, a) = \sum_{s', r} p(s', r \mid s, a) \left[ r + \gamma \max_{a'} Q_*(s', 
 <p><strong>Further Reading</strong>:
 For further info please refer to chapter 3 of the Sutton and Barto <a href="http://incompleteideas.net/book/RLbook2020.pdf">book</a>. </p>
 <h2 id="your-turn">Your turn</h2>
-<p>Go ahead and play around with some grid world environment by executing and experiementing with the code in <a href="../../workseets/worksheet3.ipynb">worksheet3</a>.</p>
+<p>Go ahead and play around with some grid world environment by executing and experiementing with the code in <a href="../../workseets/worksheet3.ipynb">worksheet3</a>.</p></body></html>
 
 
 
@@ -1968,6 +1970,8 @@ For further info please refer to chapter 3 of the Sutton and Barto <a href="http
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement-and-player.min.js"></script>
       
     
   </body>

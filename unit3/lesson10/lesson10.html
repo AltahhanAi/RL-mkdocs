@@ -47,6 +47,8 @@
     
       <link rel="stylesheet" href="../../css/extra.css">
     
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1296,7 +1298,7 @@
 
 
 
-<p>The notebook uses a library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries are written from scratch using standard Python libraries (numpy, matplotlib etc.).
+<div><p>The notebook uses a library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries are written from scratch using standard Python libraries (numpy, matplotlib etc.).
 Please note that you will need permission from the author to use the code for research, commercially or otherwise.</p>
 <h1 id="lesson-9-tabular-methods-planning-and-learning">Lesson 9- Tabular Methods: Planning and Learning</h1>
 <p><strong>Learning outcomes</strong>
@@ -1362,7 +1364,7 @@ Below we show the Random sample one-step Q-planning method.</p>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">dynaQ</span> <span class="o">=</span> <span class="n">DynaQ</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
 </code></pre></div>
-<p><img alt="png" src="output_10_0.png" /></p>
+<p><img alt="png" src="output_10_0.png"></p>
 <p>Let us see how many updates DynaQ had to do to achieve what it has achieved in the first 2 episodes!</p>
 <div class="highlight"><pre><span></span><code><span class="n">dynaQ</span><span class="o">.</span><span class="n">nUpdates</span>
 </code></pre></div>
@@ -1371,27 +1373,27 @@ Below we show the Random sample one-step Q-planning method.</p>
 <p>For comparison let us do the same for Q learning, ( DynaQ is equivalent to Q learning fro m=0). This agent will take a bit of time sine we are training for 2 episodes.</p>
 <div class="highlight"><pre><span></span><code><span class="n">qlearn</span> <span class="o">=</span> <span class="n">DynaQ</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
 </code></pre></div>
-<p><img alt="png" src="output_14_0.png" /></p>
+<p><img alt="png" src="output_14_0.png"></p>
 <div class="highlight"><pre><span></span><code><span class="n">qlearn</span><span class="o">.</span><span class="n">nUpdates</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>1011
 </code></pre></div>
 <p>As we can see the difference is huge between both, this difference shown on the performance. Let us study how the performance varies with n (the number of planning steps)</p>
 <h3 id="the-effect-of-planning-steps-on-dynaq">The effect of planning steps on DynaQ</h3>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mazePlanning</span><span class="p">(</span><span class="n">runs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="n">DynaQ</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;DynaQ&#39;</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mazePlanning</span><span class="p">(</span><span class="n">runs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="n">DynaQ</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'DynaQ'</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">yticks</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">([</span><span class="mi">14</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">800</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">50</span><span class="p">]:</span>
         <span class="n">DynaQ0</span> <span class="o">=</span> <span class="n">Runs</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">algo</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">.95</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span> 
-                      <span class="n">runs</span><span class="o">=</span><span class="n">runs</span><span class="p">,</span> <span class="n">plotT</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="o">+</span><span class="s1">&#39; m = </span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">m</span><span class="p">)</span>
+                      <span class="n">runs</span><span class="o">=</span><span class="n">runs</span><span class="p">,</span> <span class="n">plotT</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="o">+</span><span class="s1">' m = </span><span class="si">%d</span><span class="s1">'</span><span class="o">%</span><span class="n">m</span><span class="p">)</span>
 <span class="n">fig_8_2</span> <span class="o">=</span> <span class="n">mazePlanning</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">fig_8_2</span><span class="p">()</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|30/30
-100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|30/30
-100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|30/30
+<div class="highlight"><pre><span></span><code>100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|30/30
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|30/30
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|30/30
 </code></pre></div>
-<p><img alt="png" src="output_19_1.png" /></p>
+<p><img alt="png" src="output_19_1.png"></p>
 <h2 id="prioritized-sweeping">Prioritized Sweeping</h2>
 <p>In DynaQ, the algorithm uniformly chooses n number of previously visited states and re-do their updates. This is ok when the environment is small. However, when the environment becomes big, the performance will dip, and the algorithm will need to do more updates per step to reach an optimal solution. This is where prioritising more important updates over less important ones optimises compute resource usage and achieves more in fewer steps. This is the idea of prioritized sweeping algorithms; it will sweep through different previous states' updates but prioritise those needing the most changes. It measures this priority by the absolute value of the TD error (yes, TD again!). The higher this error value is, the higher its corresponding priority is. It uses a queue to add states that need to update the most (as per their TD error) on the top of the queue. Then it will go through the queue one by one until its number of planning steps is done or until the queue is empty. The algorithm is shown below.</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Psweeping</span><span class="p">(</span><span class="n">MDP</span><span class="p">(</span><span class="n">MRP</span><span class="p">)):</span>
@@ -1447,16 +1449,16 @@ Below we show the Random sample one-step Q-planning method.</p>
 <p>Note that for the insert() function, we check first if state s is already in the queue, and if so, remove its entry if it has less priority than the new entry. Otherwise, do not add anything. </p>
 <p>PQueue is an ascending sorted queue according to P, not to s, and hence we cannot do a binary search for s, so we had to reside to linear search we tried to cut the search time by limiting the queue scope to 2n from the end of the queue.</p>
 <p>Let us ensure that Qlearning and prioritized sweeping are almost identical for θ=0 and m=0.</p>
-<div class="highlight"><pre><span></span><code><span class="n">psweep0</span> <span class="o">=</span> <span class="n">Runs</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">Psweeping</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">.95</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">θ</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span><span class="n">runs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">plotT</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;psweep n = </span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">qlearn</span> <span class="o">=</span> <span class="n">Runs</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">Qlearn</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">.95</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span><span class="n">runs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">plotT</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Qlearn&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">psweep0</span> <span class="o">=</span> <span class="n">Runs</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">Psweeping</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">.95</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">θ</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span><span class="n">runs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">plotT</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">'psweep n = </span><span class="si">%d</span><span class="s1">'</span><span class="o">%</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">qlearn</span> <span class="o">=</span> <span class="n">Runs</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">Qlearn</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">.95</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span><span class="n">runs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">plotT</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">'Qlearn'</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|10/10
-100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|10/10
+<div class="highlight"><pre><span></span><code>100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|10/10
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|10/10
 </code></pre></div>
-<p><img alt="png" src="output_23_1.png" /></p>
+<p><img alt="png" src="output_23_1.png"></p>
 <div class="highlight"><pre><span></span><code><span class="n">psweeping</span> <span class="o">=</span> <span class="n">Psweeping</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
 </code></pre></div>
-<p><img alt="png" src="output_24_0.png" /></p>
+<p><img alt="png" src="output_24_0.png"></p>
 <div class="highlight"><pre><span></span><code><span class="n">psweeping</span><span class="o">.</span><span class="n">nUpdates</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>3
@@ -1465,7 +1467,7 @@ Below we show the Random sample one-step Q-planning method.</p>
 Ok so now let us test with m=50</p>
 <div class="highlight"><pre><span></span><code><span class="n">psweeping</span> <span class="o">=</span> <span class="n">Psweeping</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
 </code></pre></div>
-<p><img alt="png" src="output_27_0.png" /></p>
+<p><img alt="png" src="output_27_0.png"></p>
 <div class="highlight"><pre><span></span><code><span class="n">psweeping</span><span class="o">.</span><span class="n">nUpdates</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>2754
@@ -1473,16 +1475,16 @@ Ok so now let us test with m=50</p>
 <p>Compare the above 5k number of updates for prioritised sweeping with the 32k number of update for DynaQ for the same number of planning states m=50. The difference is huge.</p>
 <h3 id="the-effect-of-planning-steps-on-prioritised-sweeping">The effect of planning steps on Prioritised Sweeping</h3>
 <p>Ok let us conduct the same experiment as before and test to see how the performance changes with n.</p>
-<div class="highlight"><pre><span></span><code><span class="n">mazePlanning</span><span class="p">(</span><span class="n">runs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="n">Psweeping</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Prioritised Sweeping&#39;</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">mazePlanning</span><span class="p">(</span><span class="n">runs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="n">Psweeping</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Prioritised Sweeping'</span><span class="p">,</span> <span class="n">yticks</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|10/10
-100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|10/10
-100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|10/10
+<div class="highlight"><pre><span></span><code>100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|10/10
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|10/10
+100%|[90m██████████████████████████████████████████████████████████████████████████████████████████[0m|10/10
 </code></pre></div>
-<p><img alt="png" src="output_31_1.png" /></p>
+<p><img alt="png" src="output_31_1.png"></p>
 <h2 id="prioritized-sweeping-on-different-maze-sizes">Prioritized sweeping on different maze sizes</h2>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">maze</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">Grid</span><span class="p">(</span><span class="n">gridsize</span><span class="o">=</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span><span class="n">cols</span><span class="p">],</span> <span class="n">s0</span><span class="o">=</span><span class="nb">int</span><span class="p">((</span><span class="n">rows</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">cols</span><span class="p">,</span> <span class="n">goals</span><span class="o">=</span><span class="p">[</span><span class="n">rows</span><span class="o">*</span><span class="n">cols</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;maze&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Grid</span><span class="p">(</span><span class="n">gridsize</span><span class="o">=</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span><span class="n">cols</span><span class="p">],</span> <span class="n">s0</span><span class="o">=</span><span class="nb">int</span><span class="p">((</span><span class="n">rows</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">cols</span><span class="p">,</span> <span class="n">goals</span><span class="o">=</span><span class="p">[</span><span class="n">rows</span><span class="o">*</span><span class="n">cols</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">style</span><span class="o">=</span><span class="s1">'maze'</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">mazes</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
@@ -1504,10 +1506,10 @@ Ok so now let us test with m=50</p>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">mazes</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
 </code></pre></div>
-<p><img alt="png" src="output_35_0.png" /></p>
+<p><img alt="png" src="output_35_0.png"></p>
 <div class="highlight"><pre><span></span><code><span class="n">psweeping</span> <span class="o">=</span> <span class="n">Psweeping</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">mazes</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">19</span><span class="p">,</span><span class="mf">3.5</span><span class="p">])[</span><span class="mi">3</span><span class="p">],</span> <span class="n">α</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
 </code></pre></div>
-<p><img alt="png" src="output_36_0.png" /></p>
+<p><img alt="png" src="output_36_0.png"></p>
 <p>Let us examine the number of steps required by prioritised sweeping and compare it to the number of updates</p>
 <div class="highlight"><pre><span></span><code><span class="n">psweeping</span><span class="o">.</span><span class="n">t</span>
 </code></pre></div>
@@ -1523,7 +1525,7 @@ Ok so now let us test with m=50</p>
 <div class="highlight"><pre><span></span><code>CPU times: user 43.1 s, sys: 7.77 s, total: 50.9 s
 Wall time: 25.7 s
 </code></pre></div>
-<p><img alt="png" src="output_40_1.png" /></p>
+<p><img alt="png" src="output_40_1.png"></p>
 <div class="highlight"><pre><span></span><code><span class="n">dynaQ</span><span class="o">.</span><span class="n">t</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>63
@@ -1552,18 +1554,18 @@ The reason we cannot use our original Runs class is due to allowing for stopping
 
         <span class="bp">self</span><span class="o">.</span><span class="n">nUpdates</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">algo</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">algos</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Maze Planning with </span><span class="si">%s</span><span class="s1">...........................&#39;</span><span class="o">%</span><span class="n">algo</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">Maze Planning with </span><span class="si">%s</span><span class="s1">...........................'</span><span class="o">%</span><span class="n">algo</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nUpdates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PlanningRuns</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">algo</span><span class="p">,</span> <span class="n">runs</span><span class="o">=</span><span class="n">runs</span><span class="p">,</span> <span class="n">envs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">envs</span> <span class="p">))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">'log'</span><span class="p">)</span>
         <span class="n">sizes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">envs</span><span class="o">.</span><span class="n">sizes</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">nUpdate</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nUpdates</span><span class="p">):</span>
             <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nUpdates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">algos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 
-        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Gridworld size (#states)&#39;</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Updates until optimal solution&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Gridworld size (#states)'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Updates until optimal solution'</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
@@ -1584,7 +1586,7 @@ experience stopped at episode 15
 experience stopped at episode 32
 experience stopped at episode 20
 </code></pre></div>
-<p><img alt="png" src="output_49_1.png" /></p>
+<p><img alt="png" src="output_49_1.png"></p>
 <div class="highlight"><pre><span></span><code>CPU times: user 28.8 s, sys: 646 ms, total: 29.5 s
 Wall time: 29.3 s
 </code></pre></div>
@@ -1593,7 +1595,7 @@ Wall time: 29.3 s
 <h2 id="your-turn">Your turn</h2>
 <ol>
 <li>consider what you would need to change in the prioritised sweeping in order to deal with a stochastic environment</li>
-</ol>
+</ol></div>
 
 
 
@@ -1661,6 +1663,8 @@ Wall time: 29.3 s
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement-and-player.min.js"></script>
       
     
   </body>
