@@ -47,8 +47,6 @@
     
       <link rel="stylesheet" href="../../css/extra.css">
     
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
-    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1670,7 +1668,7 @@
 
 
 
-<div><h1 id="lesson-7-introduction-to-intelligent-mobile-robots">Lesson 7: Introduction to Intelligent Mobile Robots</h1>
+<h1 id="lesson-7-introduction-to-intelligent-mobile-robots">Lesson 7: Introduction to Intelligent Mobile Robots</h1>
 <p><strong>Lesson learning outcomes:</strong></p>
 <p>By completing this lesson, you will be better able to:</p>
 <ul>
@@ -1744,7 +1742,7 @@
 <li><strong>Motion constraints</strong> appear when a system has less input variables than degrees of freedom (DOFs). Holonomic constraints prohibit certain robot poses while a nonholonomic constraint prohibits certain robot velocities (the robot can drive only in the direction of the wheels’ rotation).</li>
 </ul>
 <p>Figure below depicts an abstract control scheme for mobile robot systems that we will use throughout this course. This figure identifies many of the main bodies of knowledge associated with mobile robotics.</p>
-<p><img alt="01-01.png" src="01-01.png"></p>
+<p><img alt="01-01.png" src="01-01.png" /></p>
 <h3 id="kinematics-mobile-robot-vs-robotic-manipulator">Kinematics: Mobile Robot Vs Robotic Manipulator</h3>
 <ul>
 <li>
@@ -1772,7 +1770,7 @@ precisely is an extremely challenging task.</p>
 <h5 id="open-loop-control">Open-loop Control</h5>
 <p>The objective of a open-loop kinematic controller is to follow a trajectory described by its position or velocity profile as a function of time. This is often done by dividing the trajectory (path) in motion segments of clearly defined shape, for example, straight lines and segments of a circle. The control problem is thus to pre compute a smooth trajectory based on line and circle
 segments that drives the robot from the initial position to the final position (figure below).</p>
-<p><img alt="01-02.png" src="01-02.png"></p>
+<p><img alt="01-02.png" src="01-02.png" /></p>
 <p>This approach can be regarded as open-loop motion control, because the measured robot position is not fed back for velocity or position control. It has several disadvantages:</p>
 <ul>
 <li>It is not at all an easy task to pre compute a feasible trajectory if all limitations and constraints of the robot’s velocities and accelerations have to be considered.</li>
@@ -1783,17 +1781,17 @@ segments that drives the robot from the initial position to the final position (
 <p>A more appropriate approach in motion control of a mobile robot is to use a real-state feedback controller. With such a controller the robot’s path-planning task is reduced to setting intermediate positions (subgoals) lying on the requested path.</p>
 <p>Closed-loop control is a form of motion control in which the path, or trajectory, of the device is corrected at frequent intervals. After motion begins, a position sensor detects possible errors in the trajectory. If an error is detected, the sensor outputs a signal that operates through a feedback circuit to bring the manipulator back on course. The term derives from the fact that the feedback and control-signal circuits together constitute a closed loop. The main asset of closed-loop control is accuracy. In addition, closed-loop control can compensate for rapid, localized, or unexpected changes in the work environment. The principal disadvantages are greater cost and complexity than simpler schemes such as ballistic control. The most common type of classical control used in industry is Proportional Integral Derivative (PID) controller.</p>
 <p>A general control system follows the methodology given in picture below. </p>
-<p><img alt="01-06.png" src="01-06.png"></p>
+<p><img alt="01-06.png" src="01-06.png" /></p>
 <p>The actuators are usually the DC motors, step-by-step motors etc. The end effector, as the name say, is the general purpose tool or gripper or hand to mimic the grasping capability for the robotic manipulator. There are different kinds of Sensors Proprioceptive like encoder, gyro, etc. and Exteroceptive sensors like bumpers, rangefinders (infrared, ultrasonic), laser and vision sensors like mono, stereo etc. In order to make useful decision based on these sensor measurements, there are two level of control in each loop: Low-level control and High-level control. </p>
 <p>The low level control is shown in figure below. In the low level control, following are the fundamental ideas:</p>
-<p><img alt="01-07.png" src="01-07.png"></p>
+<p><img alt="01-07.png" src="01-07.png" /></p>
 <ul>
 <li>High-gain PI controllers control the robot’s motors so that the robot moves according to the desired speed profile. </li>
 <li>The low-level control deals only with the robot actuators control according to the high-level control instructions.</li>
 <li>If the gains are high enough, the low-level control makes the robot a purely kinematic system.</li>
 </ul>
 <p>On the other hand, the high level controller is given in picture below.</p>
-<p><img alt="01-08.png" src="01-08.png"></p>
+<p><img alt="01-08.png" src="01-08.png" /></p>
 <ul>
 <li>It processes and computes the signals to send to the low-level controller using data coming from sensors.</li>
 <li>From its point of view, the robot behaves as a purely kinematic system.</li>
@@ -1882,7 +1880,7 @@ segments that drives the robot from the initial position to the final position (
 This lesson concludes our unit where we have studied important formulations of RL all of which assumed that we use a table representation for our state space. In the next unit, we will study other offline and fully online RL algorithms that use bootstrapping. Additionally, we will study planning algorithms and then use function approximation instead of a table to represent the state space that can be continuous and infinite. -->
 
 <h1 id="units-conclusion">Unit's conclusion</h1>
-<p>This lesson concludes our unit where we have studied important formulations of RL all of which assumed that we use a table representation for our state space. In the next unit, we will study other offline and fully online RL algorithms that use bootstrapping. Additionally, we will study planning algorithms and then use function approximation instead of a table to represent the state space that can be continuous and infinite.</p></div>
+<p>This lesson concludes our unit where we have studied important formulations of RL all of which assumed that we use a table representation for our state space. In the next unit, we will study other offline and fully online RL algorithms that use bootstrapping. Additionally, we will study planning algorithms and then use function approximation instead of a table to represent the state space that can be continuous and infinite.</p>
 
 
 
@@ -1947,8 +1945,6 @@ This lesson concludes our unit where we have studied important formulations of R
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
-      
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement-and-player.min.js"></script>
       
     
   </body>

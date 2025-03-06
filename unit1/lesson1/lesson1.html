@@ -47,8 +47,6 @@
     
       <link rel="stylesheet" href="../../css/extra.css">
     
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
-    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1388,7 +1386,7 @@
 
 
 
-<div><h1 id="lesson-1-introduction-to-tabular-methods-in-reinforcement-learning">Lesson 1: Introduction to Tabular Methods in Reinforcement Learning</h1>
+<h1 id="lesson-1-introduction-to-tabular-methods-in-reinforcement-learning">Lesson 1: Introduction to Tabular Methods in Reinforcement Learning</h1>
 <p><strong>Unit 1 Learning outcomes</strong></p>
 <p>By the end of this unit, you will be able to:  </p>
 <ol>
@@ -1398,7 +1396,7 @@
 <li><strong>Analyze</strong> the theoretical foundations of RL, including Markov Decision Processes (MDPs) and the Bellman equation.  </li>
 <li><strong>Compare</strong> prediction and control in RL settings, outlining their respective challenges and solutions.  </li>
 </ol>
-<hr>
+<hr />
 <p>In this unit, we start by covering a simplified RL settings in the form of common problems, called Armed-bandit problem. We then move into understanding the main mathematical framework underpining  reinforcement learning, namely Markov Decision Processes(MDPs). As always we take a balaced approach by discussing such concepts from a theoretical and practical perspectives. </p>
 <h2 id="markov-property">Markov property</h2>
 <p>RL has gained a lot of attention in recent years due to its unmatched ability to tackle difficult control problems with a minimal assumption about the settings and the environment that an agent works in. Controlling an agent (such as a simulated robot) is not trivial and can often require a specific setup and strong assumptions about its environment that make the corresponding solutions sometimes either difficult to attain or impractical in real scenarios. In RL, we try to minimise these assumptions and require that only the environment adheres to the Markov property. In simple terms, the Markov property assumes that inferring what to do (taking action) in a specific state can be fully specified by looking at this state and does not depend on other past states.</p>
@@ -1525,7 +1523,7 @@
 <h2 id="unit-overview">Unit Overview</h2>
 <p>More formally, in the first three units, we will study important reinforcement learning algorithms that use <em>tabular policy representation</em>. These algorithms learn a lookup table that identifies a suitable action that can be taken for a certain state. Our main concern is to design practical and efficient algorithms that can <em>learn</em> an optimal policy either via direct interaction with an environment, via an environment model that captures the dynamics of the environment, or both. An optimal policy is a policy that maximises the sum of discounted rewards obtained by following this policy.</p>
 <p>The main underlying framework we assume is a Markov Decision Process (MDP). In a nutshell, as we said earlier this framework assumes that the probability of moving to the next state is only dependent on the current state and not on past states.</p>
-<p>We start by covering non-associated problems, such as K-armed Bandit. These problems have no states. This will help us focus on the action space as it will be isolated from the state's effect. We then study how to solve MDP problems using Dynamic Programming (DP). DP assumes that we have a model of the environment that the agent is acting on. By model, we mean the <em>dynamics</em> or probabilities of landing in a state and obtaining a specific reward given an action and a previous state. This kind of conditional probability provides a comprehensive framework to reach an optimal policy, but it is hard to obtain in the real world. We then reside in sample methods, particularly Monte Carlo. This method allows us to gather samples of an agent running, making environmental decisions, and collecting rewards. We use averages to obtain an estimate of the discounted returns of an episode. We conclude our units by developing suitable core classes that allow us to study and demonstrate the advantages and disadvantages of these and other methods.</p></div>
+<p>We start by covering non-associated problems, such as K-armed Bandit. These problems have no states. This will help us focus on the action space as it will be isolated from the state's effect. We then study how to solve MDP problems using Dynamic Programming (DP). DP assumes that we have a model of the environment that the agent is acting on. By model, we mean the <em>dynamics</em> or probabilities of landing in a state and obtaining a specific reward given an action and a previous state. This kind of conditional probability provides a comprehensive framework to reach an optimal policy, but it is hard to obtain in the real world. We then reside in sample methods, particularly Monte Carlo. This method allows us to gather samples of an agent running, making environmental decisions, and collecting rewards. We use averages to obtain an estimate of the discounted returns of an episode. We conclude our units by developing suitable core classes that allow us to study and demonstrate the advantages and disadvantages of these and other methods.</p>
 
 
 
@@ -1590,8 +1588,6 @@
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
-      
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement-and-player.min.js"></script>
       
     
   </body>

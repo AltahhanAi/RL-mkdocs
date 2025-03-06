@@ -43,8 +43,6 @@
     
       <link rel="stylesheet" href="../../css/extra.css">
     
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
-    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1156,7 +1154,7 @@
 
 
 
-<div><h1 id="running-turtlesim-in-ros-2-foxy-a-step-by-step-tutorial">Running Turtlesim in ROS 2 Foxy: A Step-by-Step Tutorial</h1>
+<h1 id="running-turtlesim-in-ros-2-foxy-a-step-by-step-tutorial">Running Turtlesim in ROS 2 Foxy: A Step-by-Step Tutorial</h1>
 <p><strong>learning outcomes:</strong></p>
 <p>By the end of this worksheet, you will be better able to:</p>
 <ul>
@@ -1168,9 +1166,9 @@
 <h2 id="step-1-setup-your-ros-2-workspace">Step 1: Setup Your ROS 2 Workspace</h2>
 <p>Before running Turtlesim, ensure your ROS 2 Foxy environment is set up.</p>
 <p>In a terminal, source your ROS 2 Foxy installation:</p>
-<p></p><div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>/opt/ros/foxy/setup.bash
+<p><div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>/opt/ros/foxy/setup.bash
 </code></pre></div>
-If you have a ROS 2 workspace, source it as well:
+If you have a ROS 2 workspace, source it as well:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">source</span><span class="w"> </span>~/ros2_ws/install/setup.bash
 </code></pre></div>
 <h2 id="step-2-launch-turtlesim">Step 2: Launch Turtlesim</h2>
@@ -1195,7 +1193,7 @@ If you have a ROS 2 workspace, source it as well:
 </ul>
 <h3 id="move-the-turtle-using-velocity-commands">Move the Turtle Using Velocity Commands</h3>
 <p>You can use the cmd_vel topic to control the turtle’s movement. First, let’s send a velocity command to move the turtle forward. To send a forward velocity to the turtle, use the following command:</p>
-<div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>/turtle1/cmd_vel<span class="w"> </span>geometry_msgs/msg/Twist<span class="w"> </span><span class="s2">"{linear: {x: 2.0}, angular: {z: 0.0}}"</span>
+<div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>/turtle1/cmd_vel<span class="w"> </span>geometry_msgs/msg/Twist<span class="w"> </span><span class="s2">&quot;{linear: {x: 2.0}, angular: {z: 0.0}}&quot;</span>
 </code></pre></div>
 <ul>
 <li>linear.x = 2.0: Moves the turtle forward with a speed of 2.0.</li>
@@ -1204,12 +1202,12 @@ If you have a ROS 2 workspace, source it as well:
 <p>You will see the turtle start moving forward in the Turtlesim window.</p>
 <h3 id="stop-the-turtle">Stop the Turtle</h3>
 <p>To stop the turtle, publish a message with zero velocity:</p>
-<div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>/turtle1/cmd_vel<span class="w"> </span>geometry_msgs/msg/Twist<span class="w"> </span><span class="s2">"{linear: {x: 0.0}, angular: {z: 0.0}}"</span>
+<div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>/turtle1/cmd_vel<span class="w"> </span>geometry_msgs/msg/Twist<span class="w"> </span><span class="s2">&quot;{linear: {x: 0.0}, angular: {z: 0.0}}&quot;</span>
 </code></pre></div>
 <p>The turtle will stop moving.</p>
 <h3 id="rotate-the-turtle">Rotate the Turtle</h3>
 <p>To rotate the turtle, you can publish a message that applies angular velocity:</p>
-<div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>/turtle1/cmd_vel<span class="w"> </span>geometry_msgs/msg/Twist<span class="w"> </span><span class="s2">"{linear: {x: 0.0}, angular: {z: 1.0}}"</span>
+<div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>/turtle1/cmd_vel<span class="w"> </span>geometry_msgs/msg/Twist<span class="w"> </span><span class="s2">&quot;{linear: {x: 0.0}, angular: {z: 1.0}}&quot;</span>
 </code></pre></div>
 <ul>
 <li>linear.x = 0.0: No forward movement.</li>
@@ -1239,7 +1237,7 @@ To view the turtle’s current position and orientation, you can use the pose to
 <li>View the turtle’s pose by subscribing to the /turtle1/pose topic.</li>
 <li>Stop and control the turtle's movement using the ros2 topic pub command.</li>
 </ul>
-<p>This is a simple demonstration of how to control a simulated robot in ROS2 using the terminal. We will provide you with a way to control a simulated robot using python code in the next tutorial. </p></div>
+<p>This is a simple demonstration of how to control a simulated robot in ROS2 using the terminal. We will provide you with a way to control a simulated robot using python code in the next tutorial. </p>
 
 
 
@@ -1304,8 +1302,6 @@ To view the turtle’s current position and orientation, you can use the pose to
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
-      
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement-and-player.min.js"></script>
       
     
   </body>

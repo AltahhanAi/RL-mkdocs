@@ -47,8 +47,6 @@
     
       <link rel="stylesheet" href="../../css/extra.css">
     
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
-    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1091,7 +1089,7 @@
 
 
 
-<div><p>The notebook uses a library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries are written from scratch using standard Python libraries (numpy, matplotlib etc.).
+<p>The notebook uses a library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries are written from scratch using standard Python libraries (numpy, matplotlib etc.).
 Please note that you will need permission from the author to use the code for research, commercially or otherwise.</p>
 <h1 id="lesson-16-rl-on-robotics">Lesson 16: RL on Robotics</h1>
 <p><strong>Learning outcomes</strong>
@@ -1137,13 +1135,13 @@ You must select restart your notebook kernel, ex. Kernel-&gt; Restart and Run AL
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="n">ros</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># !export PATH="home/rl/.local/bin:/opt/ros/humble/share:$PATH"</span>
-<span class="c1"># !python3 -c "import rclpy as ros; ros.init()"</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># !export PATH=&quot;home/rl/.local/bin:/opt/ros/humble/share:$PATH&quot;</span>
+<span class="c1"># !python3 -c &quot;import rclpy as ros; ros.init()&quot;</span>
 </code></pre></div>
 <h2 id="moving-the-robotactions">Moving the robot(Actions)</h2>
 <p>We start by controlling the robot only</p>
 <p>Go to /opt/ros/humble/share/turtlebot3_gazebo/models/turtlebot3_burger/model.sdf and adjust the <update_rate>30</update_rate> to <update_rate>5</update_rate> for the odomotry turtlebot3_diff_drive. This will change its frequency from 30 to 5 so that it aligns with the scanner frequency.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">():</span> <span class="k">return</span> <span class="s1">'node'</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">name</span><span class="p">():</span> <span class="k">return</span> <span class="s1">&#39;node&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000</span><span class="p">))</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Env</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
 
@@ -1177,20 +1175,20 @@ You must select restart your notebook kernel, ex. Kernel-&gt; Restart and Run AL
         <span class="bp">self</span><span class="o">.</span><span class="n">goals</span> <span class="o">=</span>  <span class="p">[[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">]]</span>
         <span class="c1"># -----------------------------------------------------------------</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">controller</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span><span class="n">Twist</span><span class="p">,</span> <span class="s1">'/cmd_vel'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">controller</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span><span class="n">Twist</span><span class="p">,</span> <span class="s1">&#39;/cmd_vel&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_timer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span> <span class="n">LaserScan</span><span class="p">,</span> <span class="s1">'/scan'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">odometr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span> <span class="n">Odometry</span><span class="p">,</span> <span class="s1">'/odom'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">odom</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scanner</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span> <span class="n">LaserScan</span><span class="p">,</span> <span class="s1">&#39;/scan&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">odometr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span> <span class="n">Odometry</span><span class="p">,</span> <span class="s1">&#39;/odom&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">odom</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">range_max</span> <span class="o">=</span> <span class="mf">3.5</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">range_min</span> <span class="o">=</span> <span class="mf">.28</span>               <span class="c1"># change as you see fit</span>
 
 
         <span class="c1"># establish a reset client </span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reset_world</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_client</span><span class="p">(</span><span class="n">Empty</span><span class="p">,</span> <span class="s1">'/reset_world'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_world</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_client</span><span class="p">(</span><span class="n">Empty</span><span class="p">,</span> <span class="s1">&#39;/reset_world&#39;</span><span class="p">)</span>
         <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_world</span><span class="o">.</span><span class="n">wait_for_service</span><span class="p">(</span><span class="n">timeout_sec</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'world client service...'</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;world client service...&#39;</span><span class="p">)</span>
 
 
         <span class="c1"># compatibility----------------------------------------------</span>
@@ -1219,9 +1217,9 @@ You must select restart your notebook kernel, ex. Kernel-&gt; Restart and Run AL
         <span class="c1"># self.rate = self.create_rate(30)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s1">'speed  = '</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">'θspeed = '</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">θspeed</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">'freq   = '</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;speed  = &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;θspeed = &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">θspeed</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;freq   = &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span>
 
 <span class="c1"># sensing--------------------------------------------------------------</span>
     <span class="c1"># odometry (position and orientation) readings</span>
@@ -1230,14 +1228,14 @@ You must select restart your notebook kernel, ex. Kernel-&gt; Restart and Run AL
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">odoms</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">θ</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaw</span><span class="p">(</span><span class="n">odoms</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">odom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">θ</span><span class="p">])</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">'odom = '</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">odom</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;odom = &#39;</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">odom</span> <span class="p">)</span>
 
     <span class="c1"># laser scanners readings</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scans</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">scans</span><span class="o">.</span><span class="n">ranges</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="p">[</span><span class="n">scans</span><span class="o">==</span><span class="n">Inf</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_max</span>
-        <span class="c1"># if self.verbose: print('scan = ', self.scans[:10].round(2))</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">'scan = '</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:],</span> <span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="p">[:</span><span class="mi">5</span><span class="p">]]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+        <span class="c1"># if self.verbose: print(&#39;scan = &#39;, self.scans[:10].round(2))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;scan = &#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:],</span> <span class="bp">self</span><span class="o">.</span><span class="n">scans</span><span class="p">[:</span><span class="mi">5</span><span class="p">]]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 
     <span class="c1"># converting to the quaternion self.z to Euler</span>
     <span class="c1"># see https://www.allaboutcircuits.com/technical-articles/dont-get-lost-in-deep-space-understanding-quaternions/#</span>
@@ -1265,7 +1263,7 @@ You must select restart your notebook kernel, ex. Kernel-&gt; Restart and Run AL
         <span class="n">dist</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">dists</span><span class="p">)</span>         <span class="c1"># nearest goal distance</span>
         <span class="n">goal</span> <span class="o">=</span> <span class="n">dists</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>  <span class="c1"># nearest goal index</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">'seeking goal ____________________'</span><span class="p">,</span> <span class="n">goal</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;seeking goal ____________________&#39;</span><span class="p">,</span> <span class="n">goal</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">dist</span><span class="o">**</span><span class="mf">.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">goal</span>
 
     <span class="c1"># robot reached goal ...............................................................</span>
@@ -1276,7 +1274,7 @@ You must select restart your notebook kernel, ex. Kernel-&gt; Restart and Run AL
             <span class="n">atgoal</span> <span class="o">=</span> <span class="n">xgoal</span> <span class="o">+</span> <span class="n">tol</span> <span class="o">&gt;</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">xgoal</span> <span class="o">-</span> <span class="n">tol</span>  <span class="ow">and</span>  \
                      <span class="n">ygoal</span> <span class="o">+</span> <span class="n">tol</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="o">&gt;</span> <span class="n">ygoal</span> <span class="o">-</span> <span class="n">tol</span>
 
-            <span class="k">if</span> <span class="n">atgoal</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">'Goal has been reached woohoooooooooooooooooooooooooooooo!!'</span><span class="p">);</span> <span class="k">break</span>
+            <span class="k">if</span> <span class="n">atgoal</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Goal has been reached woohoooooooooooooooooooooooooooooo!!&#39;</span><span class="p">);</span> <span class="k">break</span>
         <span class="k">return</span> <span class="n">atgoal</span>
 
     <span class="c1"># robot hits a wall...................................................................</span>
@@ -1301,13 +1299,13 @@ You must select restart your notebook kernel, ex. Kernel-&gt; Restart and Run AL
         <span class="k">if</span> <span class="n">stype</span><span class="p">:</span> <span class="n">reward</span> <span class="o">-=</span> <span class="n">imp</span><span class="o">*</span><span class="p">(</span><span class="n">dist</span><span class="o">+</span><span class="n">θdist</span><span class="p">)</span> 
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> 
-            <span class="nb">print</span><span class="p">(</span><span class="s1">'reward components='</span><span class="p">,</span> 
-                  <span class="s1">'Total reward='</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> 
-                  <span class="s1">'state reward='</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="p">[</span><span class="n">stype</span><span class="p">],</span>
-                  <span class="s1">'goal dist='</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> 
-                  <span class="s1">'|θ-θgoal|='</span><span class="p">,</span> <span class="n">θdist</span><span class="p">)</span>
-                <span class="c1">#   'θrobot=', self.θ, </span>
-                <span class="c1">#   'θgoal =', θgoal, </span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;reward components=&#39;</span><span class="p">,</span> 
+                  <span class="s1">&#39;Total reward=&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> 
+                  <span class="s1">&#39;state reward=&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rewards</span><span class="p">[</span><span class="n">stype</span><span class="p">],</span>
+                  <span class="s1">&#39;goal dist=&#39;</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> 
+                  <span class="s1">&#39;|θ-θgoal|=&#39;</span><span class="p">,</span> <span class="n">θdist</span><span class="p">)</span>
+                <span class="c1">#   &#39;θrobot=&#39;, self.θ, </span>
+                <span class="c1">#   &#39;θgoal =&#39;, θgoal, </span>
 
         <span class="c1"># reset without restarting an episode if the robot hits a wall</span>
         <span class="k">if</span> <span class="n">stype</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span> 
@@ -1326,7 +1324,7 @@ You must select restart your notebook kernel, ex. Kernel-&gt; Restart and Run AL
 
         <span class="bp">self</span><span class="o">.</span><span class="n">si</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">yi</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cols</span>     <span class="c1"># position state in the grid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nC</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">θi</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">si</span>      <span class="c1"># position state with orientation</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">'grid cell= '</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">si</span><span class="p">,</span> <span class="s1">'state = '</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;grid cell= &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">si</span><span class="p">,</span> <span class="s1">&#39;state = &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span> 
 
 
@@ -1343,7 +1341,7 @@ You must select restart your notebook kernel, ex. Kernel-&gt; Restart and Run AL
         <span class="k">if</span> <span class="n">θspeed</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">θspeed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">θspeed</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">+=</span><span class="mi">1</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">'step = '</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;step = &#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
 
         <span class="k">if</span>  <span class="n">a</span><span class="o">==-</span><span class="mi">1</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">x</span>  <span class="o">=</span> <span class="o">-</span><span class="n">speed</span>  <span class="c1"># backwards</span>
         <span class="k">elif</span> <span class="n">a</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">x</span>  <span class="o">=</span>  <span class="n">speed</span>  <span class="c1"># forwards</span>
@@ -1365,7 +1363,7 @@ You must select restart your notebook kernel, ex. Kernel-&gt; Restart and Run AL
 
 <span class="c1"># reseting--------------------------------------------------------------</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">'resetting world..........................................'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;resetting world..........................................&#39;</span><span class="p">)</span>
         <span class="c1"># to ensure earlier queued actions are flushed, there are better ways to do this</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset_world</span><span class="o">.</span><span class="n">call_async</span><span class="p">(</span><span class="n">Empty</span><span class="o">.</span><span class="n">Request</span><span class="p">())</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>  <span class="c1"># move slightly forward to update the odometry to prevent repeating an episode unnecessary</span>
@@ -1593,13 +1591,13 @@ freq   =  0.05
 <div class="highlight"><pre><span></span><code>CPU times: user 35min 38s, sys: 1min 23s, total: 37min 2s
 Wall time: 7h 53min 35s
 </code></pre></div>
-<p><img alt="png" src="output_41_1.png"></p>
+<p><img alt="png" src="output_41_1.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="o">%</span><span class="n">time</span> <span class="n">vtruesarsa</span> <span class="o">=</span> <span class="n">trueSarsaλ</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">venv</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.05</span><span class="p">,</span> <span class="n">ε</span><span class="o">=</span><span class="mf">.1</span><span class="p">,</span> <span class="n">max_t</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">demoGame</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>CPU times: user 30min 2s, sys: 1min 9s, total: 31min 12s
 Wall time: 7h 4min 40s
 </code></pre></div>
-<p><img alt="png" src="output_42_1.png"></p>
+<p><img alt="png" src="output_42_1.png" /></p>
 <div class="highlight"><pre><span></span><code>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="c1"># venv.θspeed = pi/3 </span>
@@ -1621,7 +1619,7 @@ Wall time: 6min 31s
 
 &lt;RLv.Sarsaλ at 0x7f5ffd716f40&gt;
 </code></pre></div>
-<p><img alt="png" src="output_45_2.png"></p>
+<p><img alt="png" src="output_45_2.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">vtruesarsa</span><span class="o">.</span><span class="n">episodes</span> <span class="o">=</span> <span class="mi">530</span>
 <span class="c1"># sarsa.rewards=[100, -10, 0, -1]</span>
 <span class="o">%</span><span class="n">time</span> <span class="n">vtruesarsa</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">venv</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1635,7 +1633,7 @@ Wall time: 18min 5s
 
 &lt;RLv.trueSarsaλ at 0x7f60340968b0&gt;
 </code></pre></div>
-<p><img alt="png" src="output_46_2.png"></p>
+<p><img alt="png" src="output_46_2.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">venv</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>resetting world..........................................
@@ -1706,10 +1704,10 @@ array([0.01292713, 0.01281209, 0.0227836 , 0.02324465, 0.01027762,
 <p>To train more efficiently, turn off the gui in gazebo. To do so, go to the .launch file that you have launched gazebo with and comment out the follwoing lines:</p>
 <div class="highlight"><pre><span></span><code>   IncludeLaunchDescription(
        PythonLaunchDescriptionSource(
-           os.path.join(pkg_gazebo_ros, 'launch', 'gzclient.launch.py')
+           os.path.join(pkg_gazebo_ros, &#39;launch&#39;, &#39;gzclient.launch.py&#39;)
        ),
    ),
-</code></pre></div></div>
+</code></pre></div>
 
 
 
@@ -1777,8 +1775,6 @@ array([0.01292713, 0.01281209, 0.0227836 , 0.02324465, 0.01027762,
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
-      
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement-and-player.min.js"></script>
       
     
   </body>

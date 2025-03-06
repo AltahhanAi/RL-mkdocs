@@ -47,8 +47,6 @@
     
       <link rel="stylesheet" href="../../css/extra.css">
     
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
-    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1148,15 +1146,15 @@
 
 
 
-<div><h1 id="lesson-12-introduction-to-function-approximation-methods">Lesson 12: Introduction to Function Approximation Methods</h1>
-<p><strong>Unit 4: Learning Outcomes</strong><br>
+<h1 id="lesson-12-introduction-to-function-approximation-methods">Lesson 12: Introduction to Function Approximation Methods</h1>
+<p><strong>Unit 4: Learning Outcomes</strong><br />
 By the end of this unit, you will be able to: </p>
 <ol>
 <li><strong>Apply</strong> RL techniques to control an agent in complex environment representations.  </li>
 <li><strong>Compare</strong> the trade-offs of on-policy and off-policy learning algorithms.  </li>
 <li><strong>Evaluate</strong> the convergence properties of RL algorithms in both tabular and function approximation settings, considering their practical limitations.  </li>
 </ol>
-<hr>
+<hr />
 <p>In this and subsequent lessons, we will learn about finding solutions for states represented by features (observations). In a real-world environment, it is hard and unrealistic to expect to be able to identify a state fully. Usually, we can only partially observe the state via a set of features that can help us to recognise or distinguish a state, but that does not mean that we have guarantees that the state is fully identifiable or that the features are unique for each different state. Nevertheless, we should be able to deal with these spaces. After all, RL is meant for real-world problems. We must come to terms with the issue that this partial observability can be dealt with effectively in most practical cases by using suitable features. Because the states that share inner properties usually tend to have similar features, by dealing with these states via these features, we usually succeed in generalising to other similar states. To that end, dealing with the features via a set of parameters is natural, as we did in several machine learning modules. Of course, we can bring along other non-parametric models, such as Gaussian processes. However, this falls outside the scope of our RL treatment. 
 In some cases, we might need to generalise the RL framework from the MDP’s underlying assumption of full observability to Partially Observable Markov Decision Processes or POMDP. In most cases, this might be unnecessary, and we can get away without dealing with the intricacy of POMDP. Again, POMDP is outside the scope of our coverage.
 What is left is then to move from a tabular to a parametric representation by adjusting the update rules we have dealt with so far to the parametric representation instead of the tabular one. </p>
@@ -1168,7 +1166,7 @@ We then move to other constructions, including coarse coding and tile coding, to
 <p>This is where neural networks can come to the rescue.  Neural networks can automatically find a suitable set of features internally through their hidden layers, as we know. Whether to use a deep neural network or a shallow one depends on the complexity of the problem and the complexity that we would want our state representation to have. Neural networks help extract helpful features in the early layers that will be used in later layers to extract a correct value function. In this case, we do not need to use tile or similar coding because the network automatically learns the feature representation. The main issue that we often face, which acted as a deterrence for researchers to use neural networks for a long time, is that there are far fewer guarantees of convergence for neural networks, while several strong guarantees exist for linear regression models. Nevertheless, this impasse was broken with the introduction of DQN, and in practice, RL algorithms have proven resilient to neural networks in general. The picture is different for off-policy methods, and fewer guarantees exist for the tabular, let alone the function approximation methods. </p>
 <p>Note that we are dealing mainly with regression from an ML perspective. This is because the value function is just a function that maps the state to an actual number, so the answer is continuous values (not discrete). It is just a value, so we face a regression problem. When we deal with function approximation, TD (r + V(s')-V(s)) and other methods do not take the gradient of the target V(s'); we only differentiate V(s). This is because we are bootstrapping, and in ML(supervised learning), the target is a fixed value that is not differentiable (while in RL, it is). Remember, for example, that the update rule for the Monte Carlo method involves (Gt-V(s)), which, calculating its gradient, involves differentiating V(s) only. Because of this, we call the methods that do not take the target's gradient <em>a semi-gradient method</em>. We then use the action-value function to establish a suitable policy as we did earlier (ex., e-greedy). </p>
 <p>Finally, we move to a different type of RL <em>control</em> algorithms that deal directly with the policy and attempts to learn a policy directly without going through the intermediate step of fitting a value function. These methods might use regression or classification models called policy-gradient methods because they differentiate the policy <span class="arithmatex">\(\pi\)</span> itself, not <span class="arithmatex">\(Q\)</span>. These methods are amongst the most promising methods in RL and have proven more resilience with more convergence guarantees than action-value functions methods. </p>
-<p>Ok, with all of that in mind, let us get started.</p></div>
+<p>Ok, with all of that in mind, let us get started.</p>
 
 
 
@@ -1233,8 +1231,6 @@ We then move to other constructions, including coarse coding and tile coding, to
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
-      
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement-and-player.min.js"></script>
       
     
   </body>

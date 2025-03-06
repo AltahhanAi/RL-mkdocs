@@ -47,8 +47,6 @@
     
       <link rel="stylesheet" href="../../css/extra.css">
     
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelementplayer.min.css">
-    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1166,7 +1164,7 @@
 
 
 
-<div><p>The notebook uses a library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries are written from scratch using standard Python libraries (numpy, matplotlib etc.).
+<p>The notebook uses a library of functionality in RL that aims for simplicity and general insight into how algorithms work, these libraries are written from scratch using standard Python libraries (numpy, matplotlib etc.).
 Please note that you will need permission from the author to use the code for research, commercially or otherwise.</p>
 <h1 id="lesson-15-non-linear-action-value-approximation-and-policy-gradient-methods-for-control">Lesson 15: Non-linear Action-Value Approximation and Policy Gradient Methods for Control</h1>
 <p><strong>Learning outcomes</strong>
@@ -1182,22 +1180,22 @@ The accompanying reading of this lesson is <strong>chapter 16</strong> of our te
 <p>Please refer to libraries installation in the Introduction to find a list of libraries that you will need to install. If you are using the Azure VM then these packages will be already there, so you can get started and jum to the next section. If you cannot find a <strong>list</strong> of pip3 install in the IntroductionTOC notebook then re-download the notebook from minerva.</p>
 <p>Let us test if it is working</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># !conda list -f tensorflow</span>
-<span class="c1"># print('-------------check that the two commands give you the same version--------------------')</span>
-<span class="c1"># print('-------------otherwise it means you are using a kernel without a GPU------------------')</span>
+<span class="c1"># print(&#39;-------------check that the two commands give you the same version--------------------&#39;)</span>
+<span class="c1"># print(&#39;-------------otherwise it means you are using a kernel without a GPU------------------&#39;)</span>
 <span class="c1"># !pip3 show tensorflow </span>
 </code></pre></div>
 <p>We can also check if our GPU is in use as follows.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.python.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">device_lib</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">device_lib</span><span class="o">.</span><span class="n">list_local_devices</span><span class="p">())</span>
 <span class="c1"># or</span>
-<span class="c1"># !python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"</span>
+<span class="c1"># !python3 -c &quot;import tensorflow as tf; print(tf.config.list_physical_devices(&#39;GPU&#39;))&quot;</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>2025-02-23 16:56:04.777721: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
 To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
 
 
-[name: "/device:CPU:0"
-device_type: "CPU"
+[name: &quot;/device:CPU:0&quot;
+device_type: &quot;CPU&quot;
 memory_limit: 268435456
 locality {
 }
@@ -1206,8 +1204,8 @@ xla_global_id: -1
 ]
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.python.platform</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_info</span> <span class="k">as</span> <span class="n">tf_build_info</span>
-<span class="c1"># print("cudnn_version",tf_build_info.build_info['cudnn_version'])</span>
-<span class="c1"># print("cuda_version",tf_build_info.build_info['cuda_version'])</span>
+<span class="c1"># print(&quot;cudnn_version&quot;,tf_build_info.build_info[&#39;cudnn_version&#39;])</span>
+<span class="c1"># print(&quot;cuda_version&quot;,tf_build_info.build_info[&#39;cuda_version&#39;])</span>
 </code></pre></div>
 <p>Ok, we are ready, let us get started...!</p>
 <p>To run this notebook on a remote Azure lab server <strong>without</strong> using remote desktop check this <a href="https://docs.microsoft.com/en-us/azure/lab-services/class-type-jupyter-notebook#template-virtual-machine">link</a></p>
@@ -1291,48 +1289,48 @@ Note that in their paper DeepMinds trained for 200M frames, we set the max_t_exp
 <h3 id="buffer-with-complex-element-tuples">Buffer with Complex Element (Tuples)</h3>
 <p>Let us assume that we have a set of tuples each consists of (s,a,sn). In this case we can add these tuples as is. Below we show an example, we have represented actions as integers but states/observations as string to help identifying them visually, but bear in mind that they are going to be a more complex entities such as images.</p>
 <div class="highlight"><pre><span></span><code><span class="n">buffer</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">'2'</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s1">'3'</span><span class="p">))</span>
-<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">'3'</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">'4'</span><span class="p">))</span>
-<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">'4'</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">'5'</span><span class="p">))</span>
-<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">'5'</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s1">'4'</span><span class="p">))</span>
+<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;2&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;3&#39;</span><span class="p">))</span>
+<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;3&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="p">))</span>
+<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;4&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;5&#39;</span><span class="p">))</span>
+<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;5&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="p">))</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>deque([('2', 1, '3'), ('3', 2, '4'), ('4', 2, '5'), ('5', 1, '4')], maxlen=4)
+<div class="highlight"><pre><span></span><code>deque([(&#39;2&#39;, 1, &#39;3&#39;), (&#39;3&#39;, 2, &#39;4&#39;), (&#39;4&#39;, 2, &#39;5&#39;), (&#39;5&#39;, 1, &#39;4&#39;)], maxlen=4)
 </code></pre></div>
 <p>Now in order to sample we can directly sample from the buffer </p>
 <div class="highlight"><pre><span></span><code><span class="n">batch</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>[('2', 1, '3'), ('5', 1, '4'), ('3', 2, '4')]
+<div class="highlight"><pre><span></span><code>[(&#39;2&#39;, 1, &#39;3&#39;), (&#39;5&#39;, 1, &#39;4&#39;), (&#39;3&#39;, 2, &#39;4&#39;)]
 </code></pre></div>
 <p>However, the above is not useful, usually we want to place all the actions and states and next states in their own list to feed them as a batch into a neural network. To put all states and actions together each in its own list we can use zip</p>
 <div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">batch</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>('2', '5', '3')
+<div class="highlight"><pre><span></span><code>(&#39;2&#39;, &#39;5&#39;, &#39;3&#39;)
 (1, 1, 2)
-('3', '4', '4')
+(&#39;3&#39;, &#39;4&#39;, &#39;4&#39;)
 </code></pre></div>
 <p>We can also convert them into a numpy array directly.</p>
 <div class="highlight"><pre><span></span><code><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">batch</span><span class="p">)]</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>[array(['2', '5', '3'], dtype='&lt;U1'),
+<div class="highlight"><pre><span></span><code>[array([&#39;2&#39;, &#39;5&#39;, &#39;3&#39;], dtype=&#39;&lt;U1&#39;),
  array([1, 1, 2]),
- array(['3', '4', '4'], dtype='&lt;U1')]
+ array([&#39;3&#39;, &#39;4&#39;, &#39;4&#39;], dtype=&#39;&lt;U1&#39;)]
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">buffer</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">'2'</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s1">'3'</span><span class="p">))</span>
-<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">'3'</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">'4'</span><span class="p">))</span>
-<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">'4'</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">'5'</span><span class="p">))</span>
-<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">'5'</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s1">'4'</span><span class="p">))</span>
-<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">'7'</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="s1">'6'</span><span class="p">))</span>
+<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;2&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;3&#39;</span><span class="p">))</span>
+<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;3&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="p">))</span>
+<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;4&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;5&#39;</span><span class="p">))</span>
+<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;5&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="p">))</span>
+<span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;7&#39;</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="s1">&#39;6&#39;</span><span class="p">))</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span>
 <span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">sample</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="mi">3</span><span class="p">))]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>deque([('3', 2, '4'), ('4', 2, '5'), ('5', 1, '4'), ('7', 8, '6')], maxlen=4)
-[array(['5', '7', '4'], dtype='&lt;U1'), array([1, 8, 2]), array(['4', '6', '5'], dtype='&lt;U1')]
+<div class="highlight"><pre><span></span><code>deque([(&#39;3&#39;, 2, &#39;4&#39;), (&#39;4&#39;, 2, &#39;5&#39;), (&#39;5&#39;, 1, &#39;4&#39;), (&#39;7&#39;, 8, &#39;6&#39;)], maxlen=4)
+[array([&#39;5&#39;, &#39;7&#39;, &#39;4&#39;], dtype=&#39;&lt;U1&#39;), array([1, 8, 2]), array([&#39;4&#39;, &#39;6&#39;, &#39;5&#39;], dtype=&#39;&lt;U1&#39;)]
 </code></pre></div>
 <p>sampling an empty batch</p>
 <div class="highlight"><pre><span></span><code><span class="n">nbatch</span> <span class="o">=</span> <span class="mi">1</span>
@@ -1347,7 +1345,7 @@ Note that in their paper DeepMinds trained for 200M frames, we set the max_t_exp
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="n">slice_</span><span class="p">(</span><span class="n">buffer</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code>[('4', 2, '5'), ('5', 1, '4'), ('7', 8, '6')]
+<div class="highlight"><pre><span></span><code>[(&#39;4&#39;, 2, &#39;5&#39;), (&#39;5&#39;, 1, &#39;4&#39;), (&#39;7&#39;, 8, &#39;6&#39;)]
 </code></pre></div>
 <h2 id="neural-network-based-mrp">Neural Network Based MRP</h2>
 <p>In this class we implement the basic functionality for dealing with creating, saving and loading deep learning models. In addition, we make these models the default functions used to obtain the value function via self.V_.
@@ -1370,27 +1368,27 @@ Note that nF is usually used in the Env(ironment) class but feature extraction i
         <span class="bp">self</span><span class="o">.</span><span class="n">load_weights_</span><span class="o">=</span> <span class="n">load_weights</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">save_weights_</span><span class="o">=</span> <span class="n">save_weights</span> <span class="c1"># used to save the target net every now and then</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">update_msg</span> <span class="o">=</span> <span class="s1">'update </span><span class="si">%s</span><span class="s1"> network weights...........! </span><span class="si">%d</span><span class="s1">'</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">saving_msg</span> <span class="o">=</span> <span class="s1">'saving </span><span class="si">%s</span><span class="s1"> network weights to disk...! </span><span class="si">%d</span><span class="s1">'</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">loading_msg</span> <span class="o">=</span> <span class="s1">'loading </span><span class="si">%s</span><span class="s1"> network weights from disk...!'</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_msg</span> <span class="o">=</span> <span class="s1">&#39;update </span><span class="si">%s</span><span class="s1"> network weights...........! </span><span class="si">%d</span><span class="s1">&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saving_msg</span> <span class="o">=</span> <span class="s1">&#39;saving </span><span class="si">%s</span><span class="s1"> network weights to disk...! </span><span class="si">%d</span><span class="s1">&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loading_msg</span> <span class="o">=</span> <span class="s1">&#39;loading </span><span class="si">%s</span><span class="s1"> network weights from disk...!&#39;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vN</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span><span class="s1">'V'</span><span class="p">)</span>                      <span class="c1"># create V deep network</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_weights_</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vN</span><span class="p">,</span><span class="s1">'V.weights.h5'</span><span class="p">)</span> <span class="c1"># from earlier training proces   </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vN</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">)</span>                      <span class="c1"># create V deep network</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_weights_</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vN</span><span class="p">,</span><span class="s1">&#39;V.weights.h5&#39;</span><span class="p">)</span> <span class="c1"># from earlier training proces   </span>
         <span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">V_</span>
 
     <span class="c1">#-------------------------------------------Deep model related---------------------------</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">create_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">net_str</span><span class="p">):</span>
         <span class="n">x0</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="c1">#(84,84,1))#self.env.frame_size_)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">Conv2D</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">)(</span><span class="n">x0</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">Conv2D</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">)(</span><span class="n">x0</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">Flatten</span><span class="p">()(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nF</span><span class="p">,</span> <span class="s1">'relu'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">net_str</span><span class="o">==</span><span class="s1">'V'</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span> 
+        <span class="n">x</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nF</span><span class="p">,</span> <span class="s1">&#39;relu&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">1</span> <span class="k">if</span> <span class="n">net_str</span><span class="o">==</span><span class="s1">&#39;V&#39;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span> 
         <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
-        <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="p">),</span> <span class="n">loss</span><span class="o">=</span><span class="s1">'mse'</span><span class="p">)</span>
-        <span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span> <span class="k">if</span> <span class="n">net_str</span> <span class="o">!=</span> <span class="s1">'Qn'</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="p">),</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span> <span class="k">if</span> <span class="n">net_str</span> <span class="o">!=</span> <span class="s1">&#39;Qn&#39;</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="n">model</span><span class="o">.</span><span class="n">net_str</span> <span class="o">=</span> <span class="n">net_str</span>
         <span class="k">return</span> <span class="n">model</span>
 
@@ -1400,8 +1398,8 @@ Note that nF is usually used in the Env(ironment) class but feature extraction i
         <span class="n">loaded_weights</span><span class="o">.</span><span class="n">assert_consumed</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">save_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saving_msg</span><span class="o">%</span><span class="p">(</span><span class="s1">'V '</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">t_</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vN</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="s1">'V.weights.h5'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saving_msg</span><span class="o">%</span><span class="p">(</span><span class="s1">&#39;V &#39;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">t_</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vN</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="s1">&#39;V.weights.h5&#39;</span><span class="p">)</span>
 
     <span class="c1">#------------------------------------- value related 🧠-----------------------------------</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">V_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">Vs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1448,18 +1446,18 @@ Note that nF is usually used in the Env(ironment) class but feature extraction i
 
     <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">init</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_vN</span> <span class="k">else</span> <span class="kc">None</span>                     <span class="c1"># to create also vN, suitable for actor-critic</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qN</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">)</span>                              <span class="c1"># create main policy network</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qNn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span><span class="s1">'Qn'</span><span class="p">)</span>                             <span class="c1"># create target network to estimate Q(sn)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qN</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span><span class="s1">&#39;Q&#39;</span><span class="p">)</span>                              <span class="c1"># create main policy network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qNn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span><span class="s1">&#39;Qn&#39;</span><span class="p">)</span>                             <span class="c1"># create target network to estimate Q(sn)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qN</span><span class="p">,</span><span class="s1">'Q.weights.h5'</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_weights_</span> <span class="k">else</span> <span class="kc">None</span> <span class="c1"># from earlier training proces</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qNn</span><span class="p">,</span><span class="s1">'Q.weights.h5'</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_weights_</span> <span class="k">else</span> <span class="kc">None</span> <span class="c1"># from earlier training proces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qN</span><span class="p">,</span><span class="s1">&#39;Q.weights.h5&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_weights_</span> <span class="k">else</span> <span class="kc">None</span> <span class="c1"># from earlier training proces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qNn</span><span class="p">,</span><span class="s1">&#39;Q.weights.h5&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_weights_</span> <span class="k">else</span> <span class="kc">None</span> <span class="c1"># from earlier training proces</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">save_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save_weights</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_vN</span> <span class="k">else</span> <span class="kc">None</span>             <span class="c1"># save vN weights, for actor-critic</span>
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saving_msg</span><span class="o">%</span><span class="p">(</span><span class="s1">'Q'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qN</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="s1">'Q.weights.h5'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saving_msg</span><span class="o">%</span><span class="p">(</span><span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qN</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="s1">&#39;Q.weights.h5&#39;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">net</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_msg</span><span class="o">%</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">net_str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_</span><span class="p">))</span>
@@ -1491,7 +1489,7 @@ Note that nF is usually used in the Env(ironment) class but feature extraction i
 <p>Note that we need to set ε here otherwise it will be set by default to .1 in the parent class.</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DQN</span><span class="p">(</span><span class="n">nnMDP</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">t_Qn</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span> 
-        <span class="nb">print</span><span class="p">(</span><span class="s1">'--------------------- 🧠  DQN is being set up 🧠 -----------------------'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;--------------------- 🧠  DQN is being set up 🧠 -----------------------&#39;</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">α</span> <span class="o">=</span> <span class="n">α</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1525,47 +1523,47 @@ Note that nF is usually used in the Env(ironment) class but feature extraction i
 <span class="c1"># please be patient as it takes much longer to learn from pixles</span>
 
 
-<span class="o">%</span><span class="n">time</span> <span class="n">nqlearn</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">iGrid</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">'maze'</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="s1">'reward_1'</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> \
+<span class="o">%</span><span class="n">time</span> <span class="n">nqlearn</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">iGrid</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;maze&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="s1">&#39;reward_1&#39;</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> \
                     <span class="n">rndbatch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">t_Qn</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">nbuffer</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">nbatch</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="o">**</span><span class="n">demoGame</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span> 
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>CPU times: user 3h 32min 14s, sys: 44min 36s, total: 4h 16min 50s
 Wall time: 3h 11min 34s
 </code></pre></div>
-<p><img alt="png" src="output_51_1.png"></p>
+<p><img alt="png" src="output_51_1.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">nqlearn</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">103</span><span class="p">,</span> <span class="o">**</span><span class="n">demoGame</span><span class="p">())</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>&lt;__main__.DQN at 0x14a0f16d0&gt;
 </code></pre></div>
-<p><img alt="png" src="output_52_1.png"></p>
+<p><img alt="png" src="output_52_1.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">nqlearn</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">110</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">demoGame</span><span class="p">())</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>&lt;__main__.DQN at 0x14a0f16d0&gt;
 </code></pre></div>
-<p><img alt="png" src="output_53_1.png"></p>
+<p><img alt="png" src="output_53_1.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># deal with the Grid states as images and learn from them to navigate it</span>
-<span class="o">%</span><span class="n">time</span> <span class="n">nqlearn</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">iGrid</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">'maze'</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="s1">'reward_1'</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> \
+<span class="o">%</span><span class="n">time</span> <span class="n">nqlearn</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">iGrid</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;maze&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="s1">&#39;reward_1&#39;</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> \
                     <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">nbuffer</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nbatch</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">demoGame</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span> 
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>CPU times: user 6h 47min 50s, sys: 58min 54s, total: 7h 46min 45s
 Wall time: 6h 44min 8s
 </code></pre></div>
-<p><img alt="png" src="output_54_1.png"></p>
+<p><img alt="png" src="output_54_1.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># deal with the Grid states as images and learn from them to navigate it</span>
-<span class="o">%</span><span class="n">time</span> <span class="n">nqlearn</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">iGrid</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">'maze'</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="s1">'reward_1'</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> \
+<span class="o">%</span><span class="n">time</span> <span class="n">nqlearn</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">iGrid</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;maze&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="s1">&#39;reward_1&#39;</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> \
                     <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">nbuffer</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">nbatch</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="o">**</span><span class="n">demoGame</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>CPU times: user 4h 57min 59s, sys: 49min 30s, total: 5h 47min 30s
 Wall time: 4h 39min 39s
 </code></pre></div>
-<p><img alt="png" src="output_55_1.png"></p>
+<p><img alt="png" src="output_55_1.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># deal with the Grid states as images and learn from them to navigate it</span>
-<span class="o">%</span><span class="n">time</span> <span class="n">nqlearn</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">iGrid</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">'maze'</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="s1">'reward_1'</span><span class="p">),</span> \
+<span class="o">%</span><span class="n">time</span> <span class="n">nqlearn</span> <span class="o">=</span> <span class="n">DQN</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">iGrid</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;maze&#39;</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="s1">&#39;reward_1&#39;</span><span class="p">),</span> \
                     <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">nbuffer</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">nbatch</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="o">**</span><span class="n">demoGame</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span> 
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>CPU times: user 1h 49min 58s, sys: 15min 27s, total: 2h 5min 26s
 Wall time: 1h 33min 50s
 </code></pre></div>
-<p><img alt="png" src="output_56_1.png"></p>
+<p><img alt="png" src="output_56_1.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">nqlearn</span><span class="o">.</span><span class="n">policy</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>&lt;bound method MDP.&lt;locals&gt;.MDP.εgreedy of &lt;__main__.DQN object at 0x19819fc20&gt;&gt;
@@ -1585,20 +1583,20 @@ Wall time: 19min 47s
 
 &lt;__main__.DQN at 0x19819fc20&gt;
 </code></pre></div>
-<p><img alt="png" src="output_59_2.png"></p>
+<p><img alt="png" src="output_59_2.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="n">nqlearn</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">render__</span><span class="p">()</span>
 </code></pre></div>
-<p><img alt="png" src="output_60_0.png"></p>
+<p><img alt="png" src="output_60_0.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="c1"># nqlearn.ep -=1</span>
 <span class="c1"># nqlearn.plotT = False</span>
 <span class="c1"># nqlearn.visual = True</span>
-<span class="c1"># nqlearn.underhood='maxQ' # uncomment to see also the policy</span>
+<span class="c1"># nqlearn.underhood=&#39;maxQ&#39; # uncomment to see also the policy</span>
 <span class="n">nqlearn</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">resume</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">159</span><span class="p">,</span> <span class="n">plotT</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>&lt;__main__.DQN at 0x19819fc20&gt;
 </code></pre></div>
-<p><img alt="png" src="output_61_1.png"></p>
-<div class="highlight"><pre><span></span><code><span class="n">plt</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">'img/img0.png'</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+<p><img alt="png" src="output_61_1.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="n">plt</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;img/img0.png&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>(231, 387, 4)
 </code></pre></div>
@@ -1606,7 +1604,7 @@ Wall time: 19min 47s
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>&lt;matplotlib.image.AxesImage at 0x197c04ec0&gt;
 </code></pre></div>
-<p><img alt="png" src="output_63_1.png"></p>
+<p><img alt="png" src="output_63_1.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="mi">163</span><span class="o">*</span><span class="mi">278</span><span class="o">*</span><span class="mi">4</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>181256
@@ -1616,16 +1614,16 @@ Wall time: 19min 47s
 <span class="n">nqlearn</span><span class="o">.</span><span class="n">ep</span> <span class="o">-=</span><span class="mi">1</span>
 <span class="n">nqlearn</span><span class="o">.</span><span class="n">plotT</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">nqlearn</span><span class="o">.</span><span class="n">visual</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="c1"># nqlearn.underhood='maxQ' # uncomment to see also the policy</span>
+<span class="c1"># nqlearn.underhood=&#39;maxQ&#39; # uncomment to see also the policy</span>
 <span class="n">nqlearn</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">train</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">demoGame</span><span class="p">())</span>
 </code></pre></div>
 <div class="highlight"><pre><span></span><code>&lt;__main__.DQN at 0x19819fc20&gt;
 </code></pre></div>
-<p><img alt="png" src="output_65_1.png"></p>
+<p><img alt="png" src="output_65_1.png" /></p>
 <h2 id="double-dqn-learning">Double DQN Learning</h2>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DDQN</span><span class="p">(</span><span class="n">DQN</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">'----------- 🧠 Double DQN is being set up 🧠 ---------------------'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;----------- 🧠 Double DQN is being set up 🧠 ---------------------&#39;</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">α</span> <span class="o">=</span> <span class="n">α</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1650,7 +1648,7 @@ Wall time: 19min 47s
         <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Qs</span><span class="p">)</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">Qn</span><span class="p">(</span><span class="n">sn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">t_Qn</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
 </code></pre></div>
-<div class="highlight"><pre><span></span><code><span class="c1"># %time ddqlearn = DDQN(env=Gridi(style='maze'), seed=10, episodes=2, max_t=200, \</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># %time ddqlearn = DDQN(env=Gridi(style=&#39;maze&#39;), seed=10, episodes=2, max_t=200, \</span>
 <span class="c1">#                       max_t_exp=2000, nbuffer=100, nbatch=32, **demoGame()).interact() </span>
 </code></pre></div>
 <h2 id="conclusion">Conclusion</h2>
@@ -1670,7 +1668,7 @@ Wall time: 19min 47s
 <h2 id="challenge">Challenge++</h2>
 <ol>
 <li>check the implementation of the deep network in the <a href="https://keras.io/examples/rl/actor_critic_cartpole/">tutorial</a> and try to integrate it into the provided infrastructure.</li>
-</ol></div>
+</ol>
 
 
 
@@ -1738,8 +1736,6 @@ Wall time: 19min 47s
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
-      
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.16/mediaelement-and-player.min.js"></script>
       
     
   </body>
