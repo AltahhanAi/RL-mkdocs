@@ -602,9 +602,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sources-stochasticity-dynamics-and-policy" class="md-nav__link">
+  <a href="#sources-of-stochasticity-dynamics-and-policy" class="md-nav__link">
     <span class="md-ellipsis">
-      Sources Stochasticity- Dynamics and Policy
+      Sources of Stochasticity - Dynamics and Policy
     </span>
   </a>
   
@@ -1140,9 +1140,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sources-stochasticity-dynamics-and-policy" class="md-nav__link">
+  <a href="#sources-of-stochasticity-dynamics-and-policy" class="md-nav__link">
     <span class="md-ellipsis">
-      Sources Stochasticity- Dynamics and Policy
+      Sources of Stochasticity - Dynamics and Policy
     </span>
   </a>
   
@@ -1164,18 +1164,18 @@
 
 
 
-<script>
-  window.MathJax = {
-    tex: {
-      tags: "ams",  // Enables equation numbering
-    //   displayMath: [['$$', '$$'], ['\\[', '\\]']]
-    }
-  };
+<script>  
+window.MathJax = {    
+  tex: {      
+    tags: "ams",  // Enables equation numbering    
+    // displayMath: [['$$', '$$'], ['\\[', '\\]']]    
+  }  
+};  
 </script>
 
-<h1 id="lesson-5-dynamic-programming-model-based-approach">Lesson 5- Dynamic Programming: Model-Based Approach</h1>
-<p><strong>Unit 2: Learning Outcomes</strong><br />
-By the end of this unit, you will be able to:  </p>
+<h1 id="lesson-5-dynamic-programming-model-based-approach">Lesson 5 - Dynamic Programming: Model-Based Approach</h1>
+<p><strong>Unit 2: Learning Outcomes</strong>  </p>
+<p>By the end of this unit, you will be able to:</p>
 <ol>
 <li><strong>Compute</strong> the value function for a given policy in tabular settings.  </li>
 <li><strong>Implement</strong> control methods that infer an agent’s policy from an action-value function.  </li>
@@ -1185,57 +1185,60 @@ By the end of this unit, you will be able to:  </p>
 <li><strong>Analyze</strong> how REINFORCE achieves unbiased but high-variance policy gradient estimation through interaction with the environment.  </li>
 </ol>
 <hr />
-<p>In the first lesson, you looked at a basic RL problem, the k-arm bandit, which involves only actions and no states (non-associative problem). In general, in RL, we are faced with different situations, and we need to take different actions in each situation in order to achieve a certain goal. This general type of environment with states and actions imposes a different flavour to the solution we can design. From now on, we will tackle associative problems. For associative problems, there are two approaches:</p>
+<p>In the first lesson, you looked at a basic RL problem, the k-arm bandit, which involves only actions and no states (non-associative problem). In general, in RL, we are faced with different situations, and we need to take different actions in each situation in order to achieve a certain goal. This general type of environment with states and actions imposes a different flavor to the solution we can design. From now on, we will tackle associative problems. For associative problems, there are two approaches:</p>
 <ol>
-<li>Model-based approach</li>
-<li>Model-free approach</li>
+<li>Model-based approach  </li>
+<li>Model-free approach  </li>
 </ol>
-<p>In this lesson, we will take the first approach. We will learn how to use a model of the environment to solve an RL problem. The model is given in the form of the dynamics of the environment. These usually come in the form of 4 dimensions of conditional probability involving an answer to the following question: what is the probability of obtaining a certain reward r in a certain state s' given that the agent was previously in a state s and applied action a.</p>
+<p>In this lesson, we will take the first approach. We will learn how to use a model of the environment to solve an RL problem. The model is given in the form of the dynamics of the environment. These usually come in the form of 4 dimensions of conditional probability involving an answer to the following question: what is the probability of obtaining a certain reward <span class="arithmatex">\(r\)</span> in a certain state <span class="arithmatex">\(s'\)</span> given that the agent was previously in a state <span class="arithmatex">\(s\)</span> and applied action <span class="arithmatex">\(a\)</span>?</p>
 <p>We will assume that there is already a model for the environment and try to take advantage of this model to come up with the best policy. Nevertheless, we will see simple ways to build such models and come back to this question later when we tackle planning algorithms in RL.</p>
-<p><strong>Plan</strong>
-As usual, in general there are two types of RL problems that we will attempt to design methods to deal with 
-1. Prediction problem
-For These problems we will design Policy Evaluation Methods that attempt to find the best estimate for the value-function given a policy.</p>
+<p><strong>Plan</strong></p>
+<p>As usual, in general, there are two types of RL problems that we will attempt to design methods to deal with:</p>
 <ol>
-<li>Control problems 
-For These problems we will design Value Iteration methods which utilise the idea of Generalised Policy Iteration. They attempt to find the best policy, via estimating an action-value function for a current policy then moving to a better and improved policy by choosing a greedy action often.</li>
+<li>
+<p><strong>Prediction problem</strong><br />
+For these problems, we will design Policy Evaluation Methods that attempt to find the best estimate for the value-function given a policy.</p>
+</li>
+<li>
+<p><strong>Control problems</strong><br />
+For these problems, we will design Value Iteration methods which utilize the idea of Generalized Policy Iteration. They attempt to find the best policy, via estimating an action-value function for a current policy, then moving to a better and improved policy by choosing a greedy action often.</p>
+</li>
 </ol>
 <h2 id="inducing-the-dynamics-by-interacting-with-the-environment">Inducing the dynamics by interacting with the environment</h2>
-<p>We cover obtaining the dynamics from an actual environment in the practicals. We will use mainly the random walk environment and the grid world environment and generate their dynamics. These are deterministic simple environments. Nevertheless, they are very useful to demonstrate the ideas of RL. </p>
-<p>Note that when we move to the real world the dynamics become much more complex and building or obtaining the dynamic becomes impractical in most cases. Therefore, towards that end instead of dealing directly with the environment's dynamics, we will see later how we can substitute this requirement by having to <em>interact</em> with the environment to gain <em>experience</em> which will help us <em>infer</em> a good <em>estimate</em> of the <em>expected</em> value function (discounted sum of rewards) which in turn will help us to <em>infer</em> a close to <em>optimal policy</em> for the task in hand. </p>
-<p>The exercise of dealing with probabilities and then using them in designing a Dynamic Programming solution is valuable since most of the other solutions utilise the basic ideas (policy iteration, value iteration algorithms and policy improvements theorem) that we cover here and will mainly show us that we can devise a form of Bellman equation that is suitable for interaction, where we use sampling, model-free algorithms instead of using probabilities(dynamics), model-based algorithms. </p>
-<p>Dynamic programming suffers from what Bellman described as the curse of dimensionality which indicates that the computational resources required to solve a problem grow exponentially with the dimensionality of the problem. So in our case, the dimensionality is the number of states (as well as actions and rewards). So for example if the dynamic programming solution computational complexity is <span class="arithmatex">\(2^{|S|}\)</span> and the number of states <span class="arithmatex">\(|S|=10\)</span> then it costs <span class="arithmatex">\(2^{10}=1024\)</span> but when the number of states <span class="arithmatex">\(|S|\)</span> grows to 100 the cost becomes <span class="arithmatex">\(2^{100}=1267650600228229401496703205376\)</span>.</p>
-<h2 id="sources-stochasticity-dynamics-and-policy">Sources Stochasticity- Dynamics and Policy</h2>
+<p>We cover obtaining the dynamics from an actual environment in the practicals. We will use mainly the random walk environment and the grid world environment to generate their dynamics. These are deterministic, simple environments. Nevertheless, they are very useful to demonstrate the ideas of RL. Note that when we move to the real world, the dynamics become much more complex, and building or obtaining the dynamics becomes impractical in most cases. </p>
+<p>Therefore, towards that end, instead of dealing directly with the environment's dynamics, we will see later how we can substitute this requirement by having to <em>interact</em> with the environment to gain <em>experience</em>, which will help us <em>infer</em> a good <em>estimate</em> of the <em>expected</em> value function (discounted sum of rewards), which in turn will help us to <em>infer</em> a close to <em>optimal policy</em> for the task at hand. </p>
+<p>The exercise of dealing with probabilities and then using them in designing a Dynamic Programming solution is valuable since most of the other solutions utilize the basic ideas (policy iteration, value iteration algorithms, and policy improvement theorem) that we cover here and will mainly show us that we can devise a form of Bellman equation that is suitable for interaction, where we use sampling, model-free algorithms instead of using probabilities (dynamics), model-based algorithms. </p>
+<p>Dynamic programming suffers from what Bellman described as the curse of dimensionality, which indicates that the computational resources required to solve a problem grow exponentially with the dimensionality of the problem. So, in our case, the dimensionality is the number of states (as well as actions and rewards). For example, if the dynamic programming solution computational complexity is <span class="arithmatex">\(2^{|S|}\)</span> and the number of states <span class="arithmatex">\(|S| = 10\)</span>, then it costs <span class="arithmatex">\(2^{10} = 1024\)</span>, but when the number of states <span class="arithmatex">\(|S|\)</span> grows to 100, the cost becomes <span class="arithmatex">\(2^{100} = 1267650600228229401496703205376\)</span>.</p>
+<h2 id="sources-of-stochasticity-dynamics-and-policy">Sources of Stochasticity - Dynamics and Policy</h2>
 <p>One important point to make is that stochasticity comes from different elements of the MDP and from the policy itself.</p>
 <ol>
-<li>There might be stochasticity in the dynamics at the state transition level,
-   where applying action <span class="arithmatex">\(a\)</span> in a state <span class="arithmatex">\(s\)</span> may cause the agent to transition to different states, each with a different probability</li>
-<li>
-<p>There might be stochasticity in the dynamics at the reward level,
-   where applying action <span class="arithmatex">\(a\)</span> in a state <span class="arithmatex">\(s\)</span> may result in different rewards, each with a certain probability</p>
-</li>
-<li>
-<p>There might be stochasticity in the policy itself,
-   where the policy applies different actions in a state <span class="arithmatex">\(s\)</span>  with different probabilities</p>
-</li>
-<li>
-<p>There might be stochasticity or randomness in observing the current state due to the complexity of the state space. 
-   For example, when a robot moves around in the environment, after a while, we cannot reliably designate its position from its motor encoders even when we know the start position due to dead-reckoning. This is called partial observability, and there is a framework called BOMDP or partially observable MDP to tackle this problem. However, we will not study this branch. The field is divided about the necessity of BOMDP with a line of thought that considers that we can overcome this difficulty by encoding our states differently but staying in the MDP framework.</p>
-</li>
+<li>There might be stochasticity in the dynamics at the state transition level, where applying action <span class="arithmatex">\(a\)</span> in a state <span class="arithmatex">\(s\)</span> may cause the agent to transition to different states, each with a different probability.</li>
+<li>There might be stochasticity in the dynamics at the reward level, where applying action <span class="arithmatex">\(a\)</span> in a state <span class="arithmatex">\(s\)</span> may result in different rewards, each with a certain probability.</li>
+<li>There might be stochasticity in the policy itself, where the policy applies different actions in a state <span class="arithmatex">\(s\)</span> with different probabilities.</li>
+<li>There might be stochasticity or randomness in observing the current state due to the complexity of the state space. For example, when a robot moves around in the environment, after a while, we cannot reliably designate its position from its motor encoders even when we know the start position due to dead-reckoning. This is called partial observability, and there is a framework called BOMDP (Partially Observable MDP) to tackle this problem. However, we will not study this branch. The field is divided about the necessity of BOMDP, with a line of thought that considers that we can overcome this difficulty by encoding our states differently but staying in the MDP framework.</li>
 </ol>
-<p>These sources of stochasticity dictate using suitable techniques to obtain the dynamics and to evaluate or improve stochastic and deterministic policy. You will see an implementation of this in the associated worksheet.</p>
+<p>These sources of stochasticity dictate using suitable techniques to obtain the dynamics and to evaluate or improve stochastic and deterministic policies. You will see an implementation of this in the associated worksheet.</p>
 <h1 id="dynamic-programming-methods">Dynamic Programming Methods</h1>
-<p>Ok so we are ready now to move to Dynamic programming algorithms to solve the RL problem of finding a best estimate of a value function and or finding an optimal policy. Dynamic Programming (DP) refers to a collection of algorithms used for solving Markov Decision Processes (MDPs). DP methods rely on the principle of optimality and require a known model of the environment (transition probabilities and rewards). The main algorithms used in DP are <strong>Policy Evaluation</strong>, <strong>Policy Iteration</strong>, and <strong>Value Iteration</strong>.</p>
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=55e740c0-8e7f-4735-b5cd-3a8911e9fc16&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create"  width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="8. Dynamic Programming 1.mkv"></iframe>
+<p>Okay, so we are ready now to move to Dynamic Programming algorithms to solve the RL problem of finding the best estimate of a value function and/or finding an optimal policy. Dynamic Programming (DP) refers to a collection of algorithms used for solving Markov Decision Processes (MDPs). DP methods rely on the principle of optimality and require a known model of the environment (transition probabilities and rewards). The main algorithms used in DP are <strong>Policy Evaluation</strong>, <strong>Policy Iteration</strong>, and <strong>Value Iteration</strong>.</p>
+<video width="470" height="200" controls>  
+  <source src="/videos/8. Dynamic Programming 1.mp4" type="video/mp4">  
+  Dynamic Programming 1  
+</video>
 
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=da8f61f0-2c2d-4ec2-9ac1-ef73d31de388&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create"  width="470" height="200"frameborder="0" scrolling="no" allowfullscreen title="8. Dynamic Programming 2.mkv"></iframe>
+<video width="470" height="200" controls>  
+  <source src="/videos/8. Dynamic Programming 2.mp4" type="video/mp4">  
+  Dynamic Programming 2  
+</video>
 
 <h2 id="policy-evaluation">Policy Evaluation</h2>
-<p>The first step to improving any policy is to evaluate how good or bad the policy is for the given task. This fundamental question can be addressed by tying up the task with a reward function that basically rewards the agent for achieving the task or a subtask that leads to the final goal. The agent's aim then becomes to collect as many rewards as possible (or to incur as few losses as possible), which should help the agent achieve the given task. One example is when a robot is moving in an environment, and we want it to reach a specific location, then we can reward/punish the robot for each step that is taking it close to the goal or away from it. But this awareness of the goal location is usually difficult to attain in real environments. Hence it is replaced by rewarding the agent when it reaches the goal or punishing the agent for each step taken without reaching the goal location.</p>
+<p>The first step to improving any policy is to evaluate how good or bad the policy is for the given task. This fundamental question can be addressed by tying up the task with a reward function that basically rewards the agent for achieving the task or a subtask that leads to the final goal. The agent's aim then becomes to collect as many rewards as possible (or to incur as few losses as possible), which should help the agent achieve the given task. One example is when a robot is moving in an environment, and we want it to reach a specific location; then we can reward/punish the robot for each step that is taking it closer to the goal or away from it. But this awareness of the goal location is usually difficult to attain in real environments. Hence it is replaced by rewarding the agent when it reaches the goal or punishing the agent for each step taken without reaching the goal location.</p>
 <p>We can devise an evaluation strategy based on the discounted sum of rewards the agent is <em>expected</em> to collect while executing the task. The strategy depends on the dynamics of the environment. You may want to read section 4.1 and come back here to continue reading the code for the policy evaluation algorithm to get an insight into how it works.</p>
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=7523c957-a9cb-4e87-b55c-1c449702ba9c&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create"  width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="9. policy evaluation.mkv"></iframe>
+<video width="470" height="200" controls>  
+  <source src="/videos/9. policy evaluation.mp4" type="video/mp4">  
+  Policy Evaluation  
+</video>
 
-<p>In summary, policy evaluation computes the <strong>state-value function</strong> <span class="arithmatex">\( V^{\pi} \)</span> for a given policy <span class="arithmatex">\( \pi \)</span>. It determines how good it is to follow a specific policy in an MDP. Below we show the pseudocode for this algorithm. <em>Bellman equation is the basis of the update used in policy evaluation algorithm.</em></p>
+<p>In summary, policy evaluation computes the <em>state-value function</em> <span class="arithmatex">\( V^{\pi} \)</span> for a given policy <span class="arithmatex">\( \pi \)</span>. It determines how good it is to follow a specific policy in an MDP. Below we show the pseudocode for this algorithm. <em>Bellman equation is the basis of the update used in the policy evaluation algorithm.</em></p>
 <h3 id="policy-evaluation-algorithm">Policy Evaluation Algorithm:</h3>
 <p><span class="arithmatex">\(
 \begin{array}{ll}
@@ -1252,37 +1255,33 @@ For These problems we will design Value Iteration methods which utilise the idea
 \textbf{Return:}  V^{\pi}(s), \forall s \in S
 \end{array}
 \)</span></p>
-<p>The existence and uniqueness of <span class="arithmatex">\(v_\pi\)</span> guaranteed as long as either  <span class="arithmatex">\(\gamma&lt; 1\)</span> or eventual termination is guaranteed from all states under the policy <span class="arithmatex">\(\pi\)</span>. 
-Note that <span class="arithmatex">\(\gamma\)</span> must be <span class="arithmatex">\(&lt; 1\)</span> to guarantee convergence of the Bellman equation because, in general, we do not know whether the policy guarantees reaching a terminal(goal) state; if we do, then <span class="arithmatex">\(\gamma=1\)</span> is ok. </p>
-<!-- This condition can be relaxed when we move to sampling instead of dynamic programming in the next consequent lessons. -->
-
+<p>The existence and uniqueness of <span class="arithmatex">\(v_\pi\)</span> are guaranteed as long as either  <span class="arithmatex">\(\gamma&lt; 1\)</span> or eventual termination is guaranteed from all states under the policy <span class="arithmatex">\(\pi\)</span>. Note that <span class="arithmatex">\(\gamma\)</span> must be <span class="arithmatex">\(&lt; 1\)</span> to guarantee convergence of the Bellman equation because, in general, we do not know whether the policy guarantees reaching a terminal (goal) state; if we do, then <span class="arithmatex">\(\gamma=1\)</span> is okay.</p>
 <h2 id="policy-improvement-theorem">Policy Improvement Theorem</h2>
-<p>The <strong>Policy Improvement Theorem</strong> states that if for all states:</p>
+<p>The Policy Improvement Theorem states that if for all states:</p>
 <div class="arithmatex">\[
 Q_{\pi}(s, a^*) &gt; V_{\pi}(s)
 \]</div>
-<p>where <span class="arithmatex">\( a^* = \arg\max_a Q_{\pi}(s, a) \)</span>, then choosing <span class="arithmatex">\( a^* \)</span> instead of the action dictated by <span class="arithmatex">\( \pi \)</span> results in a strictly better policy. This theorem justifies <strong>Policy Iteration</strong>.</p>
-<p>Based on this important theorem, we can then devise an algorithm that improve our policy. A natural way to do this to first evaluate the current policy then improve it, then evaluate the improved policy and then improve it, and so on until the policy stabilise which means we reached an optimal policy that cannot be improved any more. This idea of <em>iteratively</em> improving the policy constitute the base for two algorithms that we cover, Policy Iteration and Value Iteration.</p>
+<p>where <span class="arithmatex">\( a^* = \arg\max_a Q_{\pi}(s, a) \)</span>, then choosing <span class="arithmatex">\( a^* \)</span> instead of the action dictated by <span class="arithmatex">\( \pi \)</span> results in a strictly better policy. This theorem justifies <em>Policy Iteration</em>.</p>
+<p>Based on this important theorem, we can then devise an algorithm that improves our policy. A natural way to do this is to first evaluate the current policy, then improve it, then evaluate the improved policy, and then improve it, and so on until the policy stabilizes, which means we reached an optimal policy that cannot be improved anymore. This idea of <em>iteratively</em> improving the policy constitutes the base for two algorithms that we cover: Policy Iteration and Value Iteration.</p>
 <h2 id="policy-iteration">Policy Iteration</h2>
-<p>Now that we know how to evaluate a policy, it is time to improve it. Policy iteration is a fundamental algorithm. It explicitly and iteratively tries first to reach a highly accurate estimate of the value function of the current policy, then it tries to improve the policy by maximising the probability of greedy actions as per the current value function. Evaluating the current policy fully and then improving it via policy iteration can be inefficient, but it shows the fundamental ideas behind reinforcement learning. </p>
+<p>Now that we know how to evaluate a policy, it is time to improve it. Policy iteration is a fundamental algorithm. It explicitly and iteratively tries first to reach a highly accurate estimate of the value function of the current policy, then it tries to improve the policy by maximizing the probability of greedy actions as per the current value function. Evaluating the current policy fully and then improving it via policy iteration can be inefficient, but it shows the fundamental ideas behind reinforcement learning. </p>
 <p>Policy Iteration is an iterative process to find the optimal policy <span class="arithmatex">\( \pi^* \)</span>. It consists of two alternating steps:</p>
 <ol>
 <li><strong>Policy Evaluation:</strong> Compute <span class="arithmatex">\( V^{\pi} \)</span> using the policy evaluation algorithm.</li>
 <li><strong>Policy Improvement:</strong> Improve the policy by acting greedily with respect to <span class="arithmatex">\( V^{\pi} \)</span>:
-   <span class="arithmatex">\(
+   [
    \pi'(s) = \arg\max_a \sum_{s'} P(s' | s, a) [R(s, a, s') + \gamma V(s')]
-   \)</span></li>
+   ]</li>
 <li>Repeat until <span class="arithmatex">\( \pi \)</span> converges to <span class="arithmatex">\( \pi^* \)</span>.</li>
 </ol>
-<p>So as you can see the policy improvement step is based on <em>Bellman Optimality equation</em>.
-Belwo we show the pseduocode for thsi algorithm.</p>
+<p>So, as you can see, the policy improvement step is based on the <em>Bellman Optimality equation</em>. Below we show the pseudocode for this algorithm.</p>
 <h3 id="policy-iteration-algorithm">Policy Iteration Algorithm:</h3>
 <p><span class="arithmatex">\(
 \begin{array}{ll}
 \textbf{Algorithm: }  \text{Policy Iteration} \\
 \textbf{Initialize: } \pi \text{ arbitrarily} \\
 \textbf{Repeat:}  \\
-\quad \text{Policy Evaluation (using above algorithm)} \\
+\quad \text{Policy Evaluation (using the above algorithm)} \\
 \quad \text{Policy Improvement:} \\
 \quad \quad \textbf{For all } s \in S: \\
 \quad \quad \quad \pi'(s) \leftarrow \arg\max_a \sum_{s', r} p(s',r | s, a) [r + \gamma V(s')] \\
@@ -1292,7 +1291,7 @@ Belwo we show the pseduocode for thsi algorithm.</p>
 \end{array}
 \)</span></p>
 <h3 id="policy-iteration-on-a-maze-grid-world">Policy Iteration on a Maze Grid World</h3>
-<p>Let us try it on a slightly complex environment such as the maze.</p>
+<p>Let us try it on a slightly more complex environment, such as the maze.</p>
 <div class="highlight"><pre><span></span><code><span class="n">π</span> <span class="o">=</span> <span class="n">Policy_iteration</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">maze</span><span class="p">(),</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div>
 <p><img alt="png" src="output_105_0.png" /></p>
@@ -1300,14 +1299,14 @@ Belwo we show the pseduocode for thsi algorithm.</p>
 policy improvement stopped @ iteration 16:
 </code></pre></div>
 <h2 id="value-iteration">Value Iteration</h2>
-<p>Our final step to fully develop the ideas of dynamic programming is to shorten the time it takes for a policy to be evaluated and improved. One simple idea we will follow here is to slightly improve the evaluation and immediately improve the policy. We do these two steps iteratively until our policy has stopped to improve. This is a very effective strategy because we do not wait until the policy is fully evaluated to improve it; we weave and interleave the two loops together in one loop. </p>
+<p>Our final step to fully develop the ideas of dynamic programming is to shorten the time it takes for a policy to be evaluated and improved. One simple idea we will follow here is to slightly improve the evaluation and immediately improve the policy. We do these two steps iteratively until our policy has stopped improving. This is a very effective strategy because we do not wait until the policy is fully evaluated to improve it; we weave and interleave the two loops together in one loop.</p>
 <p>Value Iteration is a special case of Policy Iteration where policy evaluation is truncated to a single update per state. Instead of evaluating a policy to convergence, we update the value function directly:
 [
 V(s) \leftarrow \max_a \sum_{s'} P(s' | s, a) [R(s, a, s') + \gamma V(s')]
 ]
-This is a nifty idea since we are saving on most of the policy evaluation and suffice by just one <strong>step</strong> of evaluation per iteration that also incorporates a policy improvement step.
- <em>Bellman Optimality equation is the basis of the update used in value iteration algorithm.</em>
-Below we show this algorithm. </p>
+This is a nifty idea since we are saving on most of the policy evaluation and suffice with just one <strong>step</strong> of evaluation per iteration that also incorporates a policy improvement step.<br />
+<em>The Bellman Optimality equation is the basis of the update used in the value iteration algorithm.</em><br />
+Below we show this algorithm.</p>
 <h3 id="value-iteration-algorithm">Value Iteration Algorithm:</h3>
 <p><span class="arithmatex">\(
 \begin{array}{ll}
@@ -1363,10 +1362,10 @@ Below we show this algorithm. </p>
 <div class="highlight"><pre><span></span><code>loop stopped @ iteration: 14 , Δ =  0
 </code></pre></div>
 <h2 id="conclusion">Conclusion</h2>
-<p>In this lesson, we covered the main dynamic programming algorithms. We saw how evaluating a policy was extremely useful in being the key component to allowing us to improve the policy. We then developed a policy iteration algorithm which improves the policy in two main steps:
-1. a step that evaluates the policy fully to reach an accurate estimation of the action values of the current policy
-2. a step that improves the policy by adopting a greedy action. The usage of an action-value function Q(s,a) was key in allowing us to choose between actions since the state-value function V(s) does not differentiate between the values of actions</p>
-<p>We finally saw how the value-iteration algorithm has a similar structure to the policy-iteration algorithm with one important difference; it can arrive at an optimal policy by just taking a step <em>towards</em> the optimal policy by slightly refines its estimation of the action-value function without fully evaluating it.  Hence, it improves its policy more concisely and with much less overhead than the full policy iteration method.</p>
+<p>In this lesson, we covered the main dynamic programming algorithms. We saw how evaluating a policy was extremely useful as it is the key component in allowing us to improve the policy. We then developed a policy iteration algorithm that improves the policy in two main steps:
+1. A step that evaluates the policy fully to reach an accurate estimation of the action values of the current policy.
+2. A step that improves the policy by adopting a greedy action. The usage of an action-value function <span class="arithmatex">\( Q(s,a) \)</span> was key in allowing us to choose between actions since the state-value function <span class="arithmatex">\( V(s) \)</span> does not differentiate between the values of actions.</p>
+<p>We finally saw how the value iteration algorithm has a similar structure to the policy iteration algorithm with one important difference: it can arrive at an optimal policy by just taking a step <em>towards</em> the optimal policy by slightly refining its estimation of the action-value function without fully evaluating it. Hence, it improves its policy more concisely and with much less overhead than the full policy iteration method.</p>
 <p>In summary:</p>
 <ul>
 <li><strong>Policy Evaluation</strong> computes <span class="arithmatex">\( V^{\pi} \)</span> for a fixed policy.</li>
@@ -1374,12 +1373,12 @@ Below we show this algorithm. </p>
 <li><strong>Policy Iteration</strong> alternates between evaluation and improvement until convergence.</li>
 <li><strong>Value Iteration</strong> updates values directly, skipping full policy evaluation.</li>
 </ul>
-<p>These techniques form the foundation of solving MDPs using Dynamic Programming.
-In the next lesson, we will take a different approach and move to cover sampling methods that do not use the dynamics of the environment explicitly and instead try to improve its policy by interacting with the environment.</p>
-<p><strong>Further Reading</strong>:
-For further reading you can refer to chapter 4 from the Sutton and Barto <a href="http://incompleteideas.net/book/RLbook2020.pdf">book</a>.</p>
+<p>These techniques form the foundation of solving MDPs using Dynamic Programming.<br />
+In the next lesson, we will take a different approach and move on to cover sampling methods that do not use the dynamics of the environment explicitly and instead try to improve their policy by interacting with the environment.</p>
+<p><strong>Further Reading</strong>:<br />
+For further reading, you can refer to chapter 4 from the Sutton and Barto <a href="http://incompleteideas.net/book/RLbook2020.pdf">book</a>.</p>
 <h2 id="your-turn">Your turn</h2>
-<p>Now it is time to experiemnt further and interact with code in <a href="../../workseets/worksheet5.ipynb">worksheet5</a>.</p>
+<p>Now it is time to experiment further and interact with the code in <a href="../../workseets/worksheet5.ipynb">worksheet5</a>.</p>
 
 
 
@@ -1444,6 +1443,8 @@ For further reading you can refer to chapter 4 from the Sutton and Barto <a href
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../videos/my-video.mp4"></script>
       
     
   </body>
