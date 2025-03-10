@@ -1616,11 +1616,11 @@ p(S_{t+1} | S_t, A_t, \dots, S_0, A_0) = p(S_{t+1} | S_t, A_t)
 p(s' | s, a) = p(s' | s, a) \quad \forall t
 \]</div>
 <video width="470" height="200" controls>
-  <source src="/videos/1. MDP.mp4" type="video/mp4">
+  <source src="/RL-mkdocs/videos/1. MDP.mp4" type="video/mp4">
 </video>
 
 <video width="470" height="200" controls>
-  <source src="/videos/2. Dynamics.mp4" type="video/mp4">
+  <source src="/RL-mkdocs/videos/2. Dynamics.mp4" type="video/mp4">
 </video>
 
 <!-- <iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=f93d3c1e-261f-42bd-93cd-92f67e120d99&embed=%7B%22ust%22%3Atrue%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="Markov Decision Processes (MDP)" enablejsapi=1></iframe>
@@ -1678,12 +1678,12 @@ r(s, a) = \sum_{s'} \sum_r r \cdot p(s', r | s, a)
 <p><strong>The above equation is the most important equation in RL that the Bellman Equations are built on it. In turn, we build all of our incremental updates in RL on Bellman optimality equation</strong></p>
 <p>In the video below we talk more about this important concept.</p>
 <video width="470" height="200" controls>
-  <source src="/videos/3. Returns 1.mp4" type="video/mp4">
+  <source src="/RL-mkdocs/videos/3. Returns 1.mp4" type="video/mp4">
   Returns 1
 </video>
 
 <video width="470" height="200" controls>
-  <source src="/videos/3. Returns 2.mp4" type="video/mp4">
+  <source src="/RL-mkdocs/videos/3. Returns 2.mp4" type="video/mp4">
   Return 2
 </video>
 
@@ -1854,7 +1854,7 @@ G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \dots + \gamma^{T-t-1} R_T
 <!-- <iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=7b8178ed-68d1-4335-8ab7-3d81f214f362&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="475" height="200"frameborder="0" scrolling="no" allowfullscreen title="4. Returns Expectation and Sampling.mkv"></iframe> -->
 
 <video width="470" height="200" controls>
-  <source src="/videos/4. Returns Expectation and Sampling.mp4" type="video/mp4">
+  <source src="/RL-mkdocs/videos/4. Returns Expectation and Sampling.mp4" type="video/mp4">
   Returns Expectation and Sampling
 </video>
 
@@ -1887,12 +1887,12 @@ Q^\pi(s, a) = \sum_{s', r} p(s', r \mid s, a) \left[ r + \gamma \sum_{a'} \pi(a'
 - <span class="arithmatex">\( Q_{\pi}(s, a) \)</span> is the action-value function,
 - The terms <span class="arithmatex">\( r(s, a, s') \)</span>, <span class="arithmatex">\( \gamma \)</span>, and <span class="arithmatex">\( p(s' | s, a) \)</span> are the same as in the value function equation.</p>
 <video width="470" height="200" controls>
-  <source src="/videos/5. Bellman v.mp4" type="video/mp4">
+  <source src="/RL-mkdocs/videos/5. Bellman v.mp4" type="video/mp4">
   Bellman v
 </video>
 
 <video width="470" height="200" controls>
-  <source src="/videos/6. Bellman q simple.mp4" type="video/mp4">
+  <source src="/RL-mkdocs/videos/6. Bellman q simple.mp4" type="video/mp4">
   Bellman q simple
 </video>
 
@@ -1919,12 +1919,12 @@ Q_*(s, a) = \sum_{s', r} p(s', r \mid s, a) \left[ r + \gamma \max_{a'} Q_*(s', 
 <li>The <strong>max</strong> operator ensures that the agent chooses the action <span class="arithmatex">\( a \)</span> that maximizes the expected return.</li>
 </ul>
 <video width="470" height="200" controls>
-  <source src="/videos/7. Bellman Optimality 1.mp4" type="video/mp4">
+  <source src="/RL-mkdocs/videos/7. Bellman Optimality 1.mp4" type="video/mp4">
   Bellman Optimality 1
 </video>
 
 <video width="470" height="200" controls>
-  <source src="/videos/7. Bellman Optimality 2.mp4" type="video/mp4">
+  <source src="/RL-mkdocs/videos/7. Bellman Optimality 2.mp4" type="video/mp4">
   Bellman Optimality 2
 </video>
 
@@ -1936,7 +1936,12 @@ Q_*(s, a) = \sum_{s', r} p(s', r \mid s, a) \left[ r + \gamma \max_{a'} Q_*(s', 
 <p><em>Exercise 1</em>: If you realise there is a missing symbol in the [video: Bellman Equation for v] last equations, do you know what it is and where it has originally come from?</p>
 <p><em>Exercise 2</em>: Can you derive Bellman Optimality Equation for <span class="arithmatex">\(q(s,a)\)</span> from first principles?</p>
 <p>Bellman Optimality for q from first principles can be found in this <em>optional video</em>.</p>
-<iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=fef86f50-e352-4af5-a85b-7f134be29085&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="7. MDP Bellman Equation for q from first prinsiple.mkv"></iframe>
+<!-- <iframe src="https://leeds365-my.sharepoint.com/personal/scsaalt_leeds_ac_uk/_layouts/15/embed.aspx?UniqueId=fef86f50-e352-4af5-a85b-7f134be29085&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" width="470" height="200" frameborder="0" scrolling="no" allowfullscreen title="7. MDP Bellman Equation for q from first prinsiple.mkv"></iframe> -->
+
+<video width="470" height="200" controls>
+  <source src="/RL-mkdocs/videos/7. MDP Bellman Equation for q from first principle.mp4" type="video/mp4">
+  MDP Bellman Equation for q from first principle
+</video>
 
 <h2 id="grid-world-environments">Grid World Environments</h2>
 <p>Ok, so now we are ready to tackle the practicals, please go ahead and download the worksheet and run and experiement with the provided code to build some grid world environments and visualise them and make a simple robot agent takes some steps/actions within these environments!.</p>
