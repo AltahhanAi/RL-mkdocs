@@ -42,26 +42,49 @@ Ok, so we start by implementing the TD algorithm. Due to the way we structured o
 We also would need to pass a learning step as we did for the MC algorithm. A learning step dictates how much error percentage will be considered when we update the value function. Sometimes we could go all the way α=1 when the algorithm is tabular, and the problem is simple. For most of the problems and algorithms we tackle, however, this is not desirable, and we set α=.1 or less to ensure the algorithm performs well on the common states and is acceptable on less common states. MC, however, is particularly sensitive towards this α, and we often would need to set it to smaller values such as .01.
 
 ## Temporal-Difference (TD) Learning (prediction)
-Eralier in a previous lesson, we saw how constant-$\alpha$ MC prediction method, have an update rule of the form:
+Earlier, in Lesson 6, we saw that the constant-\(\alpha\) Monte Carlo (MC) prediction method has an update rule of the form:
 
 \[
     V(S_t) \leftarrow V(S_t) + \alpha \left( G(S_t) - V(S_t) \right)
 \]
 
-*The main idea of several well-known RL algorithms is to replace $G_t$ with an estimation.* Temporal-Difference (TD) learning is a key reinforcement learning method that updates value estimates based on *bootstrapping*, meaning it uses its own current estimates to update future predictions. The TD methods updates the state-value function \(V(s)\) using one-step lookahead, i.e it replaces $G_t$ by $R_{t+1} + \gamma V(S_{t+1})$ in the constant-$\alpha$ MC update rule: 
+The core idea behind several well-known incremental reinforcement learning (RL) algorithms is to replace \( G_t \) with an estimate.  
+
+Our goal in Temporal-Difference (TD) learning is to combine the advantages of Monte Carlo (MC) methods and Dynamic Programming (DP). Specifically, we want the model-free nature of MC, which does not require a model of the environment and learns directly from experience and interaction (unlike DP). The above update rule already satisfies this requirement.  
+
+At the same time, we seek the fast convergence of DP while avoiding its high computational cost. Using \( R_{t+1} + \gamma V(S_{t+1}) \) in place of \( G_t \) satisfies this requirement—let's unpack this further.  
+
+If we recall how DP, particularly policy evaluation, updates its estimates, we see that it relies on the Bellman equation:
 
 \[
-    V(S_t) \leftarrow V(S_t) + \alpha \left( R_{t+1} + \gamma V(S_{t+1}) - V(S_t) \right)
+V^\pi(s) = \mathbb{E}_\pi \left[ R_{t+1} + \gamma V^\pi(S_{t+1}) \mid S_t = s \right]
 \]
 
-Where:
+TD learning leverages the Bellman equation and assumes that since the agent interacts with the environment according to its current policy, the experience is drawn according to the policy distribution \( \pi \). This means that the expectation \( \mathbb{E}_\pi \) in the Bellman equation is naturally satisfied if we use this experience from \( \pi \) to update the estimate of the value function \( V^\pi(s) \). Thus, the learned value function should follow and satisfy the Bellman equation. If it does not, it should be adjusted accordingly.  
+
+(Recall that any expectation can be approximated by sampling and averaging from the underlying distribution, as per the law of large numbers. Instead of averaging, we use a step-size parameter \( \alpha < 1 \) to continuously adjust the estimates, similar to the constant-\(\alpha\) MC method.)  
+
+According to the Bellman equation, \( R_{t+1} + \gamma V(S_{t+1}) \) serves as a good candidate estimate for \( G_t \), leveraging bootstrapping in the same way as DP. In other words, the state-value function \( V(S_t) \) should remain close to \( R_{t+1} + \gamma V(S_{t+1}) \). If it deviates, it should be adjusted in that direction.  
+
+Thus, TD replaces \( G_t \) with \( R_{t+1} + \gamma V(S_{t+1}) \) in the constant-\(\alpha\) MC update rule:
+
+\[
+    V(S_t) \leftarrow V(S_t) + \alpha \left(R_{t+1} + \gamma V(S_{t+1}) - V(S_t) \right)
+\]
+
+This formulation allows TD learning to balance between MC and DP, providing a practical and efficient approach to value estimation in reinforcement learning. It adheres to the incremental nature of the constant-\(\alpha\) MC method while also enabling an *online* learning approach rather than the *end-of-episode* learning used in MC. At the same time, it allows for better and faster convergence, similar to DP.  
+
+**Key Components:**
 
 - \( \alpha \) is the step-size (learning rate),
-- \( r_{t+1} \) is the reward received after taking action in \( s_t \),
+- \( R_{t+1} \) is the reward received after taking action in \( S_t \),
 - \( \gamma \) is the discount factor,
-- \( V(s_{t+1}) \) is the estimate of the next state's value.
+- \( V(S_{t+1}) \) is the estimate of the next state's value.
 
-Unlike Monte Carlo (MC) methods, which require complete episodes (including constant $\alpha$ MC), TD does not require a complete episode, like constant $\alpha$ MC, TD methods update values *incrementally* after each time step, making them more efficient for continuous or long-horizon problems. The replacement of $G_t$ sample with an estimate leads to infusing bias into TD, but the use of bootstrapping leads to a lower variance. TD tends to be faster than MC and more efficient, so the trad-off of the bias-variance is well worth it. Add to that its ability to truely incrmentally update the estimate as *rewards* are collected.
+Unlike Monte Carlo (MC) methods, which require complete episodes (including constant-\(\alpha\) MC), TD methods update values truly *incrementally* after each time step, making them more efficient for continuous or long-horizon problems. The replacement of \( G_t \) with an estimate introduces bias into TD (due to bootstrapping), but it also reduces variance.  
+
+In machine learning, the **bias-variance trade-off** is a common phenomenon, and in RL, we generally prefer lower variance since it stabilizes learning and allows for a smoother experience. TD tends to be faster and more sample-efficient than MC, making the bias-variance trade-off well worth it. Additionally, its ability to *incrementally* update the estimate *as rewards are collected* makes it a powerful tool in reinforcement learning.  
+
 
 Below we show the pseudocode for the TD algorithm.
 
@@ -82,17 +105,20 @@ Below we show the pseudocode for the TD algorithm.
 
 ---
 
-## TD vs. Monte Carlo (MC)
-| Feature         | Temporal-Difference (TD) | Monte Carlo (MC) |
-|---------------|------------------------|------------------|
-| **Update**   | After each time step    | After full episode |
-| **Exploration Requirement** | Can learn from incomplete episodes | Requires complete episodes |
-| **Variance** | Lower variance due to bootstrapping | Higher variance since full returns are used |
-| **Bias** | More biased as it relies on current estimates | Less biased since it uses true returns |
-| **Sample Efficiency** | More efficient, updates per time step | Less efficient, updates once per episode |
-| **Suitability** | Better for continuous/long tasks | Works well for episodic tasks |
+### TD vs. MC Summary
+
+| Feature                        | Temporal-Difference (TD)       | Monte Carlo (MC)           |
+|---------------------------------|--------------------------------|----------------------------|
+| **Update**                      | After each time step           | After full episode         |
+| **Exploration Requirement**     | Can learn from incomplete episodes | Requires complete episodes |
+| **Variance**                    | Lower variance due to bootstrapping | Higher variance since full returns are used |
+| **Bias**                        | More biased as it relies on current estimates | Less biased since it uses true returns |
+| **Sample Efficiency**           | More efficient, updates per time step | Less efficient, updates once per episode |
+| **Suitability**                 | Better for continuous/long tasks and even episodic | Works well for episodic tasks |
 
 TD methods blend **bootstrapping (like Dynamic Programming)** and **sampling (like MC)**, making them a flexible and powerful approach for reinforcement learning.
+
+### TD Implementation
 
 Below we provide you with the Python code to implement this algorithm.
 
@@ -102,11 +128,42 @@ class TD(MRP):
     def online(self, s, rn,sn, done, *args): 
         self.V[s] += self.α*(rn + (1- done)*self.γ*self.V[sn] - self.V[s])
 ```
-That it, this is all what you need to implement TD!. Note how close the implementation is to the update rule. Note also how we multiplied the value $V[s_{t+1}]$ by (1- done). This is to ensure that when the episode is finished (ex., the agent is at goal or has achieved the task), we want only the final reward $r_{t+1}$ to participate in the update and not $V[s_{t+1}]$. This multiplication will appear in all of the updates we use. This saves us from having to treat the goal states in a special way on the environment level (ex. we could have set the value $V[s_{t+1}]$=0 by checking if $s_{t+1}==goal$ or by checking done in the environment or by treating done inside the s_() function when we use function approximation in later lessons). We felt that this would disguise this information, and it is always better to be explicit when possible.
+That's it, this is all what you need to implement TD!. Belwo we explain the different parts of the code so that you become familiar with it.
 
-Note also that we didn't use *a* and *an* in the online() function because we are making predictions in TD (no control yet). In addition, we do not store the experience for this one-step online algorithm while we had to for MC, which is again one of the advantages of online methods.
 
-Let us test our brand new TD algorithm on the random walk prediction problem. Note that randwalk is the default environment for MRP anyway and hence no need to pass it.
+
+#### Close to the Update Rule:
+The code is designed to directly follow the TD update rule for value estimation:
+
+\[
+V(S_t) \leftarrow V(S_t) + \alpha \left( R_{t+1} + \gamma V(S_{t+1}) - V(S_t) \right)
+\]
+
+- **\( r_n \)** represents the immediate reward \( R_{t+1} \),
+- **\( s_n \)** is the next state \( S_{t+1} \),
+- **\( done \)** is a flag indicating whether the episode has ended or not.
+
+#### Handling Terminal States:
+Notice that \( V[s_{t+1}] \) is multiplied by (1 - done).
+
+This ensures that when the episode ends (i.e., when the agent reaches the goal or completes the task), the value of \( V[s_{t+1}] \) is not used in the update. Instead, only the final reward \( r_{t+1} \) will contribute to the update. This is crucial for handling terminal states, and it saves you from having to handle terminal states separately in the environment. Since in deed, the value of  penultimate terminal state, must equate the rewards for ending in a terminal state and no need to have \( V[s_{t+1}] \) as it = 0 by definition.
+
+- Without this multiplication, you might need to treat goal states uniquely (for example, by setting \( V[s_{t+1}] = 0 \) when \( s_{t+1} \) is the goal, or by checking the **done** flag in the environment).
+- By applying this multiplication, we explicitly ensure the correct behavior in terminal states, which is preferred for clarity and maintainability.
+
+#### No Use of "a" and "an":
+The function `online()` does not use the arguments **"a"** and **"an"** because TD is focused on **value prediction**, not action selection. At this stage, we are estimating the value of states under a policy, without involving actions or control. Actions come into play once we move from prediction to control (which is the next step in RL).
+
+#### Online Learning:
+- TD learning is an online algorithm, meaning it updates the value estimate after each time step, therefore its update must be implemented by *overriding* this function from the MRP class.
+- Unlike Monte Carlo (MC) methods and other offline methods, which require storing experiences for full episodes before updating, TD updates its estimate after each step, making it more *memory-efficient*. This is particularly useful in problems where episodes may be long or continuous. 
+  <!-- Note that we did not need to store the episodes trajectories in a pure online method, hence these methods are usually more memory efficient that there offline counterpart! -->
+
+#### Testing on the Random Walk Problem:
+The *random walk prediction problem* (often used as a simple example in reinforcement learning) is the default environment for the *Markov Reward Process (MRP)*, so there's no need to pass it explicitly when testing the algorithm.
+
+This makes the TD algorithm particularly suited for *real-time learning* in environments where episodes may not end quickly or where you want to avoid waiting for an entire episode to complete before updating your values (although the reward nature plays also a role in that, end-of-episode reward or intermediate reward).
+
 
 
 ```python
@@ -115,14 +172,14 @@ TDwalk.interact(label='TD learning')
 ```
 ![png](output_13_1.png)
     
-Note that we did not need to store the episodes trajectories in a pure online method, hence these methods are usually more memory efficient that there offline counterpart!
+
 Note how TD performed far better and converged faster in fewer episodes than MC
 
 
 ### Offline TD
 In this section, we develop an offline TD algorithm. This is not a common algorithm as it usually defies the reason for using TD. That is, we usually use TD because it is an online algorithm. Nevertheless, studying this algorithm allows us to appreciate the strengths and weaknesses of TD and to compare its performance with other offline algorithms, such as MC.
 
-\[
+\(
 \begin{array}{ll}
 \textbf{Algorithm: }  \text{Offline Temporal-Difference Policy Evaluation} \\
 \textbf{Input: } \text{Episodes generated under policy } \pi \\
@@ -137,7 +194,7 @@ In this section, we develop an offline TD algorithm. This is not a common algori
 \quad \quad V(S_t) \leftarrow V(S_t) + \alpha \sum \delta_t \text{ (update using accumulated } \delta_t \text{)} & \\
 \textbf{Return: } V(S), \forall S \in \mathcal{S} \\
 \end{array}
-\]
+\)
 
 Below we provide you with the Python implementation of the offline TD.
 
@@ -164,9 +221,16 @@ TDwalk = TDf(α=.05, episodes=100, v0=.5, **demoV()).interact(label='TD learning
     
 
 
-Note how we overrode the offline function in our MRP class that we covered in the previous lesson.
-The first three lines inside the for loop are to make the update format of the online and offline identical.
-We could have also made the algorithm go backwards, similar to MC. Each has its advantage and disadvantage, although for TD since it uses the temporal difference error, it usually makes little difference. You can uncomment the backward loop and try it yourself.
+<!-- #### Overriding the Offline Function -->
+
+Note how we *overrode* the *offline* function in our *MRP* class that we covered in the previous lesson. 
+
+The first three lines inside the `for` loop are to make the update format of the online and offline methods identical.
+
+We could have also made the algorithm go *backwards*, similar to MC. Each approach has its own advantages and disadvantages, although for TD learning, since it uses the temporal difference error, it usually makes little difference.
+
+You can uncomment the backward loop and try it yourself.
+
 
 ## Conducting trials(several runs) of experiments
 
@@ -197,11 +261,18 @@ example_6_2()
     
 We have already imported MC to compare its performance with our newly defined offline TD. Remember that MC is also offline algorithm.
 
-## Optimality of TD
-In this section, we study the optimality of TD. We develop two algorithms, Batch TD and Batch MC. Both of these algorithms operate in a **supervised learning fashion**. We collect a set of episodes and then deal with them as mini-batches, and then we run a set of epochs that repeatedly present the so-far experience until the algorithm converges. We use TD and MC updates inside the algorithm to see which value each converges to. By doing so, we have levelled up the strength of both algorithms (both are offline and wait until the end of each episode to accommodate all past experiences after each episode), and we laid their performance on pure convergence terms.
+
+### Optimality of TD: Batch TD vs. Batch MC
+
+In this section, we study the optimality of TD. We develop two algorithms, **Batch TD** and **Batch MC**. Both of these algorithms operate in a **supervised learning fashion**. We collect a set of episodes and then treat them as mini-batches. Afterward, we run a set of epochs that repeatedly present the so-far experience until the algorithm converges. 
+
+Inside each algorithm, we use both TD and MC updates, respectively to observe which value each algorithm converges to. By doing so, we have leveled up the strength of both algorithms. Both are offline and wait until the end of each episode to accommodate all past experiences after each episode. This allows us to focus on their performance purely in terms of **convergence**.
+
+To achieve this, we inherit from the MRP_batch class, which allows us to conduct *batch TD learning*. The MRP_batch class makes all past experiences available, not just the default last episode experience. This provides us with the ability to leverage the entire history of experiences for each update, enabling us to perform more batch learning.
 
 
-```python
+
+<!-- ```python
 class MRP_batch(MRP):
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -223,9 +294,11 @@ class MRP_batch(MRP):
     # returns the agent's trace from latest episode buffer
     def trace(self):
             return self.s[:self.t+1, self.ep]
-```
+``` -->
 
-Below we inherit the above class to allow us to conduct batch TD learning. This form of learning is usually not practical, but it is listed here for studying the behaviour of TD to gain insight into what kind of target it has and compare it with MC. The point is to prove that TD, in practice, indeed has a different goal than MC and is more efficient in converging to this target, which in turn, usually reduces the error more effectively than MC does.
+
+Batch learning is usually not practical, but it is listed here to study the behavior of TD and gain insight into its target compared to MC. The key point is to demonstrate that TD, in practice, has a different goal than MC and is more efficient in converging to this target. As a result, TD typically reduces the error more effectively than MC does.
+
 
 
 ```python
@@ -239,7 +312,7 @@ class TD_batch(MRP_batch):
             ΔV = self.V*0
             # each episode acts like a mini-batch in supervised learning
             for ep in range(self.ep+1): 
-                for t in range(self.Ts[ep]):#-1, -1, -1):
+                for t in range(self.Ts[ep]):
                     s  = self.s[t, ep]
                     sn = self.s[t+1, ep]
                     rn = self.r[t+1, ep]
@@ -298,17 +371,9 @@ MCwalk_batch = MC_batch(episodes=100, v0=-1, **demoV()).interact()
 
 
 ### Batch runs
-Now it is time to run experiments to specify which algorithm is better. We follow the experiments conducted in figure 6.2 in the book. Note that we initialise to -1 this time to smoothen the resultant figure and remove any advantages the algorithms had when starting from .5 probabilities. This means that the algorithm would have to guess all the way from -1 to the probability of starting in a state s and ending up in the right terminal state. 
+Now it is time to run experiments to specify which algorithm is better. We follow the experiments conducted in Figure 6.2 in the book. 
 
-We start with 10 runs to show the full range that the algorithm will take in the early episodes, and then in the definition of figure_6_2( ), we restrict the figure's limit to show the interesting trend of each algorithm. Note that the algorithms could have been made more efficient by some further optimization which we left out for pedagogical reasons.
-
-
-```python
-α=.001
-TDB = Runs(algorithm=TD_batch(v0=-1, α=α, episodes=100), runs=3, plotE=True).interact(label= 'Batch TD, α= %.3f'%α)
-MCB = Runs(algorithm=MC_batch(v0=-1, α=α, episodes=100), runs=3, plotE=True).interact(label='Batch MC, α= %.3f'%α)
-``` 
-![png](output_38_1.png)
+Note that we initialize the value function to -1 this time to smoothen the resultant figure and remove any advantages the algorithms had when starting from 0.5 probabilities. This means that the algorithm would have to guess all the way from -1 to the probability of starting in a state \( s \) and ending up in the right terminal state.
     
 
 ```python
@@ -327,26 +392,119 @@ def figure_6_2():
 ```python
 figure_6_2()
 ```
-
     
 ![png](output_40_1.png)
     
+The above figure clearly shows that **TD** converges faster than **MC**, primarily regardless of the randomness arising from experience variations. This demonstrates (though not proves) that TD meets our goal of combining the benefits of DP and MC. It converges more quickly, is more sample-efficient than MC, and is computationally more efficient than DP
 
 
-## Sarsa on-policy control (using TD Update for Control)
-In this section, we deal with TD updates to achieve control. 
-**Using the previously shown TD algorithm directly is not suitable for control, we must adapt it so that it changes the Q tabel not the V table.**
-We cover mainly two algorithms one is Sarsa which is an on-policy control algorithm (meaning the followed policy is the same as the policy we are learning about). The second main algorithm is the famous Q-learning algorithm which is an off-policy algorithm. In the case of Q-learning, the agent is acting according to an ε-greedy algorithm while it is learning about a greedy algorithm.
 
-Similar to what we did earlier we will use the two dictionaries demoQ and demoR to make the calls more concise.
+## Sarsa and Q-learning -TD on Control
+
+In this section, we focus on TD updates to achieve control. We primarily cover two key algorithms:
+
+1. **Sarsa**: An **on-policy** control algorithm, meaning the agent learns and follows the same policy.
+2. **Q-learning**: An **off-policy** control algorithm, where the agent follows an ε-greedy policy but learns about the optimal greedy policy.
+
+<!-- ## From TD to Sarsa and Q-Learning -->
+
+The primary shift from standard TD learning to Sarsa and Q-learning is moving from value prediction to policy learning (improving Q). TD learning estimates the value of states or state-action pairs but does not explicitly account for the policy an agent follows. In contrast, reinforcement learning control methods like Sarsa and Q-learning focus on improving both the value estimates and the policy itself.
+
+Assuming the agent follows an **ε-greedy policy** that depends on action-values (Q-values), we can extend TD ideas to control. Both Sarsa and Q-learning use an **incremental update rule**, but instead of updating the state-value function \(V\), we update the action-value function \(Q\). The general update rule is:
+
+\[
+Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left( G(S_t) - Q(S_t, A_t) \right)
+\]
+
+To estimate \(G_t\), we use a form of the Bellman equation. We can either:
+
+1. Use \(R_{t+1} + \gamma V(S_{t+1})\), requiring both \(Q\) and \(V\) tables in the resultant algorithm.
+2. Use only the \(Q\) table, which is the standard approach in Sarsa and Q-learning.
+
+### Sarsa vs. Q-learning
+
+- **Sarsa (On-Policy)**: Uses the Bellman equation and updates based on the next action **\(A_{t+1}\)**:
+  
+\[
+G(S_t) \approx R_{t+1} + \gamma Q(S_{t+1}, A_{t+1})
+\]
+
+  Since \(A_{t+1}\) is chosen by the current policy (e.g., ε-greedy), Sarsa updates based on actual agent behavior.
+
+- **Q-learning (Off-Policy)**: Uses the Bellman **Optimality** equation instead:
+  
+\[
+G(S_t) \approx R_{t+1} + \gamma \max_a Q(S_{t+1}, a)
+\]
+  
+  This means Q-learning updates based on the best possible future action (regardless of whether it will be taken or not), rather than the one actually taken.
+
+### How Does Sarsa Improve the Policy?
+
+A key question is: *If Sarsa does not use the Bellman Optimality equation, how does it improve the policy?* 
+
+The answer lies in how \(A_{t+1}\) is selected. Since actions are chosen based on an ε-greedy policy, *there is an implicit max operation in action selection*. That is, most of the time (\(1-\epsilon+\frac{\epsilon}{|\mathcal{A}|}\)), the agent picks the action with the highest \(Q\) value. This leads to *gradual policy improvement* while still allowing some exploration.
+
+Because of this, Sarsa continuously refines the Q-values and improves the policy over time. The ε-greedy strategy ensures all actions are explored, preventing premature convergence to suboptimal solutions. Even after the Q-table stabilizes, the policy remains slightly suboptimal due to exploration. One can either decay ε over time or leave it small but nonzero to maintain some exploration.
+
+<!-- ### Policy Evaluation vs. Policy Improvement
+
+- **TD methods** estimate state values under a fixed policy, focusing on prediction rather than optimization.
+- **Sarsa** refines the action-value function \(Q(s, a)\) based on the **same policy it follows**, making it an **on-policy** algorithm.
+- **Q-learning** learns the optimal action-value function **independent of the policy being followed**, making it **off-policy**. -->
+
+### Balancing Exploration and Exploitation
+
+Both algorithms use ε-greedy exploration, so both can have a built-in exploraiton strategy, but:
+
+- Sarsa updates \(Q(s, a)\) use the actual actions taken by the agent, ensuring consistency between learning and acting.
+- Q-learning updates \(Q(s, a)\) use the highest possible future value, leading to faster convergence but may suffer form over-estimation of the action-value function.
+
+The resultant behaviour of the algorithms is that:
+
+- Sarsa learns smoother policies, as it updates based on the agent's behavior.
+- Q-learning learns optimal policies faster, but may be unstable in environments with significant randomness.
+
+Ultimately, **Sarsa is more conservative and stable**, while **Q-learning converges faster to the optimal policy** but may suffer from instability in highly stochastic environments.
+
+Both algorithms use ε-greedy exploration, so both have a built-in exploration strategy, but:
+
+- **Sarsa** updates \(Q(s, a)\) based on the actual actions taken by the agent, ensuring consistency between learning and acting.
+- **Q-learning** updates \(Q(s, a)\) using the highest possible future value, which accelerates convergence but may suffer from **overestimation of the action-value function**.
+
+
+While **Sarsa is safer and more stable**, **Q-learning remains the preferred choice** for most practical RL applications due to its off-policy nature, faster convergence, and ability to leverage experience replay. However, researchers continue to refine Q-learning to mitigate its overestimation issue, making it even more effective in modern reinforcement learning systems.
+
+
+### Sarsa Algorithm in Pseudocode
+
+\(
+\begin{array}{ll}
+\textbf{Algorithm: }  \text{Sarsa (On-policy TD Control)} \\
+\textbf{Input: } \text{Environment dynamics and reward structure} \\
+\textbf{Initialize: } Q(S, A) \leftarrow 0, \forall S \in \mathcal{S}, A \in \mathcal{A}, \alpha > 0, \gamma \in [0, 1], \epsilon > 0 \\
+\textbf{For each episode: } & \\
+\quad \text{Initialize } S_0 \text{ and choose } A_0 \text{ based on policy derived from } Q \text{ (e.g., using $\epsilon$-greedy)} & \\
+\quad \text{For each step } t \text{ from 0 to T-1: } & \\
+\quad \quad R_{t+1} \leftarrow \text{Take action } A_t \text{, observe reward } R_{t+1} \text{, and next state } S_{t+1} & \\
+\quad \quad A_{t+1} \leftarrow \text{Choose } A_{t+1} \text{ based on policy derived from } Q \text{ (e.g., using $\epsilon$-greedy)} & \\
+\quad \quad Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha (R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t) )& \\
+\quad \text{End step loop} & \\
+\textbf{Return: } Q(S, A), \forall S \in \mathcal{S}, A \in \mathcal{A} \\
+\end{array}
+\)
+
+
+### Implementation of Sarsa
+
+**Note: Using the previously shown TD algorithm directly is not suitable for control, we must adapt it so that it changes the Q tabel not the V table.** In particular, we need to inherit from an MDP class to have the Q table available for us.
+
 
 ```python
 class Sarsa(MDP()):
-    
-    def init(self): #α=.8
+    def init(self): 
         self.step = self.step_an # for Sarsa we want to decide the next action in time step t
-    
-    # ----------------------------------------🌖 online learning ----------------------------------------
+    # ---------------------------------🌖 online learning ------------------------------------
     def online(self, s, rn,sn, done, a,an):
         self.Q[s,a] += self.α*(rn + (1- done)*self.γ*self.Q[sn,an] - self.Q[s,a])
 ```
@@ -355,6 +513,7 @@ Note that we do not store the experience for this one-step online algorithm whil
 
 Let us now apply the Sarsa on a simple grid world environment. The goal is directly facing the start position. However, to make the problem more difficult for the algorithm we have deprioritised the right action and we place the order of the actions as follows: left, right, down and up. This simple change made the agent pick going left before going right and made the problem only a bit more difficult. Let us see how the Sarsa performs on it.
     
+Similar to what we did earlier we will use the two dictionaries demoQ and demoR to make the calls more concise.
 
 ```python
 sarsa = Sarsa(env=grid(), α=.8, episodes=50, seed=10, **demoQ()).interact()
@@ -410,16 +569,36 @@ plt.show()
 
 
 ## Q-learning off-policy control
-Now we move to the Q-learning algorithm. Q-learning is one of the most successful algorithms in RL. Although it is an *off-policy* (not offline) algorithm, it usually performs better than the Sarsa. Q-learning also allowed for a control algorithm's first proof of convergence due to its simple update rules. 
+Now we move to the Q-learning algorithm. Q-learning is one of the most successful algorithms in RL. Although it is an *off-policy* (not offline) algorithm, it usually performs better than the Sarsa. Q-learning also allowed for a control algorithm's first proof of convergence due to its simple update rules. Below we show the pseudocode of Q-learning:
 
+
+\(
+\begin{array}{ll}
+\textbf{Algorithm: }  \text{Q-learning (Off-policy TD Control)} \\
+\textbf{Input: } \text{Environment dynamics and reward structure} \\
+\textbf{Initialize: } Q(S, A) \leftarrow 0, \forall S \in \mathcal{S}, A \in \mathcal{A}, \alpha > 0, \gamma \in [0, 1], \epsilon > 0 \\
+\textbf{For each episode: } & \\
+\quad \text{Initialize } S_0 & \\
+\quad \text{For each step } t \text{ from 0 to T-1: } & \\
+\quad \quad \text{Choose } A_t \text{ based on policy derived from } Q \text{ (e.g., using $\epsilon$-greedy)} & \\
+\quad \quad R_{t+1}, S_{t+1} \leftarrow \text{Take action } A_t, \text{ observe reward and next state} & \\
+\quad \quad Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha (R_{t+1} + \gamma \max_{a} Q(S_{t+1}, a) - Q(S_t, A_t)) & \\
+\quad \text{End step loop} & \\
+\textbf{Return: } Q(S, A), \forall S \in \mathcal{S}, A \in \mathcal{A} \\
+\end{array}
+\)
+
+Note hwo we do not need to wait until we get the next action $A_{t+1}$ as in Sarsa. This key difference is reflected in the way we implement Sarsa and Q-learning. In Sarsa we needed to specify that we want to use the step_an function.
+
+
+
+
+### Implementation of Q-learning
 **Important** Note that Q-learning does not require changing the step function because it does not require knowing the next action in advance (unlike Sarsa). Hence it uses a simple algorithmic schema that is almost identical to TD.
-
-
 
 ```python
 class Qlearn(MDP()):
-    
-    #--------------------------------------🌖 online learning --------------------------------------
+    #---------------------------------🌖 online learning ---------------------------
     def online(self, s, rn,sn, done, a,_):
         self.Q[s,a] += self.α*(rn + (1- done)*self.γ*self.Q[sn].max() - self.Q[s,a])
 ```
@@ -433,6 +612,85 @@ qlearn = Qlearn(env=grid(), γ=1, α=.8, episodes=40, seed=10, **demoQ()).intera
 ![png](output_71_0.png)
  
 
+### Overestimation in Q-learning
+
+Since Q-learning updates are based on \(\max_a Q(S_{t+1}, a)\), it always assumes the best possible action will be taken in the future, even if the agent’s policy does not necessarily follow this assumption. This optimistic evaluation can cause systematic overestimation of Q-values, especially in stochastic environments where rewards and transitions have variability.
+
+#### Why does this happen?
+- If the Q-values are *noisy* (due to randomness in rewards or transitions), the *max operator tends to select overestimated values*.
+- This bias can *compound over time*, leading to inflated estimates and suboptimal policies.
+- In contrast, *Sarsa does not suffer from this issue*, as it updates based on the actual action chosen, avoiding the artificial boost from maximum Q-values.
+
+#### Consequences of Overestimation:
+- Instability in learning: The agent may favor suboptimal actions with overestimated values.
+- Poor policy performance in stochastic environments: The learned policy may not generalize well to different scenarios.
+- Slow or unstable convergence: The agent may take longer to find the optimal policy or oscillate between suboptimal actions.
+
+#### Mitigation Strategies:
+- Double Q-learning: Maintains two Q-value estimates and updates them separately to reduce overestimation bias.
+- Dueling Q-networks (in deep RL): Separates state-value estimation from action advantage estimation.
+- Clipped Q-learning (in some modern RL methods like Soft Actor-Critic): Limits extreme Q-value updates.
+
+Thus, while Q-learning learns optimal policies faster, it requires careful tuning or additional mechanisms to mitigate overestimation bias, particularly in stochastic environments.
+
+---
+
+### Why Researchers and Practitioners Prefer Q-learning Over Sarsa
+
+Despite the overestimation issue, Q-learning remains the more popular choice in practice due to several advantages:
+
+1. Off-policy nature:  
+   
+      - Q-learning learns the optimal policy independently of the policy being followed during exploration. This allows it to **use past experience (experience replay)**, making it suitable for modern deep RL algorithms.
+      - Sarsa, being on-policy, must continually update based on the current policy, making it **less efficient for sample reuse**.
+
+2. Faster convergence in deterministic environments:  
+      - Since Q-learning always uses the greedy update, it *quickly converges* to an optimal policy in deterministic environments where transitions and rewards are predictable.
+      - Sarsa, on the other hand, *converges more cautiously*, as it updates based on the action actually taken.
+
+3. Better long-term performance in practical applications:  
+      - In domains like robotics, game-playing (e.g., Deep Q-Networks in Atari games), and control systems, Q-learning’s focus on optimality makes it more attractive.
+      - Sarsa is more robust in highly stochastic environments but may settle for safer, suboptimal policies.
+
+4. Better compatibility with function approximation:  
+      - Deep RL methods, such as *DQN (Deep Q-Networks)*, are built on Q-learning due to its ability to learn from replayed experiences, improving sample efficiency.
+      - Sarsa, being more sensitive to the policy being followed, does not benefit as much from experience replay.
+
+---
+
+### Convergence Guarantees
+
+Both Sarsa and Q-learning converge to the optimal action-value function under certain conditions:
+
+- Sarsa (On-Policy Control) Convergence:  
+  - Sarsa is guaranteed to converge to the optimal Q-values as long as every state-action pair is visited infinitely often and the learning rate satisfies the Robbins-Monro conditions (i.e., decreasing but not too fast).
+  - Since it follows an*ε-greedy policy with exploration, it naturally satisfies this assumption over time.
+  - However, because it updates based on the agent’s policy, it may settle into a near-optimal policy rather than the true optimal one if exploration is not sufficiently reduced.
+
+- Q-learning (Off-Policy Control) Convergence:  
+  - Q-learning is proven to converge to the optimal Q-values under the same Robbins-Monro conditions.
+  - However, in stochastic environments, overestimation bias can lead to suboptimal learning, and additional modifications (e.g., Double Q-learning) are needed to ensure better stability.
+  - In deterministic settings, Q-learning usually converges faster than Sarsa.
+
+### Practical Considerations:
+- If the environment is *highly stochastic*, *Sarsa* is often preferred because it *avoids overestimation and learns safer policies*.
+- If *efficiency and optimality* are the priorities (e.g., games, robotics, deep RL), *Q-learning* is usually the better choice due to its *off-policy nature and faster learning*.
+- Modern deep RL algorithms (e.g., **DQN, DDQN**) mitigate Q-learning’s weaknesses while retaining its advantages, making it the dominant choice in large-scale applications.
+
+---
+
+### Sarsa vs Q-learning
+
+| Feature          | **Sarsa** (On-policy) | **Q-learning** (Off-policy) |
+|-----------------|-----------------|-----------------|
+| **Exploration Strategy** | Uses the action actually taken | Uses max Q-value over all actions |
+| **Policy Type** | Learns about the **same policy** it follows | Learns about an **optimal greedy policy** |
+| **Convergence** | More stable in stochastic environments | Can be faster, but may suffer from overestimation |
+| **Optimality** | May settle for a slightly suboptimal policy | More likely to find the optimal policy |
+| **Experience Replay** | Less effective | Well-suited (used in DQN, etc.) |
+| **Application** | Safer, more robust learning (e.g., safety-critical RL) | Used in deep RL (DQN), robotics, and large-scale control problems |
+
+---
 
 ## Sarsa and Q-Learning on a Cliff Edge!
 
@@ -442,23 +700,15 @@ This section compares the performance of on-policy Sarsa and off-policy Q-learni
 ```python
 sarsa = Sarsa(env=cliffwalk(), α=.5, episodes=50, seed=1, **demoR()).interact()
 ```
-
-
     
 ![png](output_75_0.png)
-    
-
 
 
 ```python
 sarsa = Qlearn(env=cliffwalk(), α=.5, episodes=50, seed=1, **demoR()).interact()
 ```
-
-
     
 ![png](output_76_0.png)
-    
-
 
 
 ```python

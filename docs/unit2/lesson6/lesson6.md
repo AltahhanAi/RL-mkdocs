@@ -1,3 +1,12 @@
+<script>
+  window.MathJax = {
+    tex: {
+      tags: "ams",  // Enables equation numbering
+    //   displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    }
+  };
+</script>
+
 # Lesson 6 - Tabular Methods: Monte Carlo
 
 **Learning outcomes**
@@ -37,7 +46,7 @@ As usual, in general, there are two types of RL problems that we will attempt to
 We start by assuming that the policy is fixed. This will help us develop an algorithm that predicts the state space's value function (expected return). Then we will move to the policy improvement methods, i.e., these methods that help us compare and improve our policy with respect to other policies and move to a better policy when necessary. Finally, we move to the control case (policy iteration methods).
 
 
-### Bellman Equations(reminder)
+<!-- ### Bellman Equations(reminder)
 
 
 # Lesson 6 - Tabular Methods: Monte Carlo
@@ -52,9 +61,9 @@ By the end of this lesson, you will be able to:
 4. Compare MC methods with dynamic programming methods.
 5. Understand the implication of satisfying and not satisfying the explore-start requirement for MC control and how to mitigate it via the reward function.
 6. Understand how to move from prediction to control by extending the \( V \) function to a \( Q \) function and make use of the idea of generalized policy iteration (GPI).
-7. Understand how policy gradient methods work and appreciate how they differ from value function methods.
+7. Understand how policy gradient methods work and appreciate how they differ from value function methods. -->
 
-## Bellman Equations
+## Bellman Equations (reminder)
 
 As we have seen in a previous lesson, the Bellman equations form the foundation of many RL methods. They define the relationship between the value of a state and the values of successor states.
 
@@ -119,7 +128,7 @@ We can take the sum starting from the first visit, or every visit, each yielding
 
 One could argue that since we want to estimate the value of a state based on the full horizon of rewards obtained until the end of an episode, we should include only the *first visit of the state* in the average. This is the basis of the First-visit Monte Carlo (MC) policy evaluation method. First-visit MC estimates the value of a state by averaging the returns from the first time that state is encountered in each episode. Below we show the pseudocode for this algorithm.
 
-\[
+\(
 \begin{array}{ll}
 \textbf{Algorithm: }  \text{First-Visit Monte Carlo Policy Evaluation} \\
 \textbf{Input: } \text{Episodes generated under policy } \pi \\
@@ -134,7 +143,7 @@ One could argue that since we want to estimate the value of a state based on the
 \quad \quad \quad V(S_t) \leftarrow V(S_t) + \frac{1}{N(S_t)}(G - V(S_t)) & \\
 \textbf{Return: } V(S), \forall S \in \mathcal{S} \\
 \end{array}
-\]
+\)
 
 ### Random Walk Problem
 
@@ -358,14 +367,14 @@ We now extend the every-visit Monte Carlo (MC) prediction algorithm by making it
 To achieve this, we adjust how averaging is performed over time. Suppose we observe state \( s \) at time step \( t \) with return \( G_t \), and the number of times \( s \) has been visited is \( N_s \). We aim to update the value estimate \( V^\pi(s) \) based on our previous estimate \( V^\pi_k(s) \). Since \( N_s - 1 \) represents the number of times \( s \) was visited before, the updated estimate is given by:
 
 \[
-    \begin{align*}
-        V^\pi_{k+1}(s) &= \frac{1}{N_s} \left(\sum_{j=1}^{N_s-1} G_j(s) + G_t(s)\right) \\
-                        &= \frac{1}{N_s} \left((N_s - 1)V^\pi_k(s) + G_t(s)\right) \\
-                        &= V^\pi_k(s) + \frac{1}{N_s} \left(G_t -  V^\pi_k(s) \right)
-    \end{align*}
+    \begin{align}
+        V^\pi_{k+1}(s) &= \frac{1}{N_s} \left(\sum_{j=1}^{N_s-1} G_j(s) + G_t(s)\right) \nonumber \\
+                        &= \frac{1}{N_s} \left((N_s - 1)V^\pi_k(s) + G_t(s)\right) \nonumber \\
+        V^\pi_{k+1}(s) &= V^\pi_k(s) + \frac{1}{N_s} \left(G_t -  V^\pi_k(s) \right)  \label{eq:main} %\tag{1}
+    \end{align}
 \]
 
-This approach mirrors the concept used in the simple bandit algorithm.
+This approach mirrors the concept used in the simple bandit algorithm. In fact this equation \(\eqref{eq:main}\) is the base for any incremental method in RL and is the most pivotal equation in all of the RL field and yet it is usually not talked about in this form. We will be using a variation of this equation in several of the techniques that we will be covering.
 
 ### Addressing the Diminishing Update Problem
 

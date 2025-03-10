@@ -127,11 +127,11 @@ Now that we know how to evaluate a policy, it is time to improve it. Policy iter
 Policy Iteration is an iterative process to find the optimal policy \( \pi^* \). It consists of two alternating steps:
 
 1. **Policy Evaluation:** Compute \( V^{\pi} \) using the policy evaluation algorithm.
-2. **Policy Improvement:** Improve the policy by acting greedily with respect to \( V^{\pi} \):
-   \[
-   \pi'(s) = \arg\max_a \sum_{s'} P(s' | s, a) [R(s, a, s') + \gamma V(s')]
-   \]
-3. Repeat until \( \pi \) converges to \( \pi^* \).
+1. **Policy Improvement:** Improve the policy by acting greedily with respect to \( V^{\pi} \):
+\(
+\pi'(s) = \arg\max_a \sum_{s'} P(s' | s, a) [R(s, a, s') + \gamma V(s')]
+\)
+1. Repeat until \( \pi \) converges to \( \pi^* \).
 
 So, as you can see, the policy improvement step is based on the *Bellman Optimality equation*. Below we show the pseudocode for this algorithm.
 
@@ -171,9 +171,11 @@ Let us try it on a slightly more complex environment, such as the maze.
 Our final step to fully develop the ideas of dynamic programming is to shorten the time it takes for a policy to be evaluated and improved. One simple idea we will follow here is to slightly improve the evaluation and immediately improve the policy. We do these two steps iteratively until our policy has stopped improving. This is a very effective strategy because we do not wait until the policy is fully evaluated to improve it; we weave and interleave the two loops together in one loop.
 
 Value Iteration is a special case of Policy Iteration where policy evaluation is truncated to a single update per state. Instead of evaluating a policy to convergence, we update the value function directly:
+
 \[
 V(s) \leftarrow \max_a \sum_{s'} P(s' | s, a) [R(s, a, s') + \gamma V(s')]
 \]
+
 This is a nifty idea since we are saving on most of the policy evaluation and suffice with just one **step** of evaluation per iteration that also incorporates a policy improvement step.  
 *The Bellman Optimality equation is the basis of the update used in the value iteration algorithm.*  
 Below we show this algorithm.
