@@ -1144,6 +1144,7 @@ V^\pi(s) = \mathbb{E}_\pi \left[ R_{t+1} + \gamma V^\pi(S_{t+1}) \mid S_t = s \r
     V(S_t) \leftarrow V(S_t) + \alpha \left(R_{t+1} + \gamma V(S_{t+1}) - V(S_t) \right)
 \]</div>
 <p>This formulation allows TD learning to balance between MC and DP, providing a practical and efficient approach to value estimation in reinforcement learning. It adheres to the incremental nature of the constant-<span class="arithmatex">\(\alpha\)</span> MC method while also enabling an <em>online</em> learning approach rather than the <em>end-of-episode</em> learning used in MC. At the same time, it allows for better and faster convergence, similar to DP.  </p>
+<p>The term <span class="arithmatex">\(\left(R_{t+1} + \gamma V(S_{t+1}) - V(S_t) \right)\)</span> is called the TD error.</p>
 <p><strong>Key Components:</strong></p>
 <ul>
 <li><span class="arithmatex">\( \alpha \)</span> is the step-size (learning rate),</li>
