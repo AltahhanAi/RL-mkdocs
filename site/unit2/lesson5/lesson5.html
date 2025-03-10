@@ -1269,9 +1269,9 @@ Q_{\pi}(s, a^*) &gt; V_{\pi}(s)
 <ol>
 <li><strong>Policy Evaluation:</strong> Compute <span class="arithmatex">\( V^{\pi} \)</span> using the policy evaluation algorithm.</li>
 <li><strong>Policy Improvement:</strong> Improve the policy by acting greedily with respect to <span class="arithmatex">\( V^{\pi} \)</span>:
-   [
-   \pi'(s) = \arg\max_a \sum_{s'} P(s' | s, a) [R(s, a, s') + \gamma V(s')]
-   ]</li>
+<span class="arithmatex">\(
+\pi'(s) = \arg\max_a \sum_{s'} P(s' | s, a) [R(s, a, s') + \gamma V(s')]
+\)</span></li>
 <li>Repeat until <span class="arithmatex">\( \pi \)</span> converges to <span class="arithmatex">\( \pi^* \)</span>.</li>
 </ol>
 <p>So, as you can see, the policy improvement step is based on the <em>Bellman Optimality equation</em>. Below we show the pseudocode for this algorithm.</p>
@@ -1300,11 +1300,11 @@ policy improvement stopped @ iteration 16:
 </code></pre></div>
 <h2 id="value-iteration">Value Iteration</h2>
 <p>Our final step to fully develop the ideas of dynamic programming is to shorten the time it takes for a policy to be evaluated and improved. One simple idea we will follow here is to slightly improve the evaluation and immediately improve the policy. We do these two steps iteratively until our policy has stopped improving. This is a very effective strategy because we do not wait until the policy is fully evaluated to improve it; we weave and interleave the two loops together in one loop.</p>
-<p>Value Iteration is a special case of Policy Iteration where policy evaluation is truncated to a single update per state. Instead of evaluating a policy to convergence, we update the value function directly:
-[
+<p>Value Iteration is a special case of Policy Iteration where policy evaluation is truncated to a single update per state. Instead of evaluating a policy to convergence, we update the value function directly:</p>
+<div class="arithmatex">\[
 V(s) \leftarrow \max_a \sum_{s'} P(s' | s, a) [R(s, a, s') + \gamma V(s')]
-]
-This is a nifty idea since we are saving on most of the policy evaluation and suffice with just one <strong>step</strong> of evaluation per iteration that also incorporates a policy improvement step.<br />
+\]</div>
+<p>This is a nifty idea since we are saving on most of the policy evaluation and suffice with just one <strong>step</strong> of evaluation per iteration that also incorporates a policy improvement step.<br />
 <em>The Bellman Optimality equation is the basis of the update used in the value iteration algorithm.</em><br />
 Below we show this algorithm.</p>
 <h3 id="value-iteration-algorithm">Value Iteration Algorithm:</h3>

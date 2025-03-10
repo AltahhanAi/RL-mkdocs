@@ -1123,22 +1123,34 @@ For These problems we will design Value Iteration methods which utilise the idea
 <p>Ok, so we start by implementing the TD algorithm. Due to the way we structured our code and classes, it is relatively simple and straightforward to define any online and offline methods. TD is an online method that will be called in <em>each step during an episode</em>. We, therefore, can turn off the storage because we do not need it, but leaving it will not hurt the grid problems we are tackling. It will consume some memory and a few extra milliseconds of processing. For more difficult problems, we need to utilise the memory to train anyway, as we shall see in the Application unit.</p>
 <p>We also would need to pass a learning step as we did for the MC algorithm. A learning step dictates how much error percentage will be considered when we update the value function. Sometimes we could go all the way α=1 when the algorithm is tabular, and the problem is simple. For most of the problems and algorithms we tackle, however, this is not desirable, and we set α=.1 or less to ensure the algorithm performs well on the common states and is acceptable on less common states. MC, however, is particularly sensitive towards this α, and we often would need to set it to smaller values such as .01.</p>
 <h2 id="temporal-difference-td-learning-prediction">Temporal-Difference (TD) Learning (prediction)</h2>
-<p>Eralier in a previous lesson, we saw how constant-<span class="arithmatex">\(\alpha\)</span> MC prediction method, have an update rule of the form:</p>
+<p>Earlier, in Lesson 6, we saw that the constant-<span class="arithmatex">\(\alpha\)</span> Monte Carlo (MC) prediction method has an update rule of the form:</p>
 <div class="arithmatex">\[
     V(S_t) \leftarrow V(S_t) + \alpha \left( G(S_t) - V(S_t) \right)
 \]</div>
-<p><em>The main idea of several well-known RL algorithms is to replace <span class="arithmatex">\(G_t\)</span> with an estimation.</em> Temporal-Difference (TD) learning is a key reinforcement learning method that updates value estimates based on <em>bootstrapping</em>, meaning it uses its own current estimates to update future predictions. The TD methods updates the state-value function <span class="arithmatex">\(V(s)\)</span> using one-step lookahead, i.e it replaces <span class="arithmatex">\(G_t\)</span> by <span class="arithmatex">\(R_{t+1} + \gamma V(S_{t+1})\)</span> in the constant-<span class="arithmatex">\(\alpha\)</span> MC update rule: </p>
+<p>The core idea behind several well-known incremental reinforcement learning (RL) algorithms is to replace <span class="arithmatex">\( G_t \)</span> with an estimate.  </p>
+<p>Our goal in Temporal-Difference (TD) learning is to combine the advantages of Monte Carlo (MC) methods and Dynamic Programming (DP). Specifically, we want the model-free nature of MC, which does not require a model of the environment and learns directly from experience and interaction (unlike DP). The above update rule already satisfies this requirement.  </p>
+<p>At the same time, we seek the fast convergence of DP while avoiding its high computational cost. Using <span class="arithmatex">\( R_{t+1} + \gamma V(S_{t+1}) \)</span> in place of <span class="arithmatex">\( G_t \)</span> satisfies this requirement—let's unpack this further.  </p>
+<p>If we recall how DP, particularly policy evaluation, updates its estimates, we see that it relies on the Bellman equation:</p>
 <div class="arithmatex">\[
-    V(S_t) \leftarrow V(S_t) + \alpha \left( R_{t+1} + \gamma V(S_{t+1}) - V(S_t) \right)
+V^\pi(s) = \mathbb{E}_\pi \left[ R_{t+1} + \gamma V^\pi(S_{t+1}) \mid S_t = s \right]
 \]</div>
-<p>Where:</p>
+<p>TD learning leverages the Bellman equation and assumes that since the agent interacts with the environment according to its current policy, the experience is drawn according to the policy distribution <span class="arithmatex">\( \pi \)</span>. This means that the expectation <span class="arithmatex">\( \mathbb{E}_\pi \)</span> in the Bellman equation is naturally satisfied if we use this experience from <span class="arithmatex">\( \pi \)</span> to update the estimate of the value function <span class="arithmatex">\( V^\pi(s) \)</span>. Thus, the learned value function should follow and satisfy the Bellman equation. If it does not, it should be adjusted accordingly.  </p>
+<p>(Recall that any expectation can be approximated by sampling and averaging from the underlying distribution, as per the law of large numbers. Instead of averaging, we use a step-size parameter <span class="arithmatex">\( \alpha &lt; 1 \)</span> to continuously adjust the estimates, similar to the constant-<span class="arithmatex">\(\alpha\)</span> MC method.)  </p>
+<p>According to the Bellman equation, <span class="arithmatex">\( R_{t+1} + \gamma V(S_{t+1}) \)</span> serves as a good candidate estimate for <span class="arithmatex">\( G_t \)</span>, leveraging bootstrapping in the same way as DP. In other words, the state-value function <span class="arithmatex">\( V(S_t) \)</span> should remain close to <span class="arithmatex">\( R_{t+1} + \gamma V(S_{t+1}) \)</span>. If it deviates, it should be adjusted in that direction.  </p>
+<p>Thus, TD replaces <span class="arithmatex">\( G_t \)</span> with <span class="arithmatex">\( R_{t+1} + \gamma V(S_{t+1}) \)</span> in the constant-<span class="arithmatex">\(\alpha\)</span> MC update rule:</p>
+<div class="arithmatex">\[
+    V(S_t) \leftarrow V(S_t) + \alpha \left(R_{t+1} + \gamma V(S_{t+1}) - V(S_t) \right)
+\]</div>
+<p>This formulation allows TD learning to balance between MC and DP, providing a practical and efficient approach to value estimation in reinforcement learning. It adheres to the incremental nature of the constant-<span class="arithmatex">\(\alpha\)</span> MC method while also enabling an <em>online</em> learning approach rather than the <em>end-of-episode</em> learning used in MC. At the same time, it allows for better and faster convergence, similar to DP.  </p>
+<p><strong>Key Components:</strong></p>
 <ul>
 <li><span class="arithmatex">\( \alpha \)</span> is the step-size (learning rate),</li>
-<li><span class="arithmatex">\( r_{t+1} \)</span> is the reward received after taking action in <span class="arithmatex">\( s_t \)</span>,</li>
+<li><span class="arithmatex">\( R_{t+1} \)</span> is the reward received after taking action in <span class="arithmatex">\( S_t \)</span>,</li>
 <li><span class="arithmatex">\( \gamma \)</span> is the discount factor,</li>
-<li><span class="arithmatex">\( V(s_{t+1}) \)</span> is the estimate of the next state's value.</li>
+<li><span class="arithmatex">\( V(S_{t+1}) \)</span> is the estimate of the next state's value.</li>
 </ul>
-<p>Unlike Monte Carlo (MC) methods, which require complete episodes (including constant <span class="arithmatex">\(\alpha\)</span> MC), TD does not require a complete episode, like constant <span class="arithmatex">\(\alpha\)</span> MC, TD methods update values <em>incrementally</em> after each time step, making them more efficient for continuous or long-horizon problems. The replacement of <span class="arithmatex">\(G_t\)</span> sample with an estimate leads to infusing bias into TD, but the use of bootstrapping leads to a lower variance. TD tends to be faster than MC and more efficient, so the trad-off of the bias-variance is well worth it. Add to that its ability to truely incrmentally update the estimate as <em>rewards</em> are collected.</p>
+<p>Unlike Monte Carlo (MC) methods, which require complete episodes (including constant-<span class="arithmatex">\(\alpha\)</span> MC), TD methods update values truly <em>incrementally</em> after each time step, making them more efficient for continuous or long-horizon problems. The replacement of <span class="arithmatex">\( G_t \)</span> with an estimate introduces bias into TD (due to bootstrapping), but it also reduces variance.  </p>
+<p>In machine learning, the <strong>bias-variance trade-off</strong> is a common phenomenon, and in RL, we generally prefer lower variance since it stabilizes learning and allows for a smoother experience. TD tends to be faster and more sample-efficient than MC, making the bias-variance trade-off well worth it. Additionally, its ability to <em>incrementally</em> update the estimate <em>as rewards are collected</em> makes it a powerful tool in reinforcement learning.  </p>
 <p>Below we show the pseudocode for the TD algorithm.</p>
 <p><span class="arithmatex">\(
 \begin{array}{ll}
@@ -1155,7 +1167,7 @@ For These problems we will design Value Iteration methods which utilise the idea
 \end{array}
 \)</span></p>
 <hr />
-<h2 id="td-vs-monte-carlo-mc">TD vs. Monte Carlo (MC)</h2>
+<h3 id="td-vs-mc-summary">TD vs. MC Summary</h3>
 <table>
 <thead>
 <tr>
@@ -1192,30 +1204,57 @@ For These problems we will design Value Iteration methods which utilise the idea
 </tr>
 <tr>
 <td><strong>Suitability</strong></td>
-<td>Better for continuous/long tasks</td>
+<td>Better for continuous/long tasks and even episodic</td>
 <td>Works well for episodic tasks</td>
 </tr>
 </tbody>
 </table>
 <p>TD methods blend <strong>bootstrapping (like Dynamic Programming)</strong> and <strong>sampling (like MC)</strong>, making them a flexible and powerful approach for reinforcement learning.</p>
+<h3 id="td-implementation">TD Implementation</h3>
 <p>Below we provide you with the Python code to implement this algorithm.</p>
 <p><div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TD</span><span class="p">(</span><span class="n">MRP</span><span class="p">):</span>
     <span class="c1"># ----------------------------- 🌖 online learning ----------------------    </span>
     <span class="k">def</span><span class="w"> </span><span class="nf">online</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">rn</span><span class="p">,</span><span class="n">sn</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="n">rn</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">sn</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">s</span><span class="p">])</span>
 </code></pre></div>
-That it, this is all what you need to implement TD!. Note how close the implementation is to the update rule. Note also how we multiplied the value <span class="arithmatex">\(V[s_{t+1}]\)</span> by (1- done). This is to ensure that when the episode is finished (ex., the agent is at goal or has achieved the task), we want only the final reward <span class="arithmatex">\(r_{t+1}\)</span> to participate in the update and not <span class="arithmatex">\(V[s_{t+1}]\)</span>. This multiplication will appear in all of the updates we use. This saves us from having to treat the goal states in a special way on the environment level (ex. we could have set the value <span class="arithmatex">\(V[s_{t+1}]\)</span>=0 by checking if <span class="arithmatex">\(s_{t+1}==goal\)</span> or by checking done in the environment or by treating done inside the s_() function when we use function approximation in later lessons). We felt that this would disguise this information, and it is always better to be explicit when possible.</p>
-<p>Note also that we didn't use <em>a</em> and <em>an</em> in the online() function because we are making predictions in TD (no control yet). In addition, we do not store the experience for this one-step online algorithm while we had to for MC, which is again one of the advantages of online methods.</p>
-<p>Let us test our brand new TD algorithm on the random walk prediction problem. Note that randwalk is the default environment for MRP anyway and hence no need to pass it.</p>
+That's it, this is all what you need to implement TD!. Belwo we explain the different parts of the code so that you become familiar with it.</p>
+<h4 id="close-to-the-update-rule">Close to the Update Rule:</h4>
+<p>The code is designed to directly follow the TD update rule for value estimation:</p>
+<div class="arithmatex">\[
+V(S_t) \leftarrow V(S_t) + \alpha \left( R_{t+1} + \gamma V(S_{t+1}) - V(S_t) \right)
+\]</div>
+<ul>
+<li><strong><span class="arithmatex">\( r_n \)</span></strong> represents the immediate reward <span class="arithmatex">\( R_{t+1} \)</span>,</li>
+<li><strong><span class="arithmatex">\( s_n \)</span></strong> is the next state <span class="arithmatex">\( S_{t+1} \)</span>,</li>
+<li><strong><span class="arithmatex">\( done \)</span></strong> is a flag indicating whether the episode has ended or not.</li>
+</ul>
+<h4 id="handling-terminal-states">Handling Terminal States:</h4>
+<p>Notice that <span class="arithmatex">\( V[s_{t+1}] \)</span> is multiplied by (1 - done).</p>
+<p>This ensures that when the episode ends (i.e., when the agent reaches the goal or completes the task), the value of <span class="arithmatex">\( V[s_{t+1}] \)</span> is not used in the update. Instead, only the final reward <span class="arithmatex">\( r_{t+1} \)</span> will contribute to the update. This is crucial for handling terminal states, and it saves you from having to handle terminal states separately in the environment. Since in deed, the value of  penultimate terminal state, must equate the rewards for ending in a terminal state and no need to have <span class="arithmatex">\( V[s_{t+1}] \)</span> as it = 0 by definition.</p>
+<ul>
+<li>Without this multiplication, you might need to treat goal states uniquely (for example, by setting <span class="arithmatex">\( V[s_{t+1}] = 0 \)</span> when <span class="arithmatex">\( s_{t+1} \)</span> is the goal, or by checking the <strong>done</strong> flag in the environment).</li>
+<li>By applying this multiplication, we explicitly ensure the correct behavior in terminal states, which is preferred for clarity and maintainability.</li>
+</ul>
+<h4 id="no-use-of-a-and-an">No Use of "a" and "an":</h4>
+<p>The function <code>online()</code> does not use the arguments <strong>"a"</strong> and <strong>"an"</strong> because TD is focused on <strong>value prediction</strong>, not action selection. At this stage, we are estimating the value of states under a policy, without involving actions or control. Actions come into play once we move from prediction to control (which is the next step in RL).</p>
+<h4 id="online-learning">Online Learning:</h4>
+<ul>
+<li>TD learning is an online algorithm, meaning it updates the value estimate after each time step, therefore its update must be implemented by <em>overriding</em> this function from the MRP class.</li>
+<li>Unlike Monte Carlo (MC) methods and other offline methods, which require storing experiences for full episodes before updating, TD updates its estimate after each step, making it more <em>memory-efficient</em>. This is particularly useful in problems where episodes may be long or continuous. 
+  <!-- Note that we did not need to store the episodes trajectories in a pure online method, hence these methods are usually more memory efficient that there offline counterpart! -->
+</li>
+</ul>
+<h4 id="testing-on-the-random-walk-problem">Testing on the Random Walk Problem:</h4>
+<p>The <em>random walk prediction problem</em> (often used as a simple example in reinforcement learning) is the default environment for the <em>Markov Reward Process (MRP)</em>, so there's no need to pass it explicitly when testing the algorithm.</p>
+<p>This makes the TD algorithm particularly suited for <em>real-time learning</em> in environments where episodes may not end quickly or where you want to avoid waiting for an entire episode to complete before updating your values (although the reward nature plays also a role in that, end-of-episode reward or intermediate reward).</p>
 <p><div class="highlight"><pre><span></span><code><span class="n">TDwalk</span> <span class="o">=</span> <span class="n">TD</span><span class="p">(</span><span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span>
 <span class="n">TDwalk</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;TD learning&#39;</span><span class="p">)</span>
 </code></pre></div>
 <img alt="png" src="output_13_1.png" /></p>
-<p>Note that we did not need to store the episodes trajectories in a pure online method, hence these methods are usually more memory efficient that there offline counterpart!
-Note how TD performed far better and converged faster in fewer episodes than MC</p>
+<p>Note how TD performed far better and converged faster in fewer episodes than MC</p>
 <h3 id="offline-td">Offline TD</h3>
 <p>In this section, we develop an offline TD algorithm. This is not a common algorithm as it usually defies the reason for using TD. That is, we usually use TD because it is an online algorithm. Nevertheless, studying this algorithm allows us to appreciate the strengths and weaknesses of TD and to compare its performance with other offline algorithms, such as MC.</p>
-<div class="arithmatex">\[
+<p><span class="arithmatex">\(
 \begin{array}{ll}
 \textbf{Algorithm: }  \text{Offline Temporal-Difference Policy Evaluation} \\
 \textbf{Input: } \text{Episodes generated under policy } \pi \\
@@ -1230,7 +1269,7 @@ Note how TD performed far better and converged faster in fewer episodes than MC<
 \quad \quad V(S_t) \leftarrow V(S_t) + \alpha \sum \delta_t \text{ (update using accumulated } \delta_t \text{)} &amp; \\
 \textbf{Return: } V(S), \forall S \in \mathcal{S} \\
 \end{array}
-\]</div>
+\)</span></p>
 <p>Below we provide you with the Python implementation of the offline TD.</p>
 <p><div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TDf</span><span class="p">(</span><span class="n">MRP</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1249,9 +1288,12 @@ Note that we can do it the changes backwards, you can try both and see the diffe
 <p><div class="highlight"><pre><span></span><code><span class="n">TDwalk</span> <span class="o">=</span> <span class="n">TDf</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="mf">.05</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="o">**</span><span class="n">demoV</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;TD learning&#39;</span><span class="p">)</span>
 </code></pre></div>
 <img alt="png" src="output_20_0.png" /></p>
-<p>Note how we overrode the offline function in our MRP class that we covered in the previous lesson.
-The first three lines inside the for loop are to make the update format of the online and offline identical.
-We could have also made the algorithm go backwards, similar to MC. Each has its advantage and disadvantage, although for TD since it uses the temporal difference error, it usually makes little difference. You can uncomment the backward loop and try it yourself.</p>
+<!-- #### Overriding the Offline Function -->
+
+<p>Note how we <em>overrode</em> the <em>offline</em> function in our <em>MRP</em> class that we covered in the previous lesson. </p>
+<p>The first three lines inside the <code>for</code> loop are to make the update format of the online and offline methods identical.</p>
+<p>We could have also made the algorithm go <em>backwards</em>, similar to MC. Each approach has its own advantages and disadvantages, although for TD learning, since it uses the temporal difference error, it usually makes little difference.</p>
+<p>You can uncomment the backward loop and try it yourself.</p>
 <h2 id="conducting-trialsseveral-runs-of-experiments">Conducting trials(several runs) of experiments</h2>
 <p>Let us now use a useful handy class called 'Runs' that summarises several runs for us to reach a reliable and unbiased conclusions when we compare algorithms performances.</p>
 <p>Note that the class allows us to run several experiments efficiently. The main assumption is that the algorithms are inherited from an MRP class which applies for the majority of the classes that we will deal with in our units.</p>
@@ -1273,31 +1315,35 @@ We could have also made the algorithm go backwards, similar to MC. Each has its 
 </code></pre></div>
 <img alt="png" src="output_27_1.png" /></p>
 <p>We have already imported MC to compare its performance with our newly defined offline TD. Remember that MC is also offline algorithm.</p>
-<h2 id="optimality-of-td">Optimality of TD</h2>
-<p>In this section, we study the optimality of TD. We develop two algorithms, Batch TD and Batch MC. Both of these algorithms operate in a <strong>supervised learning fashion</strong>. We collect a set of episodes and then deal with them as mini-batches, and then we run a set of epochs that repeatedly present the so-far experience until the algorithm converges. We use TD and MC updates inside the algorithm to see which value each converges to. By doing so, we have levelled up the strength of both algorithms (both are offline and wait until the end of each episode to accommodate all past experiences after each episode), and we laid their performance on pure convergence terms.</p>
-<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MRP_batch</span><span class="p">(</span><span class="n">MRP</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">store</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># store the full experience</span>
-    <span class="c1"># we will redfine the allocate to store the full experience instead of only latest episode</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">allocate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
-        <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">max_t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">episodes</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">max_t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">episodes</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span> <span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">nS</span><span class="o">+</span><span class="mi">10</span><span class="p">)</span>  
-        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">max_t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">episodes</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">)</span>  <span class="c1"># actions and states are indices        </span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">done</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">max_t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">episodes</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span> 
-    <span class="k">def</span><span class="w"> </span><span class="nf">store_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">a</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">rn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">sn</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">an</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">done</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="c1"># store one trajectory(sarsa) in the rigth episode buffer</span>
-        <span class="k">if</span> <span class="n">s</span>  <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ep</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
-        <span class="k">if</span> <span class="n">a</span>  <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ep</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span>
-        <span class="k">if</span> <span class="n">rn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ep</span><span class="p">]</span> <span class="o">=</span> <span class="n">rn</span>
-        <span class="k">if</span> <span class="n">sn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ep</span><span class="p">]</span> <span class="o">=</span> <span class="n">sn</span>
-        <span class="k">if</span> <span class="n">an</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ep</span><span class="p">]</span> <span class="o">=</span> <span class="n">an</span>
-        <span class="k">if</span> <span class="n">done</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">done</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ep</span><span class="p">]</span> <span class="o">=</span> <span class="n">done</span>
-    <span class="c1"># returns the agent&#39;s trace from latest episode buffer</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">trace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ep</span><span class="p">]</span>
-</code></pre></div>
-<p>Below we inherit the above class to allow us to conduct batch TD learning. This form of learning is usually not practical, but it is listed here for studying the behaviour of TD to gain insight into what kind of target it has and compare it with MC. The point is to prove that TD, in practice, indeed has a different goal than MC and is more efficient in converging to this target, which in turn, usually reduces the error more effectively than MC does.</p>
+<h3 id="optimality-of-td-batch-td-vs-batch-mc">Optimality of TD: Batch TD vs. Batch MC</h3>
+<p>In this section, we study the optimality of TD. We develop two algorithms, <strong>Batch TD</strong> and <strong>Batch MC</strong>. Both of these algorithms operate in a <strong>supervised learning fashion</strong>. We collect a set of episodes and then treat them as mini-batches. Afterward, we run a set of epochs that repeatedly present the so-far experience until the algorithm converges. </p>
+<p>Inside each algorithm, we use both TD and MC updates, respectively to observe which value each algorithm converges to. By doing so, we have leveled up the strength of both algorithms. Both are offline and wait until the end of each episode to accommodate all past experiences after each episode. This allows us to focus on their performance purely in terms of <strong>convergence</strong>.</p>
+<p>To achieve this, we inherit from the MRP_batch class, which allows us to conduct <em>batch TD learning</em>. The MRP_batch class makes all past experiences available, not just the default last episode experience. This provides us with the ability to leverage the entire history of experiences for each update, enabling us to perform more batch learning.</p>
+<!-- ```python
+class MRP_batch(MRP):
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.store = True # store the full experience
+    # we will redfine the allocate to store the full experience instead of only latest episode
+    def allocate(self): 
+        self.r = np.zeros((self.max_t, self.episodes))
+        self.s = np.ones ((self.max_t, self.episodes), dtype=np.uint32) *(self.env.nS+10)  
+        self.a = np.zeros((self.max_t, self.episodes), dtype=np.uint32)  # actions and states are indices        
+        self.done = np.zeros((self.max_t, self.episodes), dtype=bool) 
+    def store_(self, s=None,a=None,rn=None,sn=None,an=None, done=None, t=0):
+        # store one trajectory(sarsa) in the rigth episode buffer
+        if s  is not None: self.s[t, self.ep] = s
+        if a  is not None: self.a[t, self.ep] = a
+        if rn is not None: self.r[t+1, self.ep] = rn
+        if sn is not None: self.s[t+1, self.ep] = sn
+        if an is not None: self.a[t+1, self.ep] = an
+        if done is not None: self.done[t+1, self.ep] = done
+    # returns the agent's trace from latest episode buffer
+    def trace(self):
+            return self.s[:self.t+1, self.ep]
+``` -->
+
+<p>Batch learning is usually not practical, but it is listed here to study the behavior of TD and gain insight into its target compared to MC. The key point is to demonstrate that TD, in practice, has a different goal than MC and is more efficient in converging to this target. As a result, TD typically reduces the error more effectively than MC does.</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TD_batch</span><span class="p">(</span><span class="n">MRP_batch</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.001</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
@@ -1308,7 +1354,7 @@ We could have also made the algorithm go backwards, similar to MC. Each has its 
             <span class="n">ΔV</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="o">*</span><span class="mi">0</span>
             <span class="c1"># each episode acts like a mini-batch in supervised learning</span>
             <span class="k">for</span> <span class="n">ep</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ep</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span> 
-                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Ts</span><span class="p">[</span><span class="n">ep</span><span class="p">]):</span><span class="c1">#-1, -1, -1):</span>
+                <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Ts</span><span class="p">[</span><span class="n">ep</span><span class="p">]):</span>
                     <span class="n">s</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">t</span><span class="p">,</span> <span class="n">ep</span><span class="p">]</span>
                     <span class="n">sn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">ep</span><span class="p">]</span>
                     <span class="n">rn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">ep</span><span class="p">]</span>
@@ -1352,13 +1398,8 @@ We could have also made the algorithm go backwards, similar to MC. Each has its 
 </code></pre></div>
 <p><img alt="png" src="output_36_0.png" /></p>
 <h3 id="batch-runs">Batch runs</h3>
-<p>Now it is time to run experiments to specify which algorithm is better. We follow the experiments conducted in figure 6.2 in the book. Note that we initialise to -1 this time to smoothen the resultant figure and remove any advantages the algorithms had when starting from .5 probabilities. This means that the algorithm would have to guess all the way from -1 to the probability of starting in a state s and ending up in the right terminal state. </p>
-<p>We start with 10 runs to show the full range that the algorithm will take in the early episodes, and then in the definition of figure_6_2( ), we restrict the figure's limit to show the interesting trend of each algorithm. Note that the algorithms could have been made more efficient by some further optimization which we left out for pedagogical reasons.</p>
-<p><div class="highlight"><pre><span></span><code><span class="n">α</span><span class="o">=</span><span class="mf">.001</span>
-<span class="n">TDB</span> <span class="o">=</span> <span class="n">Runs</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">TD_batch</span><span class="p">(</span><span class="n">v0</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span> <span class="n">runs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">plotE</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span> <span class="s1">&#39;Batch TD, α= </span><span class="si">%.3f</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">α</span><span class="p">)</span>
-<span class="n">MCB</span> <span class="o">=</span> <span class="n">Runs</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="n">MC_batch</span><span class="p">(</span><span class="n">v0</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span> <span class="n">runs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">plotE</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">interact</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Batch MC, α= </span><span class="si">%.3f</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">α</span><span class="p">)</span>
-</code></pre></div>
-<img alt="png" src="output_38_1.png" /></p>
+<p>Now it is time to run experiments to specify which algorithm is better. We follow the experiments conducted in Figure 6.2 in the book. </p>
+<p>Note that we initialize the value function to -1 this time to smoothen the resultant figure and remove any advantages the algorithms had when starting from 0.5 probabilities. This means that the algorithm would have to guess all the way from -1 to the probability of starting in a state <span class="arithmatex">\( s \)</span> and ending up in the right terminal state.</p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">figure_6_2</span><span class="p">():</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
@@ -1373,22 +1414,96 @@ We could have also made the algorithm go backwards, similar to MC. Each has its 
 <div class="highlight"><pre><span></span><code><span class="n">figure_6_2</span><span class="p">()</span>
 </code></pre></div>
 <p><img alt="png" src="output_40_1.png" /></p>
-<h2 id="sarsa-on-policy-control-using-td-update-for-control">Sarsa on-policy control (using TD Update for Control)</h2>
-<p>In this section, we deal with TD updates to achieve control. 
-<strong>Using the previously shown TD algorithm directly is not suitable for control, we must adapt it so that it changes the Q tabel not the V table.</strong>
-We cover mainly two algorithms one is Sarsa which is an on-policy control algorithm (meaning the followed policy is the same as the policy we are learning about). The second main algorithm is the famous Q-learning algorithm which is an off-policy algorithm. In the case of Q-learning, the agent is acting according to an ε-greedy algorithm while it is learning about a greedy algorithm.</p>
-<p>Similar to what we did earlier we will use the two dictionaries demoQ and demoR to make the calls more concise.</p>
+<p>The above figure clearly shows that <strong>TD</strong> converges faster than <strong>MC</strong>, primarily regardless of the randomness arising from experience variations. This demonstrates (though not proves) that TD meets our goal of combining the benefits of DP and MC. It converges more quickly, is more sample-efficient than MC, and is computationally more efficient than DP</p>
+<h2 id="sarsa-and-q-learning-td-on-control">Sarsa and Q-learning -TD on Control</h2>
+<p>In this section, we focus on TD updates to achieve control. We primarily cover two key algorithms:</p>
+<ol>
+<li><strong>Sarsa</strong>: An <strong>on-policy</strong> control algorithm, meaning the agent learns and follows the same policy.</li>
+<li><strong>Q-learning</strong>: An <strong>off-policy</strong> control algorithm, where the agent follows an ε-greedy policy but learns about the optimal greedy policy.</li>
+</ol>
+<!-- ## From TD to Sarsa and Q-Learning -->
+
+<p>The primary shift from standard TD learning to Sarsa and Q-learning is moving from value prediction to policy learning (improving Q). TD learning estimates the value of states or state-action pairs but does not explicitly account for the policy an agent follows. In contrast, reinforcement learning control methods like Sarsa and Q-learning focus on improving both the value estimates and the policy itself.</p>
+<p>Assuming the agent follows an <strong>ε-greedy policy</strong> that depends on action-values (Q-values), we can extend TD ideas to control. Both Sarsa and Q-learning use an <strong>incremental update rule</strong>, but instead of updating the state-value function <span class="arithmatex">\(V\)</span>, we update the action-value function <span class="arithmatex">\(Q\)</span>. The general update rule is:</p>
+<div class="arithmatex">\[
+Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left( G(S_t) - Q(S_t, A_t) \right)
+\]</div>
+<p>To estimate <span class="arithmatex">\(G_t\)</span>, we use a form of the Bellman equation. We can either:</p>
+<ol>
+<li>Use <span class="arithmatex">\(R_{t+1} + \gamma V(S_{t+1})\)</span>, requiring both <span class="arithmatex">\(Q\)</span> and <span class="arithmatex">\(V\)</span> tables in the resultant algorithm.</li>
+<li>Use only the <span class="arithmatex">\(Q\)</span> table, which is the standard approach in Sarsa and Q-learning.</li>
+</ol>
+<h3 id="sarsa-vs-q-learning">Sarsa vs. Q-learning</h3>
+<ul>
+<li><strong>Sarsa (On-Policy)</strong>: Uses the Bellman equation and updates based on the next action <strong><span class="arithmatex">\(A_{t+1}\)</span></strong>:</li>
+</ul>
+<div class="arithmatex">\[
+G(S_t) \approx R_{t+1} + \gamma Q(S_{t+1}, A_{t+1})
+\]</div>
+<p>Since <span class="arithmatex">\(A_{t+1}\)</span> is chosen by the current policy (e.g., ε-greedy), Sarsa updates based on actual agent behavior.</p>
+<ul>
+<li><strong>Q-learning (Off-Policy)</strong>: Uses the Bellman <strong>Optimality</strong> equation instead:</li>
+</ul>
+<div class="arithmatex">\[
+G(S_t) \approx R_{t+1} + \gamma \max_a Q(S_{t+1}, a)
+\]</div>
+<p>This means Q-learning updates based on the best possible future action (regardless of whether it will be taken or not), rather than the one actually taken.</p>
+<h3 id="how-does-sarsa-improve-the-policy">How Does Sarsa Improve the Policy?</h3>
+<p>A key question is: <em>If Sarsa does not use the Bellman Optimality equation, how does it improve the policy?</em> </p>
+<p>The answer lies in how <span class="arithmatex">\(A_{t+1}\)</span> is selected. Since actions are chosen based on an ε-greedy policy, <em>there is an implicit max operation in action selection</em>. That is, most of the time (<span class="arithmatex">\(1-\epsilon+\frac{\epsilon}{|\mathcal{A}|}\)</span>), the agent picks the action with the highest <span class="arithmatex">\(Q\)</span> value. This leads to <em>gradual policy improvement</em> while still allowing some exploration.</p>
+<p>Because of this, Sarsa continuously refines the Q-values and improves the policy over time. The ε-greedy strategy ensures all actions are explored, preventing premature convergence to suboptimal solutions. Even after the Q-table stabilizes, the policy remains slightly suboptimal due to exploration. One can either decay ε over time or leave it small but nonzero to maintain some exploration.</p>
+<!-- ### Policy Evaluation vs. Policy Improvement
+
+- **TD methods** estimate state values under a fixed policy, focusing on prediction rather than optimization.
+- **Sarsa** refines the action-value function \(Q(s, a)\) based on the **same policy it follows**, making it an **on-policy** algorithm.
+- **Q-learning** learns the optimal action-value function **independent of the policy being followed**, making it **off-policy**. -->
+
+<h3 id="balancing-exploration-and-exploitation">Balancing Exploration and Exploitation</h3>
+<p>Both algorithms use ε-greedy exploration, so both can have a built-in exploraiton strategy, but:</p>
+<ul>
+<li>Sarsa updates <span class="arithmatex">\(Q(s, a)\)</span> use the actual actions taken by the agent, ensuring consistency between learning and acting.</li>
+<li>Q-learning updates <span class="arithmatex">\(Q(s, a)\)</span> use the highest possible future value, leading to faster convergence but may suffer form over-estimation of the action-value function.</li>
+</ul>
+<p>The resultant behaviour of the algorithms is that:</p>
+<ul>
+<li>Sarsa learns smoother policies, as it updates based on the agent's behavior.</li>
+<li>Q-learning learns optimal policies faster, but may be unstable in environments with significant randomness.</li>
+</ul>
+<p>Ultimately, <strong>Sarsa is more conservative and stable</strong>, while <strong>Q-learning converges faster to the optimal policy</strong> but may suffer from instability in highly stochastic environments.</p>
+<p>Both algorithms use ε-greedy exploration, so both have a built-in exploration strategy, but:</p>
+<ul>
+<li><strong>Sarsa</strong> updates <span class="arithmatex">\(Q(s, a)\)</span> based on the actual actions taken by the agent, ensuring consistency between learning and acting.</li>
+<li><strong>Q-learning</strong> updates <span class="arithmatex">\(Q(s, a)\)</span> using the highest possible future value, which accelerates convergence but may suffer from <strong>overestimation of the action-value function</strong>.</li>
+</ul>
+<p>While <strong>Sarsa is safer and more stable</strong>, <strong>Q-learning remains the preferred choice</strong> for most practical RL applications due to its off-policy nature, faster convergence, and ability to leverage experience replay. However, researchers continue to refine Q-learning to mitigate its overestimation issue, making it even more effective in modern reinforcement learning systems.</p>
+<h3 id="sarsa-algorithm-in-pseudocode">Sarsa Algorithm in Pseudocode</h3>
+<p><span class="arithmatex">\(
+\begin{array}{ll}
+\textbf{Algorithm: }  \text{Sarsa (On-policy TD Control)} \\
+\textbf{Input: } \text{Environment dynamics and reward structure} \\
+\textbf{Initialize: } Q(S, A) \leftarrow 0, \forall S \in \mathcal{S}, A \in \mathcal{A}, \alpha &gt; 0, \gamma \in [0, 1], \epsilon &gt; 0 \\
+\textbf{For each episode: } &amp; \\
+\quad \text{Initialize } S_0 \text{ and choose } A_0 \text{ based on policy derived from } Q \text{ (e.g., using $\epsilon$-greedy)} &amp; \\
+\quad \text{For each step } t \text{ from 0 to T-1: } &amp; \\
+\quad \quad R_{t+1} \leftarrow \text{Take action } A_t \text{, observe reward } R_{t+1} \text{, and next state } S_{t+1} &amp; \\
+\quad \quad A_{t+1} \leftarrow \text{Choose } A_{t+1} \text{ based on policy derived from } Q \text{ (e.g., using $\epsilon$-greedy)} &amp; \\
+\quad \quad Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha (R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t) )&amp; \\
+\quad \text{End step loop} &amp; \\
+\textbf{Return: } Q(S, A), \forall S \in \mathcal{S}, A \in \mathcal{A} \\
+\end{array}
+\)</span></p>
+<h3 id="implementation-of-sarsa">Implementation of Sarsa</h3>
+<p><strong>Note: Using the previously shown TD algorithm directly is not suitable for control, we must adapt it so that it changes the Q tabel not the V table.</strong> In particular, we need to inherit from an MDP class to have the Q table available for us.</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Sarsa</span><span class="p">(</span><span class="n">MDP</span><span class="p">()):</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1">#α=.8</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_an</span> <span class="c1"># for Sarsa we want to decide the next action in time step t</span>
-
-    <span class="c1"># ----------------------------------------🌖 online learning ----------------------------------------</span>
+    <span class="c1"># ---------------------------------🌖 online learning ------------------------------------</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">online</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">rn</span><span class="p">,</span><span class="n">sn</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span><span class="n">an</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="n">rn</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">sn</span><span class="p">,</span><span class="n">an</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">])</span>
 </code></pre></div>
 <p>Note that we do not store the experience for this one-step online algorithm while we had to for MC, and this is again one of the advantages of online methods.</p>
 <p>Let us now apply the Sarsa on a simple grid world environment. The goal is directly facing the start position. However, to make the problem more difficult for the algorithm we have deprioritised the right action and we place the order of the actions as follows: left, right, down and up. This simple change made the agent pick going left before going right and made the problem only a bit more difficult. Let us see how the Sarsa performs on it.</p>
+<p>Similar to what we did earlier we will use the two dictionaries demoQ and demoR to make the calls more concise.</p>
 <p><div class="highlight"><pre><span></span><code><span class="n">sarsa</span> <span class="o">=</span> <span class="n">Sarsa</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">grid</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
 </code></pre></div>
 <img alt="png" src="output_52_0.png" /></p>
@@ -1418,11 +1533,27 @@ We cover mainly two algorithms one is Sarsa which is an on-policy control algori
 </code></pre></div>
 <p><img alt="png" src="output_67_0.png" /></p>
 <h2 id="q-learning-off-policy-control">Q-learning off-policy control</h2>
-<p>Now we move to the Q-learning algorithm. Q-learning is one of the most successful algorithms in RL. Although it is an <em>off-policy</em> (not offline) algorithm, it usually performs better than the Sarsa. Q-learning also allowed for a control algorithm's first proof of convergence due to its simple update rules. </p>
+<p>Now we move to the Q-learning algorithm. Q-learning is one of the most successful algorithms in RL. Although it is an <em>off-policy</em> (not offline) algorithm, it usually performs better than the Sarsa. Q-learning also allowed for a control algorithm's first proof of convergence due to its simple update rules. Below we show the pseudocode of Q-learning:</p>
+<p><span class="arithmatex">\(
+\begin{array}{ll}
+\textbf{Algorithm: }  \text{Q-learning (Off-policy TD Control)} \\
+\textbf{Input: } \text{Environment dynamics and reward structure} \\
+\textbf{Initialize: } Q(S, A) \leftarrow 0, \forall S \in \mathcal{S}, A \in \mathcal{A}, \alpha &gt; 0, \gamma \in [0, 1], \epsilon &gt; 0 \\
+\textbf{For each episode: } &amp; \\
+\quad \text{Initialize } S_0 &amp; \\
+\quad \text{For each step } t \text{ from 0 to T-1: } &amp; \\
+\quad \quad \text{Choose } A_t \text{ based on policy derived from } Q \text{ (e.g., using $\epsilon$-greedy)} &amp; \\
+\quad \quad R_{t+1}, S_{t+1} \leftarrow \text{Take action } A_t, \text{ observe reward and next state} &amp; \\
+\quad \quad Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha (R_{t+1} + \gamma \max_{a} Q(S_{t+1}, a) - Q(S_t, A_t)) &amp; \\
+\quad \text{End step loop} &amp; \\
+\textbf{Return: } Q(S, A), \forall S \in \mathcal{S}, A \in \mathcal{A} \\
+\end{array}
+\)</span></p>
+<p>Note hwo we do not need to wait until we get the next action <span class="arithmatex">\(A_{t+1}\)</span> as in Sarsa. This key difference is reflected in the way we implement Sarsa and Q-learning. In Sarsa we needed to specify that we want to use the step_an function.</p>
+<h3 id="implementation-of-q-learning">Implementation of Q-learning</h3>
 <p><strong>Important</strong> Note that Q-learning does not require changing the step function because it does not require knowing the next action in advance (unlike Sarsa). Hence it uses a simple algorithmic schema that is almost identical to TD.</p>
 <div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Qlearn</span><span class="p">(</span><span class="n">MDP</span><span class="p">()):</span>
-
-    <span class="c1">#--------------------------------------🌖 online learning --------------------------------------</span>
+    <span class="c1">#---------------------------------🌖 online learning ---------------------------</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">online</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">rn</span><span class="p">,</span><span class="n">sn</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span><span class="n">_</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">α</span><span class="o">*</span><span class="p">(</span><span class="n">rn</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">done</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">sn</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">s</span><span class="p">,</span><span class="n">a</span><span class="p">])</span>
 </code></pre></div>
@@ -1430,6 +1561,127 @@ We cover mainly two algorithms one is Sarsa which is an on-policy control algori
 <p><div class="highlight"><pre><span></span><code><span class="n">qlearn</span> <span class="o">=</span> <span class="n">Qlearn</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">grid</span><span class="p">(),</span> <span class="n">γ</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="o">**</span><span class="n">demoQ</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
 </code></pre></div>
 <img alt="png" src="output_71_0.png" /></p>
+<h3 id="overestimation-in-q-learning">Overestimation in Q-learning</h3>
+<p>Since Q-learning updates are based on <span class="arithmatex">\(\max_a Q(S_{t+1}, a)\)</span>, it always assumes the best possible action will be taken in the future, even if the agent’s policy does not necessarily follow this assumption. This optimistic evaluation can cause systematic overestimation of Q-values, especially in stochastic environments where rewards and transitions have variability.</p>
+<h4 id="why-does-this-happen">Why does this happen?</h4>
+<ul>
+<li>If the Q-values are <em>noisy</em> (due to randomness in rewards or transitions), the <em>max operator tends to select overestimated values</em>.</li>
+<li>This bias can <em>compound over time</em>, leading to inflated estimates and suboptimal policies.</li>
+<li>In contrast, <em>Sarsa does not suffer from this issue</em>, as it updates based on the actual action chosen, avoiding the artificial boost from maximum Q-values.</li>
+</ul>
+<h4 id="consequences-of-overestimation">Consequences of Overestimation:</h4>
+<ul>
+<li>Instability in learning: The agent may favor suboptimal actions with overestimated values.</li>
+<li>Poor policy performance in stochastic environments: The learned policy may not generalize well to different scenarios.</li>
+<li>Slow or unstable convergence: The agent may take longer to find the optimal policy or oscillate between suboptimal actions.</li>
+</ul>
+<h4 id="mitigation-strategies">Mitigation Strategies:</h4>
+<ul>
+<li>Double Q-learning: Maintains two Q-value estimates and updates them separately to reduce overestimation bias.</li>
+<li>Dueling Q-networks (in deep RL): Separates state-value estimation from action advantage estimation.</li>
+<li>Clipped Q-learning (in some modern RL methods like Soft Actor-Critic): Limits extreme Q-value updates.</li>
+</ul>
+<p>Thus, while Q-learning learns optimal policies faster, it requires careful tuning or additional mechanisms to mitigate overestimation bias, particularly in stochastic environments.</p>
+<hr />
+<h3 id="why-researchers-and-practitioners-prefer-q-learning-over-sarsa">Why Researchers and Practitioners Prefer Q-learning Over Sarsa</h3>
+<p>Despite the overestimation issue, Q-learning remains the more popular choice in practice due to several advantages:</p>
+<ol>
+<li>
+<p>Off-policy nature:  </p>
+<ul>
+<li>Q-learning learns the optimal policy independently of the policy being followed during exploration. This allows it to <strong>use past experience (experience replay)</strong>, making it suitable for modern deep RL algorithms.</li>
+<li>Sarsa, being on-policy, must continually update based on the current policy, making it <strong>less efficient for sample reuse</strong>.</li>
+</ul>
+</li>
+<li>
+<p>Faster convergence in deterministic environments:  </p>
+<ul>
+<li>Since Q-learning always uses the greedy update, it <em>quickly converges</em> to an optimal policy in deterministic environments where transitions and rewards are predictable.</li>
+<li>Sarsa, on the other hand, <em>converges more cautiously</em>, as it updates based on the action actually taken.</li>
+</ul>
+</li>
+<li>
+<p>Better long-term performance in practical applications:  </p>
+<ul>
+<li>In domains like robotics, game-playing (e.g., Deep Q-Networks in Atari games), and control systems, Q-learning’s focus on optimality makes it more attractive.</li>
+<li>Sarsa is more robust in highly stochastic environments but may settle for safer, suboptimal policies.</li>
+</ul>
+</li>
+<li>
+<p>Better compatibility with function approximation:  </p>
+<ul>
+<li>Deep RL methods, such as <em>DQN (Deep Q-Networks)</em>, are built on Q-learning due to its ability to learn from replayed experiences, improving sample efficiency.</li>
+<li>Sarsa, being more sensitive to the policy being followed, does not benefit as much from experience replay.</li>
+</ul>
+</li>
+</ol>
+<hr />
+<h3 id="convergence-guarantees">Convergence Guarantees</h3>
+<p>Both Sarsa and Q-learning converge to the optimal action-value function under certain conditions:</p>
+<ul>
+<li>Sarsa (On-Policy Control) Convergence:  </li>
+<li>Sarsa is guaranteed to converge to the optimal Q-values as long as every state-action pair is visited infinitely often and the learning rate satisfies the Robbins-Monro conditions (i.e., decreasing but not too fast).</li>
+<li>Since it follows an*ε-greedy policy with exploration, it naturally satisfies this assumption over time.</li>
+<li>
+<p>However, because it updates based on the agent’s policy, it may settle into a near-optimal policy rather than the true optimal one if exploration is not sufficiently reduced.</p>
+</li>
+<li>
+<p>Q-learning (Off-Policy Control) Convergence:  </p>
+</li>
+<li>Q-learning is proven to converge to the optimal Q-values under the same Robbins-Monro conditions.</li>
+<li>However, in stochastic environments, overestimation bias can lead to suboptimal learning, and additional modifications (e.g., Double Q-learning) are needed to ensure better stability.</li>
+<li>In deterministic settings, Q-learning usually converges faster than Sarsa.</li>
+</ul>
+<h3 id="practical-considerations">Practical Considerations:</h3>
+<ul>
+<li>If the environment is <em>highly stochastic</em>, <em>Sarsa</em> is often preferred because it <em>avoids overestimation and learns safer policies</em>.</li>
+<li>If <em>efficiency and optimality</em> are the priorities (e.g., games, robotics, deep RL), <em>Q-learning</em> is usually the better choice due to its <em>off-policy nature and faster learning</em>.</li>
+<li>Modern deep RL algorithms (e.g., <strong>DQN, DDQN</strong>) mitigate Q-learning’s weaknesses while retaining its advantages, making it the dominant choice in large-scale applications.</li>
+</ul>
+<hr />
+<h3 id="sarsa-vs-q-learning_1">Sarsa vs Q-learning</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th><strong>Sarsa</strong> (On-policy)</th>
+<th><strong>Q-learning</strong> (Off-policy)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Exploration Strategy</strong></td>
+<td>Uses the action actually taken</td>
+<td>Uses max Q-value over all actions</td>
+</tr>
+<tr>
+<td><strong>Policy Type</strong></td>
+<td>Learns about the <strong>same policy</strong> it follows</td>
+<td>Learns about an <strong>optimal greedy policy</strong></td>
+</tr>
+<tr>
+<td><strong>Convergence</strong></td>
+<td>More stable in stochastic environments</td>
+<td>Can be faster, but may suffer from overestimation</td>
+</tr>
+<tr>
+<td><strong>Optimality</strong></td>
+<td>May settle for a slightly suboptimal policy</td>
+<td>More likely to find the optimal policy</td>
+</tr>
+<tr>
+<td><strong>Experience Replay</strong></td>
+<td>Less effective</td>
+<td>Well-suited (used in DQN, etc.)</td>
+</tr>
+<tr>
+<td><strong>Application</strong></td>
+<td>Safer, more robust learning (e.g., safety-critical RL)</td>
+<td>Used in deep RL (DQN), robotics, and large-scale control problems</td>
+</tr>
+</tbody>
+</table>
+<hr />
 <h2 id="sarsa-and-q-learning-on-a-cliff-edge">Sarsa and Q-Learning on a Cliff Edge!</h2>
 <p>This section compares the performance of on-policy Sarsa and off-policy Q-learning algorithms to show how each act on a specific problem. The problem that we will tackle is a cliff-edge world. This is a grid world of 12x4, with a goal location on the far-right bottom corner and the start location on the far-left bottom corner. There are no obstacles. However, there is a cliff between the start and the goal locations on the bottom. If the agent trespasses on it, it falls off the cliff, receives a penalty of -100 and will be relocated back to the start location <em>without starting a new episode</em>. The agent receives a reward of -1 everywhere, including the goal location. We will use the sum of rewards metric to measure the performance of algorithms on this problem.</p>
 <div class="highlight"><pre><span></span><code><span class="n">sarsa</span> <span class="o">=</span> <span class="n">Sarsa</span><span class="p">(</span><span class="n">env</span><span class="o">=</span><span class="n">cliffwalk</span><span class="p">(),</span> <span class="n">α</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">episodes</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">demoR</span><span class="p">())</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
